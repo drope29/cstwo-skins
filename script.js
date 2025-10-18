@@ -40,18 +40,17 @@ const cases = {
     }
 };
 
-const modalContainer = document.getElementById('modal-container');
-const closeModalBtn = document.getElementById('close-modal-btn');
-const skinName = document.getElementById('skin-name');
-const skinRarity = document.getElementById('skin-rarity');
+const openingScreen = document.getElementById('opening-screen');
+const closeOpeningBtn = document.getElementById('close-opening-btn');
+const winningSkinName = document.getElementById('winning-skin-name');
+const winningSkinRarity = document.getElementById('winning-skin-rarity');
 const roulette = document.getElementById('roulette');
 const winningSkinInfo = document.getElementById('winning-skin-info');
 
-function resetModal() {
+function resetOpeningScreen() {
     roulette.innerHTML = '';
     roulette.style.transform = 'translateX(0)';
     winningSkinInfo.style.display = 'none';
-    document.querySelector('.modal-title').textContent = 'Abrindo caixa...';
 }
 
 document.querySelectorAll('.open-case-btn').forEach(button => {
@@ -62,7 +61,7 @@ document.querySelectorAll('.open-case-btn').forEach(button => {
         if (userBalance >= selectedCase.price) {
             userBalance -= selectedCase.price;
             updateUserBalance();
-            resetModal();
+            resetOpeningScreen();
 
             const skins = selectedCase.skins;
             const winningSkin = skins[Math.floor(Math.random() * skins.length)];
@@ -82,7 +81,7 @@ document.querySelectorAll('.open-case-btn').forEach(button => {
                 roulette.appendChild(rouletteItem);
             });
 
-            modalContainer.style.display = 'block';
+            openingScreen.style.display = 'flex';
 
             // Animate the roulette
             setTimeout(() => {
@@ -94,10 +93,9 @@ document.querySelectorAll('.open-case-btn').forEach(button => {
 
             // Show winning skin info after animation
             setTimeout(() => {
-                skinName.textContent = winningSkin.name;
-                skinRarity.textContent = `Raridade: ${winningSkin.rarity}`;
+                winningSkinName.textContent = winningSkin.name;
+                winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity}`;
                 winningSkinInfo.style.display = 'block';
-                document.querySelector('.modal-title').textContent = 'Você ganhou:';
             }, 5500);
 
         } else {
@@ -106,12 +104,6 @@ document.querySelectorAll('.open-case-btn').forEach(button => {
     });
 });
 
-closeModalBtn.addEventListener('click', () => {
-    modalContainer.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-    if (e.target == modalContainer) {
-        modalContainer.style.display = 'none';
-    }
+closeOpeningBtn.addEventListener('click', () => {
+    openingScreen.style.display = 'none';
 });

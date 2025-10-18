@@ -27,13 +27,13 @@
         <main>
             <div id="cases-container">
                 <div class="case" id="case1">
-                    <img src="https://csgostash.com/storage/img/containers/cases/337.png" alt="Caixa Espectral 2">
+                    <img src="assets/images/case1.png" alt="Caixa Espectral 2">
                     <h3>Caixa Espectral</h3>
                     <p>R$ 15,00</p>
                     <button class="open-case-btn" data-case="case1">Abrir</button>
                 </div>
                 <div class="case" id="case2">
-                    <img src="https://csgostash.com/storage/img/containers/cases/83.png" alt="Caixa das Sombras">
+                    <img src="assets/images/case2.png" alt="Caixa das Sombras">
                     <h3>Caixa das Sombras</h3>
                     <p>R$ 25,00</p>
                     <button class="open-case-btn" data-case="case2">Abrir</button>
@@ -42,17 +42,16 @@
         </main>
     </div>
 
-    <div id="modal-container" style="display: none;">
-        <div id="modal-content">
-            <span id="close-modal-btn">&times;</span>
-            <h2 class="modal-title">Abrindo caixa...</h2>
+    <div id="opening-screen" style="display: none;">
+        <button id="close-opening-btn">&times; Fechar</button>
+        <div id="opening-content">
             <div id="roulette-container">
                 <div id="roulette-pin"></div>
                 <div id="roulette"></div>
             </div>
             <div id="winning-skin-info" style="display: none;">
-                <h3 id="skin-name"></h3>
-                <p id="skin-rarity"></p>
+                <h2 id="winning-skin-name"></h2>
+                <p id="winning-skin-rarity"></p>
             </div>
         </div>
     </div>
