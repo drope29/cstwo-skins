@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Case Opener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-container">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <button id="login-btn">Login</button>
+    </div>
+
+    <div id="main-container" style="display: none;">
+        <header>
+            <div class="user-info">
+                <img src="https://via.placeholder.com/50" alt="User Avatar" id="user-avatar">
+                <span id="user-balance">R$ 1.000,00</span>
+            </div>
+        </header>
+        <main>
+            <div id="cases-container">
+                <div class="case" id="case1">
+                    <img src="https://raw.githubusercontent.com/joseronaldo22/site-csgo/main/case.png" alt="Case 1">
+                    <h3>Caixa Espectral</h3>
+                    <p>R$ 15,00</p>
+                    <button class="open-case-btn" data-case="case1">Abrir</button>
+                </div>
+                <div class="case" id="case2">
+                    <img src="https://raw.githubusercontent.com/joseronaldo22/site-csgo/main/case.png" alt="Case 2">
+                    <h3>Caixa das Sombras</h3>
+                    <p>R$ 25,00</p>
+                    <button class="open-case-btn" data-case="case2">Abrir</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-container" style="display: none;">
+        <div id="modal-content">
+            <span id="close-modal-btn">&times;</span>
+            <h3 id="skin-name"></h3>
+            <img id="skin-image" src="" alt="Skin Image">
+            <p id="skin-rarity"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
