@@ -51,61 +51,74 @@ function resetOpeningScreen() {
     roulette.innerHTML = '';
     roulette.style.transform = 'translateX(0)';
     winningSkinInfo.style.display = 'none';
+
+    const oldWinner = document.querySelector('.roulette-item.winner');
+    if (oldWinner) {
+        oldWinner.classList.remove('winner');
+    }
+}
+
+function openCase(caseId) {
+    const selectedCase = cases[caseId];
+
+    if (userBalance < selectedCase.price) {
+        alert('Saldo insuficiente!');
+        return;
+    }
+
+    userBalance -= selectedCase.price;
+    updateUserBalance();
+    resetOpeningScreen();
+
+    const skins = selectedCase.skins;
+    const winningSkin = skins[Math.floor(Math.random() * skins.length)];
+    let winningItemElement = null;
+
+    // Populate the roulette
+    const rouletteItems = [];
+    for (let i = 0; i < 50; i++) {
+        rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
+    }
+    rouletteItems[45] = winningSkin;
+
+    rouletteItems.forEach((item, index) => {
+        const rouletteItem = document.createElement('div');
+        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        roulette.appendChild(rouletteItem);
+
+        if (index === 45) {
+            winningItemElement = rouletteItem;
+        }
+    });
+
+    openingScreen.style.display = 'flex';
+
+    // Animate the roulette
+    setTimeout(() => {
+        const itemWidth = 150; // Must match CSS width
+        const container = roulette.parentElement;
+        const containerWidth = container.offsetWidth;
+        const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
+        const scrollAmount = winningItemCenter - (containerWidth / 2);
+        roulette.style.transform = `translateX(-${scrollAmount}px)`;
+    }, 100);
+
+    // Show winning skin info and highlight winner after animation
+    setTimeout(() => {
+        winningSkinName.textContent = winningSkin.name;
+        winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity}`;
+        winningSkinInfo.style.display = 'block';
+        if (winningItemElement) {
+            winningItemElement.classList.add('winner');
+        }
+    }, 5500);
 }
 
 document.querySelectorAll('.case').forEach(caseElement => {
     caseElement.addEventListener('click', (e) => {
         const caseId = e.currentTarget.dataset.case;
-        const selectedCase = cases[caseId];
-
-        if (userBalance >= selectedCase.price) {
-            userBalance -= selectedCase.price;
-            updateUserBalance();
-            resetOpeningScreen();
-
-            const skins = selectedCase.skins;
-            const winningSkin = skins[Math.floor(Math.random() * skins.length)];
-
-            // Populate the roulette
-            const rouletteItems = [];
-            for (let i = 0; i < 50; i++) {
-                rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
-            }
-            // Place the winning skin near the end
-            rouletteItems[45] = winningSkin;
-
-            rouletteItems.forEach(item => {
-                const rouletteItem = document.createElement('div');
-                rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-                rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
-                roulette.appendChild(rouletteItem);
-            });
-
-            openingScreen.style.display = 'flex';
-
-            // Animate the roulette
-            setTimeout(() => {
-                const itemWidth = 150; // Must match CSS width
-                const container = roulette.parentElement;
-                const containerWidth = container.offsetWidth;
-
-                // Calculate the position to center the winning item under the pin
-                const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
-                const scrollAmount = winningItemCenter - (containerWidth / 2);
-
-                roulette.style.transform = `translateX(-${scrollAmount}px)`;
-            }, 100);
-
-            // Show winning skin info after animation
-            setTimeout(() => {
-                winningSkinName.textContent = winningSkin.name;
-                winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity}`;
-                winningSkinInfo.style.display = 'block';
-            }, 5500);
-
-        } else {
-            alert('Saldo insuficiente!');
-        }
+        openCase(caseId);
     });
 });
 
