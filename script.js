@@ -1,15 +1,23 @@
 let userBalance = 1000.00;
 const userBalanceSpan = document.getElementById('user-balance');
 
-function updateUserBalance() {
-    userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2)}`;
-}
+// --- DOM Elements ---
+const loginContainer = document.getElementById('login-container');
+const mainContainer = document.getElementById('main-container');
+const loginBtn = document.getElementById('login-btn');
+const caseScreen = document.getElementById('case-screen');
+const closeCaseBtn = document.getElementById('close-case-btn');
+const casePreview = document.getElementById('case-preview');
+const casePreviewName = document.getElementById('case-preview-name');
+const caseSkinsDisplay = document.getElementById('case-skins-display');
+const startRouletteBtn = document.getElementById('start-roulette-btn');
+const rouletteSection = document.getElementById('roulette-section');
+const winningSkinName = document.getElementById('winning-skin-name');
+const winningSkinRarity = document.getElementById('winning-skin-rarity');
+const roulette = document.getElementById('roulette');
+const winningSkinInfo = document.getElementById('winning-skin-info');
 
-document.getElementById('login-btn').addEventListener('click', () => {
-    document.getElementById('login-container').style.display = 'none';
-    document.getElementById('main-container').style.display = 'block';
-    updateUserBalance();
-});
+let currentCaseId = null;
 
 const cases = {
     case1: {
@@ -40,17 +48,16 @@ const cases = {
     }
 };
 
-const openingScreen = document.getElementById('opening-screen');
-const closeOpeningBtn = document.getElementById('close-opening-btn');
-const winningSkinName = document.getElementById('winning-skin-name');
-const winningSkinRarity = document.getElementById('winning-skin-rarity');
-const roulette = document.getElementById('roulette');
-const winningSkinInfo = document.getElementById('winning-skin-info');
+function updateUserBalance() {
+    userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2)}`;
+}
 
-function resetOpeningScreen() {
+function resetCaseScreen() {
     roulette.innerHTML = '';
     roulette.style.transform = 'translateX(0)';
     winningSkinInfo.style.display = 'none';
+    rouletteSection.style.display = 'none';
+    casePreview.style.display = 'block';
 
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
@@ -58,8 +65,31 @@ function resetOpeningScreen() {
     }
 }
 
-function openCase(caseId) {
+function showCasePreview(caseId) {
+    currentCaseId = caseId;
     const selectedCase = cases[caseId];
+
+    casePreviewName.textContent = selectedCase.name;
+    caseSkinsDisplay.innerHTML = ''; // Clear previous skins
+
+    selectedCase.skins.forEach(skin => {
+        const skinElement = document.createElement('div');
+        skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
+        skinElement.innerHTML = `
+            <img src="${skin.image}" alt="${skin.name}">
+            <p>${skin.name}</p>
+        `;
+        caseSkinsDisplay.appendChild(skinElement);
+    });
+
+    resetCaseScreen();
+    caseScreen.style.display = 'flex';
+}
+
+function startRoulette() {
+    if (!currentCaseId) return;
+
+    const selectedCase = cases[currentCaseId];
 
     if (userBalance < selectedCase.price) {
         alert('Saldo insuficiente!');
@@ -68,7 +98,10 @@ function openCase(caseId) {
 
     userBalance -= selectedCase.price;
     updateUserBalance();
-    resetOpeningScreen();
+
+    // Hide preview, show roulette
+    casePreview.style.display = 'none';
+    rouletteSection.style.display = 'block';
 
     const skins = selectedCase.skins;
     const winningSkin = skins[Math.floor(Math.random() * skins.length)];
@@ -92,15 +125,14 @@ function openCase(caseId) {
         }
     });
 
-    openingScreen.style.display = 'flex';
-
     // Animate the roulette
     setTimeout(() => {
         const itemWidth = 150; // Must match CSS width
         const container = roulette.parentElement;
         const containerWidth = container.offsetWidth;
+        const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
         const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
-        const scrollAmount = winningItemCenter - (containerWidth / 2);
+        const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
@@ -115,13 +147,26 @@ function openCase(caseId) {
     }, 5500);
 }
 
+
+// --- Event Listeners ---
+loginBtn.addEventListener('click', () => {
+    loginContainer.style.display = 'none';
+    mainContainer.style.display = 'block';
+    updateUserBalance();
+});
+
 document.querySelectorAll('.case').forEach(caseElement => {
     caseElement.addEventListener('click', (e) => {
         const caseId = e.currentTarget.dataset.case;
-        openCase(caseId);
+        showCasePreview(caseId);
     });
 });
 
-closeOpeningBtn.addEventListener('click', () => {
-    openingScreen.style.display = 'none';
+startRouletteBtn.addEventListener('click', startRoulette);
+
+closeCaseBtn.addEventListener('click', () => {
+    caseScreen.style.display = 'none';
 });
+
+// Initial setup
+updateUserBalance();
