@@ -40,24 +40,28 @@
         </main>
     </div>
 
-    <div id="case-screen" style="display: none;">
-        <button id="close-case-btn">&times; Voltar</button>
-        <div id="case-content">
-            <div id="case-preview">
-                <h2 id="case-preview-name"></h2>
-                <div id="case-skins-display"></div>
-                <button id="start-roulette-btn">Abrir Caixa</button>
-            </div>
-            <div id="roulette-section" style="display: none;">
-                <div id="roulette-container">
-                    <div id="roulette-pin"></div>
-                    <div id="roulette"></div>
-                </div>
-                <div id="winning-skin-info" style="display: none;">
-                    <h2 id="winning-skin-name"></h2>
-                    <p id="winning-skin-rarity"></p>
-                </div>
-            </div>
+    <!-- Screen 1: Pre-opening, shows case contents -->
+    <div id="pre-opening-screen" style="display: none;">
+        <button id="back-to-main-btn">&times; Voltar</button>
+        <h2 id="pre-opening-case-name"></h2>
+        <p>Conteúdo da caixa:</p>
+        <div id="case-items-grid">
+            <!-- JavaScript will populate this grid with skins -->
+        </div>
+        <button id="open-case-button">Abrir Caixa</button>
+    </div>
+
+    <!-- Screen 2: The actual roulette animation -->
+    <div id="opening-screen" style="display: none;">
+        <div id="roulette-container">
+            <div id="roulette-pin"></div>
+            <div id="roulette"></div>
+        </div>
+        <div id="winning-skin-info" style="display: none;">
+             <img id="winning-skin-image" src="" alt="Winning Skin">
+             <h2 id="winning-skin-name"></h2>
+             <p id="winning-skin-rarity"></p>
+             <button id="close-opening-btn">Fechar</button>
         </div>
     </div>
 
