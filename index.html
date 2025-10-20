@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Case Opener</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-container">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <button id="login-btn">Login</button>
+    </div>
+
+    <div id="main-container" style="display: none;">
+        <header>
+            <div class="user-info">
+                <img src="https://via.placeholder.com/50" alt="User Avatar" id="user-avatar">
+                <span id="user-balance">R$ 1.000,00</span>
+            </div>
+        </header>
+        <main>
+            <div id="cases-container">
+                <div class="case" id="case1" data-case="case1">
+                    <img src="assets/images/case1.png" alt="Caixa Espectral">
+                    <h3>Caixa Espectral</h3>
+                    <p>R$ 15,00</p>
+                </div>
+                <div class="case" id="case2" data-case="case2">
+                    <img src="assets/images/case2.png" alt="Caixa das Sombras">
+                    <h3>Caixa das Sombras</h3>
+                    <p>R$ 25,00</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Unified Case Opening Screen -->
+    <div id="case-opening-screen" style="display: none;">
+        <button id="back-to-main-btn">&times; Voltar</button>
+        <h2 id="case-name-title"></h2>
+
+        <!-- 1. Roulette -->
+        <div id="roulette-container">
+            <div id="roulette-pin"></div>
+            <div id="roulette"></div>
+        </div>
+
+        <!-- Winning Skin Info (Initially Hidden) -->
+        <div id="winning-skin-info" style="display: none;">
+             <img id="winning-skin-image" src="" alt="Winning Skin">
+             <h2 id="winning-skin-name"></h2>
+             <p id="winning-skin-rarity"></p>
+             <button id="close-winning-btn">Continuar</button>
+        </div>
+
+        <!-- 2. Open Button -->
+        <button id="open-case-button">Abrir Caixa</button>
+
+        <!-- 3. Skins Grid -->
+        <div id="case-items-grid">
+            <!-- JavaScript will populate this grid -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
