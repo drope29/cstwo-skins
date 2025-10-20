@@ -27,26 +27,26 @@ const cases = {
         name: 'Caixa Espectral',
         price: 15.00,
         skins: [
-            { name: 'AWP | Asiimov', rarity: 'covert', image: 'assets/images/skins/awp_asiimov.png' },
-            { name: 'AK-47 | Redline', rarity: 'classified', image: 'assets/images/skins/ak47_redline.png' },
-            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'assets/images/skins/m4a4_desolate_space.png' },
-            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'assets/images/skins/p250_see_ya_later.png' },
-            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: 'assets/images/skins/ump45_primal_saber.png' },
-            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'assets/images/skins/famas_mecha_industries.png' },
-            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'assets/images/skins/glock18_weasel.png' }
+            { name: 'AWP | Asiimov', rarity: 'covert', image: 'assets/images/awp_asiimov.png' },
+            { name: 'AK-47 | Redline', rarity: 'classified', image: 'assets/images/ak47_redline.png' },
+            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'assets/images/m4a4_desolate_space.png' },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'assets/images/p250_see_ya_later.png' },
+            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: 'assets/images/ump45_primal_saber.png' },
+            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'assets/images/famas_mecha_industries.png' },
+            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'assets/images/glock18_weasel.png' }
         ]
     },
     case2: {
         name: 'Caixa das Sombras',
         price: 25.00,
         skins: [
-            { name: 'Karambit | Fade', rarity: 'covert', image: 'assets/images/skins/karambit_fade.png' },
-            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'assets/images/skins/glock18_weasel.png' },
-            { name: 'AK-47 | Fire Serpent', rarity: 'covert', image: 'assets/images/skins/ak47_fire_serpent.png' },
-            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'assets/images/skins/m4a4_desolate_space.png' },
-            { name: 'AK-47 | Redline', rarity: 'classified', image: 'assets/images/skins/ak47_redline.png' },
-            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'assets/images/skins/p250_see_ya_later.png' },
-            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'assets/images/skins/famas_mecha_industries.png' }
+            { name: 'Karambit | Fade', rarity: 'covert', image: 'assets/images/karambit_fade.png' },
+            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'assets/images/glock18_weasel.png' },
+            { name: 'AK-47 | Fire Serpent', rarity: 'covert', image: 'assets/images/ak47_fire_serpent.png' },
+            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'assets/images/m4a4_desolate_space.png' },
+            { name: 'AK-47 | Redline', rarity: 'classified', image: 'assets/images/ak47_redline.png' },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'assets/images/p250_see_ya_later.png' },
+            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'assets/images/famas_mecha_industries.png' }
         ]
     }
 };
