@@ -1,0 +1,388 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(180deg, #1a1a1a 0%, #121212 100%);
+    color: #e0e0e0;
+    margin: 0;
+    padding-top: 70px;
+    overflow-x: hidden;
+}
+
+#login-container {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    width: 350px;
+    margin: 100px auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid #333;
+}
+
+#login-container input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+#login-container button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffc107;
+    color: #1a1a1a;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+#login-container button:hover {
+    background-color: #ffca2c;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 10px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    z-index: 50;
+    border-bottom: 1px solid #333;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #ffc107;
+}
+
+#user-balance {
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #2a2a2a;
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid #333;
+}
+
+main {
+    padding: 20px;
+}
+
+#cases-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.case {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    width: 250px;
+    border: 2px solid #333;
+    transition: all 0.3s ease;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.case::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 193, 7, 0.2), transparent 40%);
+    transform: rotate(0deg);
+    transition: transform 0.5s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.case:hover {
+    transform: translateY(-10px);
+    border-color: #ffc107;
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.7);
+}
+
+.case:hover::before {
+    transform: rotate(360deg);
+    opacity: 1;
+}
+
+.case img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.case h3 {
+    margin: 10px 0;
+}
+
+.case p {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ffc107;
+    margin: 0;
+}
+
+/* --- Unified Case Opening Screen --- */
+#case-opening-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 18, 18, 0.98);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align to the top */
+    align-items: center;
+    z-index: 100;
+    padding: 80px 20px 20px; /* More padding at the top */
+    overflow-y: auto;
+}
+
+#case-name-title {
+    font-size: 2.5em;
+    color: #ffc107;
+    margin-bottom: 20px;
+}
+
+/* 1. Roulette */
+#roulette-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid #333;
+    margin-bottom: 30px; /* Space between roulette and button */
+}
+
+#roulette-pin {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background-color: #ffc107;
+    z-index: 2;
+    box-shadow: 0 0 10px #ffc107;
+}
+
+#roulette {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+.roulette-item {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    padding: 5px;
+}
+
+.roulette-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.roulette-item p {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+    margin: 5px 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
+    text-align: center;
+}
+
+.roulette-item.winner {
+    border: 4px solid #ffc107;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #ffc107;
+}
+
+
+/* Winning Skin Info - This is now an overlay on top of the roulette */
+#winning-skin-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid #ffc107;
+    z-index: 101; /* Ensure it's on top */
+}
+
+#winning-skin-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}
+
+#winning-skin-name {
+    color: #ffc107;
+    font-size: 2.5em;
+    margin: 10px 0;
+}
+
+#winning-skin-rarity {
+    margin: 0 0 20px 0;
+    font-size: 1.2em;
+}
+
+
+/* 2. Open Button */
+#open-case-button {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffc107;
+    color: #1a1a1a;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    margin-bottom: 30px; /* Space between button and grid */
+}
+
+#open-case-button:hover {
+    background-color: #ffca2c;
+    transform: scale(1.05);
+}
+
+#open-case-button:disabled {
+    background-color: #555;
+    color: #888;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* 3. Skins Grid */
+#case-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.case-skin-item {
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid #333;
+}
+
+.case-skin-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.case-skin-item span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* --- General Buttons --- */
+#back-to-main-btn, #close-winning-btn {
+    background-color: #2a2a2a;
+    color: #ffc107;
+    border: 1px solid #ffc107;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#back-to-main-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#back-to-main-btn:hover, #close-winning-btn:hover {
+    background-color: #ffc107;
+    color: #1a1a1a;
+}
+
+
+/* --- Rarity Colors --- */
+.rarity-covert { border-bottom: 5px solid #d32ce6; }
+.rarity-classified { border-bottom: 5px solid #eb4b4b; }
+.rarity-restricted { border-bottom: 5px solid #8847ff; }
+.rarity-mil-spec { border-bottom: 5px solid #4b69ff; }
+
+.roulette-item.rarity-covert { background: radial-gradient(circle, #d32ce6, transparent 70%); }
+.roulette-item.rarity-classified { background: radial-gradient(circle, #eb4b4b, transparent 70%); }
+.roulette-item.rarity-restricted { background: radial-gradient(circle, #8847ff, transparent 70%); }
+.roulette-item.rarity-mil-spec { background: radial-gradient(circle, #4b69ff, transparent 70%); }
