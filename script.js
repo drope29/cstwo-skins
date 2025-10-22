@@ -29,11 +29,18 @@ const cases = {
         skins: [
             { name: 'AWP | Asiimov', rarity: 'covert', image: 'images/skins/awp_asiimov.png' },
             { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/skins/ak47_redline.png' },
-            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'images/skins/m4a4_desolate_space.png' },
-            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/skins/p250_see_ya_later.png' },
-            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: 'images/skins/ump45_primal_saber.png' },
+            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: ' images/skins/m4a4_desolate_space.png' },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: '   images/skins/p250_see_ya_later.png' },
+            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: ' images/skins/ump45_primal_saber.png' },
             { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png' },
-            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/skins/glock18_weasel.png' }
+            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/skins/glock18_weasel.png' },
+            { name: 'AWP | Gungnir', rarity: 'covert', image: 'images/skins/awp_gungnir.png' },
+            { name: 'M4A4 | The Emperor', rarity: 'classified', image: 'images/skins/m4a4_the_emperor.png' },
+            { name: 'USP-S | Orion', rarity: 'restricted', image: 'images/skins/usps_orion.png' },
+            { name: 'Glock-18 | Vogue', rarity: 'restricted', image: 'images/skins/glock18_vogue.png' },
+            { name: 'Desert Eagle | Printstream', rarity: 'classified', image: 'images/skins/deagle_printstream.png' },
+            { name: 'P90 | Asiimov', rarity: 'classified', image: 'images/skins/p90_asiimov.png' },
+            { name: 'MAC-10 | Neon Rider', rarity: 'classified', image: 'images/skins/mac10_neon_rider.png' }
         ]
     },
     case2: {
@@ -46,7 +53,14 @@ const cases = {
             { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'images/skins/m4a4_desolate_space.png' },
             { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/skins/ak47_redline.png' },
             { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/skins/p250_see_ya_later.png' },
-            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png' }
+            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png' },
+            { name: 'AK-47 | Gold Arabesque', rarity: 'covert', image: 'images/skins/ak47_gold_arabesque.png' },
+            { name: 'M4A1-S | Printstream', rarity: 'covert', image: 'images/skins/m4a1s_printstream.png' },
+            { name: 'Five-SeveN | Case Hardened', rarity: 'restricted', image: 'images/skins/five_seven_case_hardened.png' },
+            { name: 'MP9 | Starlight Protector', rarity: 'restricted', image: 'images/skins/mp9_starlight_protector.png' },
+            { name: 'Sawed-Off | The Kraken', rarity: 'mil-spec', image: 'images/skins/sawed_off_the_kraken.png' },
+            { name: 'AUG | Akihabara Accept', rarity: 'covert', image: 'images/skins/aug_akihabara_accept.png' },
+            { name: 'Galil AR | Cerberus', rarity: 'restricted', image: 'images/skins/galil_ar_cerberus.png' }
         ]
     }
 };
