@@ -268,10 +268,8 @@ main {
 #roulette {
     display: flex;
     position: absolute;
-    top: 0;
+    top: 5px; /* Manually center the 170px items in the 180px container */
     left: 0;
-    height: 100%;
-    align-items: center; /* Vertically center items */
 }
 
 .roulette-item {
