@@ -3,6 +3,7 @@ let userBalance = 1000.00;
 let currentCaseId = null;
 
 // --- DOM Elements ---
+const header = document.querySelector('header');
 const userBalanceSpan = document.getElementById('user-balance');
 const loginContainer = document.getElementById('login-container');
 const mainContainer = document.getElementById('main-container');
@@ -74,7 +75,7 @@ function resetOpeningScreen() {
     roulette.style.transition = 'none';
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
-    winningSkinInfo.style.display = 'none';
+    winningSkinInfo.classList.remove('visible');
     openCaseButton.disabled = false;
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
@@ -142,30 +143,33 @@ function startRoulette() {
 
     // Populate the roulette for the real spin
     const rouletteItems = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) { // Increased item count for a longer spin
         rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
     }
-    rouletteItems[45] = winningSkin;
+    // Place winner near the end
+    const winnerIndex = 95;
+    rouletteItems[winnerIndex] = winningSkin;
 
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
         rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
-        if (index === 45) {
+        if (index === winnerIndex) {
             winningItemElement = rouletteItem;
         }
     });
 
     // Animate the roulette
     setTimeout(() => {
-        const itemWidth = 150;
+        const itemWidth = 160; // Corresponds to the new CSS width
         const containerWidth = roulette.parentElement.offsetWidth;
-        const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
-        const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
+        // Jitter effect for the final position
+        const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.6);
+        const winningItemCenter = (itemWidth * winnerIndex) + (itemWidth / 2);
         const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
 
-        roulette.style.transition = 'transform 5s cubic-bezier(0.1, 0.8, 0.2, 1)';
+        roulette.style.transition = 'transform 7s cubic-bezier(0.2, 0.9, 0.1, 1)'; // Longer and smoother easing
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
@@ -174,16 +178,19 @@ function startRoulette() {
         winningSkinImage.src = winningSkin.image;
         winningSkinName.textContent = winningSkin.name;
         winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity}`;
-        winningSkinInfo.style.display = 'flex';
+        winningSkinInfo.classList.add('visible');
         if (winningItemElement) {
             winningItemElement.classList.add('winner');
         }
-    }, 5500);
+    }, 7500); // Adjusted timeout to match animation
 }
 
 function closeOpeningScreen() {
-    winningSkinInfo.style.display = 'none';
-    showCaseOpeningScreen(currentCaseId); // Re-show the screen in its initial state
+    winningSkinInfo.classList.remove('visible');
+    // Add a small delay to allow the fade-out animation to finish before resetting
+    setTimeout(() => {
+        showCaseOpeningScreen(currentCaseId); // Re-show the screen in its initial state
+    }, 500);
 }
 
 function goBackToMain() {
@@ -208,6 +215,14 @@ document.querySelectorAll('.case').forEach(caseElement => {
 openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
 closeWinningBtn.addEventListener('click', closeOpeningScreen);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
 
 // Initial setup
 updateUserBalance();
