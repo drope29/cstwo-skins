@@ -13,6 +13,7 @@ const caseOpeningScreen = document.getElementById('case-opening-screen');
 const backToMainBtn = document.getElementById('back-to-main-btn');
 const caseNameTitle = document.getElementById('case-name-title');
 const roulette = document.getElementById('roulette');
+const winningSkinModal = document.getElementById('winning-skin-modal');
 const winningSkinInfo = document.getElementById('winning-skin-info');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
@@ -74,8 +75,9 @@ function resetOpeningScreen() {
     roulette.style.transition = 'none';
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
-    winningSkinInfo.style.opacity = '0'; // Use opacity
-    winningSkinInfo.style.pointerEvents = 'none'; // Disable interaction
+    winningSkinModal.style.opacity = '0';
+    winningSkinModal.style.pointerEvents = 'none';
+    winningSkinInfo.style.borderColor = 'transparent';
     openCaseButton.disabled = false;
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
@@ -171,26 +173,28 @@ function startRoulette() {
         const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
         const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
 
-        roulette.style.transition = 'transform 6s cubic-bezier(0.2, 0.9, 0.3, 1)'; // Slower, smoother animation
+        roulette.style.transition = 'transform 8s cubic-bezier(0.1, 0.8, 0.2, 1)'; // Longer, more dramatic animation
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
     // Show winning skin info after animation
     setTimeout(() => {
+        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${winningSkin.rarity}-color`).trim();
         winningSkinImage.src = winningSkin.image;
         winningSkinName.textContent = winningSkin.name;
         winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity.charAt(0).toUpperCase() + winningSkin.rarity.slice(1)}`;
-        winningSkinInfo.style.opacity = '1';
-        winningSkinInfo.style.pointerEvents = 'auto';
+        winningSkinInfo.style.borderColor = rarityColor;
+        winningSkinModal.style.opacity = '1';
+        winningSkinModal.style.pointerEvents = 'auto';
         if (winningItemElement) {
             winningItemElement.classList.add('winner');
         }
-    }, 6500); // Adjusted timing
+    }, 8500); // Adjusted timing to match animation
 }
 
 function closeOpeningScreen() {
-    winningSkinInfo.style.opacity = '0';
-    winningSkinInfo.style.pointerEvents = 'none';
+    winningSkinModal.style.opacity = '0';
+    winningSkinModal.style.pointerEvents = 'none';
     // Don't re-show the whole screen, just enable the button
     setTimeout(() => {
         openCaseButton.disabled = false;
