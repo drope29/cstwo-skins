@@ -1,6 +1,8 @@
 
 let userBalance = 1000.00;
 let currentCaseId = null;
+let userInventory = [];
+let currentWinningSkin = null;
 
 // --- DOM Elements ---
 const userBalanceSpan = document.getElementById('user-balance');
@@ -18,9 +20,14 @@ const winningSkinInfo = document.getElementById('winning-skin-info');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
-const closeWinningBtn = document.getElementById('close-winning-btn');
+const sellSkinBtn = document.getElementById('sell-skin-btn');
+const keepSkinBtn = document.getElementById('keep-skin-btn');
 const openCaseButton = document.getElementById('open-case-button');
 const caseItemsGrid = document.getElementById('case-items-grid');
+const inventoryBtn = document.getElementById('inventory-btn');
+const inventoryModal = document.getElementById('inventory-modal');
+const inventoryGrid = document.getElementById('inventory-grid');
+const closeInventoryBtn = document.getElementById('close-inventory-btn');
 
 // --- Data ---
 const cases = {
@@ -28,40 +35,40 @@ const cases = {
         name: 'Caixa Espectral',
         price: 15.00,
         skins: [
-            { name: 'AWP | Asiimov', rarity: 'covert', image: 'images/skins/awp_asiimov.png' },
-            { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/skins/ak47_redline.png' },
-            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: ' images/skins/m4a4_desolate_space.png' },
-            { name: 'P250 | See Ya Later', rarity: 'restricted', image: '   images/skins/p250_see_ya_later.png' },
-            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: ' images/skins/ump45_primal_saber.png' },
-            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png' },
-            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/skins/glock18_weasel.png' },
-            { name: 'AWP | Gungnir', rarity: 'covert', image: 'images/skins/awp_gungnir.png' },
-            { name: 'M4A4 | The Emperor', rarity: 'classified', image: 'images/skins/m4a4_the_emperor.png' },
-            { name: 'USP-S | Orion', rarity: 'restricted', image: 'images/skins/usps_orion.png' },
-            { name: 'Glock-18 | Vogue', rarity: 'restricted', image: 'images/skins/glock18_vogue.png' },
-            { name: 'Desert Eagle | Printstream', rarity: 'classified', image: 'images/skins/deagle_printstream.png' },
-            { name: 'P90 | Asiimov', rarity: 'classified', image: 'images/skins/p90_asiimov.png' },
-            { name: 'MAC-10 | Neon Rider', rarity: 'classified', image: 'images/skins/mac10_neon_rider.png' }
+            { name: 'AWP | Asiimov', rarity: 'covert', image: 'images/skins/awp_asiimov.png', price: 13.50 },
+            { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/skins/ak47_redline.png', price: 12.00 },
+            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: ' images/skins/m4a4_desolate_space.png', price: 12.00 },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: '   images/skins/p250_see_ya_later.png', price: 11.25 },
+            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: ' images/skins/ump45_primal_saber.png', price: 11.25 },
+            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png', price: 10.50 },
+            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/skins/glock18_weasel.png', price: 10.50 },
+            { name: 'AWP | Gungnir', rarity: 'covert', image: 'images/skins/awp_gungnir.png', price: 13.50 },
+            { name: 'M4A4 | The Emperor', rarity: 'classified', image: 'images/skins/m4a4_the_emperor.png', price: 12.00 },
+            { name: 'USP-S | Orion', rarity: 'restricted', image: 'images/skins/usps_orion.png', price: 11.25 },
+            { name: 'Glock-18 | Vogue', rarity: 'restricted', image: 'images/skins/glock18_vogue.png', price: 11.25 },
+            { name: 'Desert Eagle | Printstream', rarity: 'classified', image: 'images/skins/deagle_printstream.png', price: 12.00 },
+            { name: 'P90 | Asiimov', rarity: 'classified', image: 'images/skins/p90_asiimov.png', price: 12.00 },
+            { name: 'MAC-10 | Neon Rider', rarity: 'classified', image: 'images/skins/mac10_neon_rider.png', price: 12.00 }
         ]
     },
     case2: {
         name: 'Caixa das Sombras',
         price: 25.00,
         skins: [
-            { name: 'Karambit | Fade', rarity: 'covert', image: 'images/skins/karambit_fade.png' },
-            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/skins/glock18_weasel.png' },
-            { name: 'AK-47 | Fire Serpent', rarity: 'covert', image: 'images/skins/ak47_fire_serpent.png' },
-            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'images/skins/m4a4_desolate_space.png' },
-            { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/skins/ak47_redline.png' },
-            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/skins/p250_see_ya_later.png' },
-            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png' },
-            { name: 'AK-47 | Gold Arabesque', rarity: 'covert', image: 'images/skins/ak47_gold_arabesque.png' },
-            { name: 'M4A1-S | Printstream', rarity: 'covert', image: 'images/skins/m4a1s_printstream.png' },
-            { name: 'Five-SeveN | Case Hardened', rarity: 'restricted', image: 'images/skins/five_seven_case_hardened.png' },
-            { name: 'MP9 | Starlight Protector', rarity: 'restricted', image: 'images/skins/mp9_starlight_protector.png' },
-            { name: 'Sawed-Off | The Kraken', rarity: 'mil-spec', image: 'images/skins/sawed_off_the_kraken.png' },
-            { name: 'AUG | Akihabara Accept', rarity: 'covert', image: 'images/skins/aug_akihabara_accept.png' },
-            { name: 'Galil AR | Cerberus', rarity: 'restricted', image: 'images/skins/galil_ar_cerberus.png' }
+            { name: 'Karambit | Fade', rarity: 'covert', image: 'images/skins/karambit_fade.png', price: 22.50 },
+            { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/skins/glock18_weasel.png', price: 17.50 },
+            { name: 'AK-47 | Fire Serpent', rarity: 'covert', image: 'images/skins/ak47_fire_serpent.png', price: 22.50 },
+            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'images/skins/m4a4_desolate_space.png', price: 20.00 },
+            { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/skins/ak47_redline.png', price: 20.00 },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/skins/p250_see_ya_later.png', price: 18.75 },
+            { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/skins/famas_mecha_industries.png', price: 17.50 },
+            { name: 'AK-47 | Gold Arabesque', rarity: 'covert', image: 'images/skins/ak47_gold_arabesque.png', price: 22.50 },
+            { name: 'M4A1-S | Printstream', rarity: 'covert', image: 'images/skins/m4a1s_printstream.png', price: 22.50 },
+            { name: 'Five-SeveN | Case Hardened', rarity: 'restricted', image: 'images/skins/five_seven_case_hardened.png', price: 18.75 },
+            { name: 'MP9 | Starlight Protector', rarity: 'restricted', image: 'images/skins/mp9_starlight_protector.png', price: 18.75 },
+            { name: 'Sawed-Off | The Kraken', rarity: 'mil-spec', image: 'images/skins/sawed_off_the_kraken.png', price: 17.50 },
+            { name: 'AUG | Akihabara Accept', rarity: 'covert', image: 'images/skins/aug_akihabara_accept.png', price: 22.50 },
+            { name: 'Galil AR | Cerberus', rarity: 'restricted', image: 'images/skins/galil_ar_cerberus.png', price: 18.75 }
         ]
     }
 };
@@ -143,7 +150,7 @@ function startRoulette() {
     roulette.innerHTML = '';
 
     const skins = selectedCase.skins;
-    const winningSkin = skins[Math.floor(Math.random() * skins.length)];
+    currentWinningSkin = skins[Math.floor(Math.random() * skins.length)];
     let winningItemElement = null;
 
     // Populate the roulette for the real spin
@@ -151,7 +158,7 @@ function startRoulette() {
     for (let i = 0; i < 50; i++) {
         rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
     }
-    rouletteItems[45] = winningSkin;
+    rouletteItems[45] = currentWinningSkin;
 
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
@@ -179,10 +186,10 @@ function startRoulette() {
 
     // Show winning skin info after animation
     setTimeout(() => {
-        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${winningSkin.rarity}-color`).trim();
-        winningSkinImage.src = winningSkin.image;
-        winningSkinName.textContent = winningSkin.name;
-        winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity.charAt(0).toUpperCase() + winningSkin.rarity.slice(1)}`;
+        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${currentWinningSkin.rarity}-color`).trim();
+        winningSkinImage.src = currentWinningSkin.image;
+        winningSkinName.textContent = currentWinningSkin.name;
+        winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
         winningSkinInfo.style.borderColor = rarityColor;
         winningSkinModal.style.opacity = '1';
         winningSkinModal.style.pointerEvents = 'auto';
@@ -218,6 +225,39 @@ function goBackToMain() {
     mainContainer.style.display = 'block';
 }
 
+function sellSkin() {
+    if (currentWinningSkin) {
+        userBalance += currentWinningSkin.price;
+        updateUserBalance();
+        closeOpeningScreen();
+    }
+}
+
+function keepSkin() {
+    if (currentWinningSkin) {
+        userInventory.push(currentWinningSkin);
+        closeOpeningScreen();
+    }
+}
+
+function openInventory() {
+    inventoryGrid.innerHTML = '';
+    userInventory.forEach(skin => {
+        const skinElement = document.createElement('div');
+        skinElement.classList.add('inventory-item', `rarity-${skin.rarity}`);
+        skinElement.innerHTML = `
+            <img src="${skin.image}" alt="${skin.name}">
+            <span>${skin.name}</span>
+        `;
+        inventoryGrid.appendChild(skinElement);
+    });
+    inventoryModal.style.display = 'flex';
+}
+
+function closeInventory() {
+    inventoryModal.style.display = 'none';
+}
+
 // --- Event Listeners ---
 loginBtn.addEventListener('click', () => {
     loginContainer.style.display = 'none';
@@ -234,7 +274,10 @@ document.querySelectorAll('.case').forEach(caseElement => {
 
 openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
-closeWinningBtn.addEventListener('click', closeOpeningScreen);
+sellSkinBtn.addEventListener('click', sellSkin);
+keepSkinBtn.addEventListener('click', keepSkin);
+inventoryBtn.addEventListener('click', openInventory);
+closeInventoryBtn.addEventListener('click', closeInventory);
 
 // Initial setup
 updateUserBalance();
