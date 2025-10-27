@@ -13,6 +13,7 @@ const caseOpeningScreen = document.getElementById('case-opening-screen');
 const backToMainBtn = document.getElementById('back-to-main-btn');
 const caseNameTitle = document.getElementById('case-name-title');
 const roulette = document.getElementById('roulette');
+const winningSkinModal = document.getElementById('winning-skin-modal');
 const winningSkinInfo = document.getElementById('winning-skin-info');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
@@ -74,7 +75,9 @@ function resetOpeningScreen() {
     roulette.style.transition = 'none';
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
-    winningSkinInfo.style.display = 'none';
+    winningSkinModal.style.opacity = '0';
+    winningSkinModal.style.pointerEvents = 'none';
+    winningSkinInfo.style.borderColor = 'transparent';
     openCaseButton.disabled = false;
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
@@ -107,7 +110,10 @@ function showCaseOpeningScreen(caseId) {
     const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins]; // Show more items
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+        rouletteItem.classList.add('roulette-item');
+        // Set rarity background with style attribute for more control
+        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${item.rarity}-color`).trim();
+        rouletteItem.style.backgroundImage = `radial-gradient(circle, ${rarityColor} 0%, rgba(0,0,0,0) 70%)`;
         rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
     });
@@ -149,7 +155,9 @@ function startRoulette() {
 
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+        rouletteItem.classList.add('roulette-item');
+        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${item.rarity}-color`).trim();
+        rouletteItem.style.backgroundImage = `radial-gradient(circle, ${rarityColor} 0%, rgba(0,0,0,0) 70%)`;
         rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
         if (index === 45) {
@@ -159,31 +167,50 @@ function startRoulette() {
 
     // Animate the roulette
     setTimeout(() => {
-        const itemWidth = 150;
+        const itemWidth = 170; // Use the new, larger item width
         const containerWidth = roulette.parentElement.offsetWidth;
         const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
         const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
         const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
 
-        roulette.style.transition = 'transform 5s cubic-bezier(0.1, 0.8, 0.2, 1)';
+        roulette.style.transition = 'transform 8s cubic-bezier(0.1, 0.8, 0.2, 1)'; // Longer, more dramatic animation
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
     // Show winning skin info after animation
     setTimeout(() => {
+        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${winningSkin.rarity}-color`).trim();
         winningSkinImage.src = winningSkin.image;
         winningSkinName.textContent = winningSkin.name;
-        winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity}`;
-        winningSkinInfo.style.display = 'flex';
+        winningSkinRarity.textContent = `Raridade: ${winningSkin.rarity.charAt(0).toUpperCase() + winningSkin.rarity.slice(1)}`;
+        winningSkinInfo.style.borderColor = rarityColor;
+        winningSkinModal.style.opacity = '1';
+        winningSkinModal.style.pointerEvents = 'auto';
         if (winningItemElement) {
             winningItemElement.classList.add('winner');
         }
-    }, 5500);
+    }, 8500); // Adjusted timing to match animation
 }
 
 function closeOpeningScreen() {
-    winningSkinInfo.style.display = 'none';
-    showCaseOpeningScreen(currentCaseId); // Re-show the screen in its initial state
+    winningSkinModal.style.opacity = '0';
+    winningSkinModal.style.pointerEvents = 'none';
+    // Don't re-show the whole screen, just enable the button
+    setTimeout(() => {
+        openCaseButton.disabled = false;
+        resetOpeningScreen(); // Fully reset for the next spin
+        // Re-populate the roulette for display
+        const selectedCase = cases[currentCaseId];
+        const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins];
+        previewItems.forEach(item => {
+            const rouletteItem = document.createElement('div');
+            rouletteItem.classList.add('roulette-item');
+            const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${item.rarity}-color`).trim();
+            rouletteItem.style.backgroundImage = `radial-gradient(circle, ${rarityColor} 0%, rgba(0,0,0,0) 70%)`;
+            rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+            roulette.appendChild(rouletteItem);
+        });
+    }, 500); // Wait for fade-out
 }
 
 function goBackToMain() {
