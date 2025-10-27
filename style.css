@@ -226,9 +226,10 @@ main {
 }
 
 .roulette-item img {
-    width: 100px;
-    height: 100px;
+    width: 130px; /* Adjusted width for better fit */
+    height: auto;   /* Let the height adjust automatically */
     object-fit: contain;
+    max-height: 100px; /* Ensure it doesn't get too tall */
 }
 
 .roulette-item p {
