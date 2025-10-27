@@ -287,8 +287,10 @@ main {
 }
 
 .roulette-item img {
-    width: 120px; /* Larger image */
-    height: 120px;
+    max-width: 120px; /* Use max-width to maintain aspect ratio */
+    max-height: 120px; /* Use max-height to maintain aspect ratio */
+    width: auto;
+    height: auto;
     object-fit: contain;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); /* Add a shadow to the image */
 }
