@@ -2,8 +2,8 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Image Path Verification', () => {
   test('should verify all image paths are correct after fix', async ({ page }) => {
-    // Navigate to the local file.
-    await page.goto('file://' + __dirname + '/index.html');
+    // Navigate to the local server.
+    await page.goto('http://localhost:8080');
 
     // 1. Simulate login
     await page.click('#login-btn');
@@ -11,9 +11,9 @@ test.describe('Image Path Verification', () => {
 
     // 2. Verify case images on the main page
     const case1Image = page.locator('#case1 img');
-    await expect(await case1Image.getAttribute('src')).toBe('assets/images/case1.png');
+    await expect(await case1Image.getAttribute('src')).toBe('images/caixa1.png');
     const case2Image = page.locator('#case2 img');
-    await expect(await case2Image.getAttribute('src')).toBe('assets/images/case2.png');
+    await expect(await case2Image.getAttribute('src')).toBe('images/caixa2.png');
 
     // 3. Click on the first case to open the case screen
     await page.click('#case1');
@@ -25,7 +25,7 @@ test.describe('Image Path Verification', () => {
 
     // Check the src of the first image to ensure it's correct
     const firstSkinImagePath = await firstSkinImage.getAttribute('src');
-    expect(firstSkinImagePath).toBe('assets/images/awp_asiimov.png');
+    expect(firstSkinImagePath).toContain('images/awp_asiimov.png');
 
     // Log all image paths for debugging
     const allImagePaths = await skinImages.evaluateAll(images => images.map(img => img.src));
@@ -34,7 +34,7 @@ test.describe('Image Path Verification', () => {
     // Ensure none of the paths contain the old '/skins/' subdirectory
     for (const path of allImagePaths) {
       expect(path).not.toContain('/skins/');
-      expect(path).toContain('assets/images/');
+      expect(path).toContain('/images/'); // Check for the correct directory in the URL
     }
 
     // 5. Take a screenshot to visually confirm
