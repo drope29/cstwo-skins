@@ -482,7 +482,6 @@ main {
     background-color: #555;
     color: #888;
     cursor: not-allowed;
-    transform: none;
 }
 
 #case-contents-title {
@@ -566,7 +565,7 @@ main {
     right: 20px;
 }
 
-#back-to-main-btn:hover, #sell-skin-btn:hover, #keep-skin-btn:hover {
+#back-to-main-btn:hover, #keep-skin-btn:hover {
     background-color: #ffc107;
     color: #1a1a1a;
 }
