@@ -421,12 +421,12 @@ main {
 
 #sell-skin-btn {
     background-color: transparent;
-    color: #ffc107;
-    border-color: #ffc107;
+    color: #28a745;
+    border-color: #28a745;
 }
 
 #sell-skin-btn:hover {
-    background-color: #ffc107;
+    background-color: #28a745;
     color: #1a1a1a;
     transform: scale(1.05);
 }
@@ -434,29 +434,54 @@ main {
 
 /* 2. Open Button */
 #open-case-button {
-    padding: 15px 40px;
+    background: #ffc107;
     border: none;
-    border-radius: 5px;
-    background-color: #ffc107;
-    color: #1a1a1a;
-    cursor: pointer;
-    font-size: 1.2em;
-    font-weight: bold;
+    padding: 10px 20px;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    width: 150px; /* Adjusted width */
     text-transform: uppercase;
-    transition: all 0.3s ease;
-    margin-bottom: 30px; /* Space between button and grid */
+    cursor: pointer;
+    transform: skew(-21deg);
+    color: #1a1a1a;
+    margin-bottom: 30px;
+    position: relative; /* Needed for the ::before element */
+    z-index: 1; /* Needed for the ::before element */
+}
+
+#open-case-button span {
+    display: inline-block;
+    transform: skew(21deg);
+}
+
+#open-case-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100%;
+    left: 0;
+    background: rgb(20, 20, 20);
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.5s;
 }
 
 #open-case-button:hover {
-    background-color: #ffca2c;
-    transform: scale(1.05);
+    color: #fff;
+}
+
+#open-case-button:hover::before {
+    left: 0;
+    right: 0;
+    opacity: 1;
 }
 
 #open-case-button:disabled {
     background-color: #555;
     color: #888;
     cursor: not-allowed;
-    transform: none;
 }
 
 #case-contents-title {
@@ -501,7 +526,7 @@ main {
     color: #ffc107;
     padding: 2px 5px;
     border-radius: 3px;
-    font-size: 0.7em;
+    font-size: 0.6em;
     font-weight: bold;
 }
 
@@ -540,7 +565,7 @@ main {
     right: 20px;
 }
 
-#back-to-main-btn:hover, #sell-skin-btn:hover, #keep-skin-btn:hover {
+#back-to-main-btn:hover, #keep-skin-btn:hover {
     background-color: #ffc107;
     color: #1a1a1a;
 }
