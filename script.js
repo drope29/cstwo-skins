@@ -30,6 +30,13 @@ const inventoryGrid = document.getElementById('inventory-grid');
 const closeInventoryBtn = document.getElementById('close-inventory-btn');
 
 // --- Data ---
+const rarityPercentages = {
+    'covert': 2,
+    'classified': 5,
+    'restricted': 20,
+    'mil-spec': 73
+};
+
 const cases = {
     case1: {
         name: 'Caixa Espectral',
@@ -74,6 +81,42 @@ const cases = {
 };
 
 // --- Functions ---
+function getWeightedRandomSkin(skins) {
+    const rand = Math.random() * 100;
+    let cumulativePercentage = 0;
+
+    let selectedRarity = null;
+
+    // Determine rarity based on weighted chance
+    for (const rarity in rarityPercentages) {
+        cumulativePercentage += rarityPercentages[rarity];
+        if (rand < cumulativePercentage) {
+            selectedRarity = rarity;
+            break;
+        }
+    }
+
+    // If no rarity was selected (should not happen with correct percentages), fallback
+    if (!selectedRarity) {
+        const rarities = Object.keys(rarityPercentages);
+        selectedRarity = rarities[rarities.length -1];
+    }
+
+
+    const skinsOfSelectedRarity = skins.filter(skin => skin.rarity === selectedRarity);
+
+    // If there are skins of the selected rarity, pick one at random
+    if (skinsOfSelectedRarity.length > 0) {
+        const randomIndex = Math.floor(Math.random() * skinsOfSelectedRarity.length);
+        return skinsOfSelectedRarity[randomIndex];
+    }
+
+    // Fallback: if for some reason there are no skins of the selected rarity,
+    // just pick any random skin from the case.
+    return skins[Math.floor(Math.random() * skins.length)];
+}
+
+
 function updateUserBalance() {
     userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2).replace('.', ',')}`;
 }
@@ -102,11 +145,31 @@ function showCaseOpeningScreen(caseId) {
     caseNameTitle.textContent = selectedCase.name;
     caseItemsGrid.innerHTML = ''; // Clear previous items
 
+    const rarityOrder = {
+        'covert': 1,
+        'classified': 2,
+        'restricted': 3,
+        'mil-spec': 4
+    };
+
+    const sortedSkins = [...selectedCase.skins].sort((a, b) => {
+        return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+    });
+
+    const skinsByRarity = selectedCase.skins.reduce((acc, skin) => {
+        acc[skin.rarity] = (acc[skin.rarity] || 0) + 1;
+        return acc;
+    }, {});
+
+
     // Populate the grid of possible skins
-    selectedCase.skins.forEach(skin => {
+    sortedSkins.forEach(skin => {
+        const rarityCount = skinsByRarity[skin.rarity] || 1;
+        const percentage = (rarityPercentages[skin.rarity] || 0) / rarityCount;
         const skinElement = document.createElement('div');
         skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
+            <div class="skin-percentage">${percentage.toFixed(2)}%</div>
             <img src="${skin.image}" alt="${skin.name}">
             <span>${skin.name}</span>
         `;
@@ -114,7 +177,7 @@ function showCaseOpeningScreen(caseId) {
     });
 
     // Pre-populate the roulette for display (it won't spin yet)
-    const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins]; // Show more items
+    const previewItems = [...sortedSkins, ...sortedSkins, ...sortedSkins]; // Show more items
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item');
@@ -150,7 +213,7 @@ function startRoulette() {
     roulette.innerHTML = '';
 
     const skins = selectedCase.skins;
-    currentWinningSkin = skins[Math.floor(Math.random() * skins.length)];
+    currentWinningSkin = getWeightedRandomSkin(skins);
     let winningItemElement = null;
 
     // Populate the roulette for the real spin
