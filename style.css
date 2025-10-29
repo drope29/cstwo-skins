@@ -280,9 +280,11 @@ main {
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 10px;
     transition: transform 0.3s ease, filter 0.3s ease;
-    background: radial-gradient(circle, var(--rarity-color, #444) 0%, rgba(0,0,0,0) 70%);
 }
 
 .roulette-item img {
@@ -341,21 +343,6 @@ main {
     }
 }
 
-@keyframes flare-pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-}
-
 #winning-skin-modal {
     position: fixed;
     top: 0;
@@ -376,46 +363,42 @@ main {
 #winning-skin-info {
     background: linear-gradient(145deg, #1F1F1F, #141414);
     padding: 40px;
-    padding-bottom: 10px; /* Make space for the bar */
     border-radius: 10px;
     text-align: center;
     animation: pop-in 0.5s ease-out forwards;
+    border: 5px solid transparent; /* Placeholder for rarity color */
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.roulette-item-image-container {
     position: relative;
-    overflow: hidden;
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 5px; /* Space between image and text */
 }
 
-#winning-skin-info::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 6px; /* Thicker bar for the winner */
-    background-color: var(--rarity-color, transparent);
-    border-radius: 0 0 10px 10px;
+.roulette-item-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
-#winning-skin-flare {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--rarity-color, transparent) 0%, rgba(0,0,0,0) 60%);
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    animation: flare-pulse 2s infinite ease-in-out;
-    opacity: 0;
+.winning-skin-image-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 20px auto; /* Center and provide margin */
 }
 
 #winning-skin-image {
-    width: 250px; /* Larger image */
-    height: 250px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    margin-bottom: 20px;
 }
+
 
 #winning-skin-name {
     color: #ffc107;
@@ -553,8 +536,12 @@ main {
     border-radius: 10px;
     padding: 10px;
     text-align: center;
+    border: 2px solid #333;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .skin-percentage {
@@ -567,11 +554,19 @@ main {
     border-radius: 3px;
     font-size: 0.6em;
     font-weight: bold;
+    z-index: 2;
 }
 
-.case-skin-item img {
+.case-skin-item-image-container {
+    position: relative;
     width: 100px;
     height: 100px;
+    margin: 0 auto; /* Center the container */
+}
+
+.case-skin-item-image-container img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
@@ -668,14 +663,35 @@ main {
     border-radius: 10px;
     padding: 10px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
+    border: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.inventory-item img {
+.inventory-item-image-container {
+    position: relative;
     width: 100px;
     height: 100px;
+    margin: 0 auto;
+}
+
+.inventory-item-image-container img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+}
+
+/* Apply the same rarity bar to inventory items */
+.inventory-item-image-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--rarity-color);
+    box-shadow: 0 0 8px var(--rarity-color);
 }
 
 .inventory-item span {
@@ -689,34 +705,84 @@ main {
 }
 
 
+/* --- Rarity Styles --- */
 :root {
     --rarity-covert-color: #d32ce6;
     --rarity-classified-color: #eb4b4b;
     --rarity-restricted-color: #8847ff;
     --rarity-mil-spec-color: #4b69ff;
-}
-/* --- Rarity Colors --- */
-.case-skin-item, .inventory-item {
-    border: none; /* Remove default border */
+    --rarity-color: #ccc; /* Default color */
 }
 
-.case-skin-item::after, .inventory-item::after {
+/* Set CSS variable for each rarity */
+.rarity-covert { --rarity-color: var(--rarity-covert-color); }
+.rarity-classified { --rarity-color: var(--rarity-classified-color); }
+.rarity-restricted { --rarity-color: var(--rarity-restricted-color); }
+.rarity-mil-spec { --rarity-color: var(--rarity-mil-spec-color); }
+
+/* 1. Grid Item: Sharp bottom bar */
+.case-skin-item-image-container::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 4px;
-    border-radius: 0 0 10px 10px;
-    background-color: transparent; /* Default */
+    background-color: var(--rarity-color);
+    box-shadow: 0 0 8px var(--rarity-color);
 }
 
-.rarity-covert { --rarity-color: var(--rarity-covert-color); }
-.rarity-classified { --rarity-color: var(--rarity-classified-color); }
-.rarity-restricted { --rarity-color: var(--rarity-restricted-color); }
-.rarity-mil-spec { --rarity-color: var(--rarity-mil-spec-color); }
+/* 2. Roulette Item: Soft radial gradient */
+.roulette-item .roulette-item-image-container {
+    background-image: radial-gradient(circle, var(--rarity-color) 0%, rgba(0,0,0,0) 65%);
+}
 
-.rarity-covert::after { background-color: var(--rarity-covert-color); }
-.rarity-classified::after { background-color: var(--rarity-classified-color); }
-.rarity-restricted::after { background-color: var(--rarity-restricted-color); }
-.rarity-mil-spec::after { background-color: var(--rarity-mil-spec-color); }
+/* 3. Winning Modal: Flare + Bar */
+@keyframes flare-pulse {
+    0% {
+        transform: scale(0.8) translate(-50%, -50%);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1) translate(-50%, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8) translate(-50%, -50%);
+        opacity: 0.5;
+    }
+}
+
+.winning-skin-image-container .rarity-flare {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    background-image: radial-gradient(circle, var(--rarity-color) 0%, rgba(0, 0, 0, 0) 70%);
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#winning-skin-info.rarity-covert .rarity-flare,
+#winning-skin-info.rarity-classified .rarity-flare,
+#winning-skin-info.rarity-restricted .rarity-flare,
+#winning-skin-info.rarity-mil-spec .rarity-flare {
+    opacity: 0.8;
+    animation: flare-pulse 2s infinite ease-in-out;
+}
+
+
+.winning-skin-image-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background-color: var(--rarity-color);
+    box-shadow: 0 0 15px var(--rarity-color);
+    border-radius: 2px;
+}

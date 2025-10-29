@@ -17,7 +17,6 @@ const caseNameTitle = document.getElementById('case-name-title');
 const roulette = document.getElementById('roulette');
 const winningSkinModal = document.getElementById('winning-skin-modal');
 const winningSkinInfo = document.getElementById('winning-skin-info');
-const winningSkinFlare = document.getElementById('winning-skin-flare');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
@@ -45,9 +44,9 @@ const cases = {
         skins: [
             { name: 'AWP | Asiimov', rarity: 'covert', image: 'images/awp_asiimov.png', price: 13.50 },
             { name: 'AK-47 | Redline', rarity: 'classified', image: 'images/ak47_redline.png', price: 12.00 },
-            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: ' images/m4a4_desolate_space.png', price: 12.00 },
-            { name: 'P250 | See Ya Later', rarity: 'restricted', image: '   images/p250_see_ya_later.png', price: 11.25 },
-            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: ' images/ump45_primal_saber.png', price: 11.25 },
+            { name: 'M4A4 | Desolate Space', rarity: 'classified', image: 'images/m4a4_desolate_space.png', price: 12.00 },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/p250_see_ya_later.png', price: 11.25 },
+            { name: 'UMP-45 | Primal Saber', rarity: 'restricted', image: 'images/ump45_primal_saber.png', price: 11.25 },
             { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/famas_mecha_industries.png', price: 10.50 },
             { name: 'Glock-18 | Weasel', rarity: 'mil-spec', image: 'images/glock18_weasel.png', price: 10.50 },
             { name: 'AWP | Gungnir', rarity: 'covert', image: 'images/awp_gungnir.png', price: 13.50 },
@@ -128,8 +127,7 @@ function resetOpeningScreen() {
     roulette.innerHTML = '';
     winningSkinModal.style.opacity = '0';
     winningSkinModal.style.pointerEvents = 'none';
-    winningSkinInfo.style.setProperty('--rarity-color', 'transparent');
-    winningSkinFlare.style.opacity = '0';
+    winningSkinInfo.style.borderColor = 'transparent';
     openCaseButton.disabled = false;
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
@@ -172,7 +170,9 @@ function showCaseOpeningScreen(caseId) {
         skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
             <div class="skin-percentage">${percentage.toFixed(2)}%</div>
-            <img src="${skin.image}" alt="${skin.name}">
+            <div class="case-skin-item-image-container">
+                <img src="${skin.image}" alt="${skin.name}">
+            </div>
             <span>${skin.name}</span>
         `;
         caseItemsGrid.appendChild(skinElement);
@@ -182,8 +182,12 @@ function showCaseOpeningScreen(caseId) {
     const previewItems = [...sortedSkins, ...sortedSkins, ...sortedSkins]; // Show more items
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        rouletteItem.classList.add('roulette-item');
+        rouletteItem.innerHTML = `
+            <div class="roulette-item-image-container">
+                <img src="${item.image}" alt="${item.name}">
+            </div>
+            <p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
     });
 
@@ -225,7 +229,11 @@ function startRoulette() {
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        rouletteItem.innerHTML = `
+            <div class="roulette-item-image-container">
+                 <img src="${item.image}" alt="${item.name}">
+            </div>
+            <p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
         if (index === 45) {
             winningItemElement = rouletteItem;
@@ -246,12 +254,14 @@ function startRoulette() {
 
     // Show winning skin info after animation
     setTimeout(() => {
-        const rarityColor = getComputedStyle(document.documentElement).getPropertyValue(`--rarity-${currentWinningSkin.rarity}-color`).trim();
+        // Clear previous rarity classes
+        winningSkinInfo.className = ''; // Reset classes
+        // Add new rarity class
+        winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
+
         winningSkinImage.src = currentWinningSkin.image;
         winningSkinName.textContent = currentWinningSkin.name;
         winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
-        winningSkinInfo.style.setProperty('--rarity-color', rarityColor);
-        winningSkinFlare.style.opacity = '1';
         winningSkinModal.style.opacity = '1';
         winningSkinModal.style.pointerEvents = 'auto';
         if (winningItemElement) {
@@ -272,8 +282,12 @@ function closeOpeningScreen() {
         const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins];
         previewItems.forEach(item => {
             const rouletteItem = document.createElement('div');
-            rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-            rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+            rouletteItem.classList.add('roulette-item');
+            rouletteItem.innerHTML = `
+            <div class="roulette-item-image-container">
+                <img src="${item.image}" alt="${item.name}">
+            </div>
+            <p>${item.name}</p>`;
             roulette.appendChild(rouletteItem);
         });
     }, 500); // Wait for fade-out
@@ -305,7 +319,9 @@ function openInventory() {
         const skinElement = document.createElement('div');
         skinElement.classList.add('inventory-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
-            <img src="${skin.image}" alt="${skin.name}">
+            <div class="inventory-item-image-container">
+                <img src="${skin.image}" alt="${skin.name}">
+            </div>
             <span>${skin.name}</span>
         `;
         inventoryGrid.appendChild(skinElement);
