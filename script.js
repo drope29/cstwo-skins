@@ -84,10 +84,8 @@ const cases = {
 function getWeightedRandomSkin(skins) {
     const rand = Math.random() * 100;
     let cumulativePercentage = 0;
-
     let selectedRarity = null;
 
-    // Determine rarity based on weighted chance
     for (const rarity in rarityPercentages) {
         cumulativePercentage += rarityPercentages[rarity];
         if (rand < cumulativePercentage) {
@@ -96,26 +94,20 @@ function getWeightedRandomSkin(skins) {
         }
     }
 
-    // If no rarity was selected (should not happen with correct percentages), fallback
     if (!selectedRarity) {
         const rarities = Object.keys(rarityPercentages);
-        selectedRarity = rarities[rarities.length -1];
+        selectedRarity = rarities[rarities.length - 1];
     }
-
 
     const skinsOfSelectedRarity = skins.filter(skin => skin.rarity === selectedRarity);
 
-    // If there are skins of the selected rarity, pick one at random
     if (skinsOfSelectedRarity.length > 0) {
         const randomIndex = Math.floor(Math.random() * skinsOfSelectedRarity.length);
         return skinsOfSelectedRarity[randomIndex];
     }
 
-    // Fallback: if for some reason there are no skins of the selected rarity,
-    // just pick any random skin from the case.
     return skins[Math.floor(Math.random() * skins.length)];
 }
-
 
 function updateUserBalance() {
     userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2).replace('.', ',')}`;
@@ -127,42 +119,28 @@ function resetOpeningScreen() {
     roulette.innerHTML = '';
     winningSkinModal.style.opacity = '0';
     winningSkinModal.style.pointerEvents = 'none';
-    winningSkinInfo.style.borderColor = 'transparent';
-    openCaseButton.disabled = false;
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
         oldWinner.classList.remove('winner');
     }
+    const winningSkinInfo = document.getElementById('winning-skin-info');
+    winningSkinInfo.className = '';
 }
 
 function showCaseOpeningScreen(caseId) {
     currentCaseId = caseId;
     const selectedCase = cases[caseId];
-
     resetOpeningScreen();
-
-    // Populate the screen elements
     caseNameTitle.textContent = selectedCase.name;
-    caseItemsGrid.innerHTML = ''; // Clear previous items
+    caseItemsGrid.innerHTML = '';
 
-    const rarityOrder = {
-        'covert': 1,
-        'classified': 2,
-        'restricted': 3,
-        'mil-spec': 4
-    };
-
-    const sortedSkins = [...selectedCase.skins].sort((a, b) => {
-        return rarityOrder[a.rarity] - rarityOrder[b.rarity];
-    });
-
+    const rarityOrder = { 'covert': 1, 'classified': 2, 'restricted': 3, 'mil-spec': 4 };
+    const sortedSkins = [...selectedCase.skins].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
     const skinsByRarity = selectedCase.skins.reduce((acc, skin) => {
         acc[skin.rarity] = (acc[skin.rarity] || 0) + 1;
         return acc;
     }, {});
 
-
-    // Populate the grid of possible skins
     sortedSkins.forEach(skin => {
         const rarityCount = skinsByRarity[skin.rarity] || 1;
         const percentage = (rarityPercentages[skin.rarity] || 0) / rarityCount;
@@ -170,95 +148,67 @@ function showCaseOpeningScreen(caseId) {
         skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
             <div class="skin-percentage">${percentage.toFixed(2)}%</div>
-            <div class="case-skin-item-image-container">
-                <img src="${skin.image}" alt="${skin.name}">
-            </div>
-            <span>${skin.name}</span>
-        `;
+            <img src="${skin.image}" alt="${skin.name}">
+            <span>${skin.name}</span>`;
         caseItemsGrid.appendChild(skinElement);
     });
 
-    // Pre-populate the roulette for display (it won't spin yet)
-    const previewItems = [...sortedSkins, ...sortedSkins, ...sortedSkins]; // Show more items
+    const previewItems = [...sortedSkins, ...sortedSkins, ...sortedSkins];
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item');
-        rouletteItem.innerHTML = `
-            <div class="roulette-item-image-container">
-                <img src="${item.image}" alt="${item.name}">
-            </div>
-            <p>${item.name}</p>`;
+        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
     });
 
-    // Show the screen
     mainContainer.style.display = 'none';
     caseOpeningScreen.style.display = 'flex';
 }
 
 function startRoulette() {
     if (!currentCaseId) return;
-
     const selectedCase = cases[currentCaseId];
-
     if (userBalance < selectedCase.price) {
         alert('Saldo insuficiente!');
         return;
     }
-
     userBalance -= selectedCase.price;
     updateUserBalance();
     openCaseButton.disabled = true;
-
-    // Reset and prepare for the actual spin
     roulette.style.transition = 'none';
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
-
     const skins = selectedCase.skins;
     currentWinningSkin = getWeightedRandomSkin(skins);
     let winningItemElement = null;
-
-    // Populate the roulette for the real spin
     const rouletteItems = [];
     for (let i = 0; i < 50; i++) {
         rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
     }
     rouletteItems[45] = currentWinningSkin;
-
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `
-            <div class="roulette-item-image-container">
-                 <img src="${item.image}" alt="${item.name}">
-            </div>
-            <p>${item.name}</p>`;
+        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
         if (index === 45) {
             winningItemElement = rouletteItem;
         }
     });
 
-    // Animate the roulette
     setTimeout(() => {
-        const itemWidth = 170; // Use the new, larger item width
+        const itemWidth = 170;
         const containerWidth = roulette.parentElement.offsetWidth;
         const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
         const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
         const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
-
-        roulette.style.transition = 'transform 8s cubic-bezier(0.1, 0.8, 0.2, 1)'; // Longer, more dramatic animation
+        roulette.style.transition = 'transform 8s cubic-bezier(0.1, 0.8, 0.2, 1)';
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
-    // Show winning skin info after animation
     setTimeout(() => {
-        // Clear previous rarity classes
-        winningSkinInfo.className = ''; // Reset classes
-        // Add new rarity class
+        winningSkinInfo.className = '';
         winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
-
         winningSkinImage.src = currentWinningSkin.image;
         winningSkinName.textContent = currentWinningSkin.name;
         winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
@@ -267,30 +217,24 @@ function startRoulette() {
         if (winningItemElement) {
             winningItemElement.classList.add('winner');
         }
-    }, 8500); // Adjusted timing to match animation
+    }, 8500);
 }
 
 function closeOpeningScreen() {
     winningSkinModal.style.opacity = '0';
     winningSkinModal.style.pointerEvents = 'none';
-    // Don't re-show the whole screen, just enable the button
     setTimeout(() => {
         openCaseButton.disabled = false;
-        resetOpeningScreen(); // Fully reset for the next spin
-        // Re-populate the roulette for display
+        resetOpeningScreen();
         const selectedCase = cases[currentCaseId];
         const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins];
         previewItems.forEach(item => {
             const rouletteItem = document.createElement('div');
-            rouletteItem.classList.add('roulette-item');
-            rouletteItem.innerHTML = `
-            <div class="roulette-item-image-container">
-                <img src="${item.image}" alt="${item.name}">
-            </div>
-            <p>${item.name}</p>`;
+            rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+            rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
             roulette.appendChild(rouletteItem);
         });
-    }, 500); // Wait for fade-out
+    }, 500);
 }
 
 function goBackToMain() {
@@ -319,11 +263,8 @@ function openInventory() {
         const skinElement = document.createElement('div');
         skinElement.classList.add('inventory-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
-            <div class="inventory-item-image-container">
-                <img src="${skin.image}" alt="${skin.name}">
-            </div>
-            <span>${skin.name}</span>
-        `;
+            <img src="${skin.image}" alt="${skin.name}">
+            <span>${skin.name}</span>`;
         inventoryGrid.appendChild(skinElement);
     });
     inventoryModal.style.display = 'flex';
@@ -333,7 +274,6 @@ function closeInventory() {
     inventoryModal.style.display = 'none';
 }
 
-// --- Event Listeners ---
 loginBtn.addEventListener('click', () => {
     loginContainer.style.display = 'none';
     mainContainer.style.display = 'block';
@@ -354,5 +294,4 @@ keepSkinBtn.addEventListener('click', keepSkin);
 inventoryBtn.addEventListener('click', openInventory);
 closeInventoryBtn.addEventListener('click', closeInventory);
 
-// Initial setup
 updateUserBalance();
