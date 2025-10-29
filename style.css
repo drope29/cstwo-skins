@@ -12,13 +12,13 @@ body {
 }
 
 #login-container {
-    background: linear-gradient(145deg, #1F1F1F, #141414); /* Darker gradient */
+    background: linear-gradient(145deg, #1F1F1F, #141414);
     padding: 40px;
     border-radius: 10px;
     text-align: center;
-    width: 380px; /* Slightly wider */
+    width: 380px;
     margin: 100px auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 193, 7, 0.2); /* Enhanced shadow and glow */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 193, 7, 0.2);
     border: 1px solid #222;
     position: relative;
 }
@@ -40,7 +40,7 @@ body {
     mask-composite: exclude;
     opacity: 0.5;
     transition: opacity 0.4s ease;
-    pointer-events: none; /* Add this line to allow clicks to pass through */
+    pointer-events: none;
 }
 
 #login-container:hover::before {
@@ -59,7 +59,7 @@ body {
     margin: 10px 0;
     border: 1px solid #444;
     border-radius: 5px;
-    background-color: #111; /* Darker input */
+    background-color: #111;
     color: #e0e0e0;
     transition: all 0.3s ease;
 }
@@ -83,7 +83,7 @@ body {
     letter-spacing: 1px;
     transition: all 0.3s ease;
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
-    margin-top: 10px; /* Add some space above the button */
+    margin-top: 10px;
 }
 
 #login-container button:hover {
@@ -97,58 +97,58 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(18, 18, 18, 0.9); /* Darker and more transparent */
+    background-color: rgba(18, 18, 18, 0.9);
     backdrop-filter: blur(12px);
-    padding: 8px 25px; /* Smaller padding */
+    padding: 8px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
     z-index: 50;
-    border-bottom: 1px solid #222; /* Darker border */
+    border-bottom: 1px solid #222;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 12px; /* Reduced gap */
+    gap: 12px;
 }
 
 #user-avatar {
-    width: 45px; /* Smaller avatar */
+    width: 45px;
     height: 45px;
     border-radius: 50%;
     border: 2px solid #ffc107;
 }
 
 #user-balance {
-    font-size: 1.1em; /* Smaller font size */
+    font-size: 1.1em;
     font-weight: bold;
-    background-color: #222; /* Darker background */
-    padding: 6px 18px; /* Adjusted padding */
+    background-color: #222;
+    padding: 6px 18px;
     border-radius: 20px;
-    border: 1px solid #444; /* Lighter border for contrast */
+    border: 1px solid #444;
 }
 
 main {
-    padding: 30px; /* More padding in main */
+    padding: 30px;
 }
 
 #cases-container {
     display: flex;
     justify-content: center;
-    gap: 35px; /* Slightly reduced gap */
+    gap: 35px;
     flex-wrap: wrap;
     padding: 20px;
 }
 
 .case {
-    background: linear-gradient(145deg, #1F1F1F, #141414); /* Darker gradient */
+    background: linear-gradient(145deg, #1F1F1F, #141414);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    width: 260px; /* Slightly wider */
-    border: 2px solid transparent; /* Transparent border to prepare for gradient */
+    width: 260px;
+    border: 2px solid transparent;
     background-clip: padding-box;
     transition: all 0.4s ease-in-out;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
@@ -177,8 +177,8 @@ main {
 }
 
 .case:hover {
-    transform: translateY(-8px) scale(1.03); /* More subtle transform */
-    box-shadow: 0 0 35px rgba(255, 193, 7, 0.5); /* Enhanced glow */
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 0 35px rgba(255, 193, 7, 0.5);
 }
 
 .case:hover::before {
@@ -202,7 +202,6 @@ main {
     margin: 0;
 }
 
-/* --- Unified Case Opening Screen --- */
 #case-opening-screen {
     position: fixed;
     top: 0;
@@ -213,10 +212,10 @@ main {
     backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align to the top */
+    justify-content: flex-start;
     align-items: center;
     z-index: 100;
-    padding: 80px 20px 20px; /* More padding at the top */
+    padding: 80px 20px 20px;
     overflow-y: auto;
 }
 
@@ -226,15 +225,14 @@ main {
     margin-bottom: 20px;
 }
 
-/* 1. Roulette */
 #roulette-container {
     position: relative;
     width: 100%;
-    max-width: 1200px; /* Can be adjusted */
-    height: 180px; /* Increased height */
+    max-width: 1200px;
+    height: 180px;
     overflow: hidden;
     border-radius: 10px;
-    background: #111; /* Darker, cleaner background */
+    background: #111;
     border: 1px solid #222;
     margin-bottom: 30px;
     box-shadow: inset 0 0 15px rgba(0,0,0,0.7);
@@ -252,28 +250,27 @@ main {
     background: linear-gradient(to right, rgba(17,17,17,1) 0%, rgba(17,17,17,0) 15%, rgba(17,17,17,0) 85%, rgba(17,17,17,1) 100%);
 }
 
-
 #roulette-pin {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 5px; /* Thicker */
+    width: 5px;
     height: 100%;
     background-color: #ffc107;
     z-index: 2;
-    box-shadow: 0 0 15px #ffc107, 0 0 5px #ff8a00; /* More pronounced shadow */
+    box-shadow: 0 0 15px #ffc107, 0 0 5px #ff8a00;
 }
 
 #roulette {
     display: flex;
     position: absolute;
-    top: 5px; /* Manually center the 170px items in the 180px container */
+    top: 5px;
     left: 0;
 }
 
 .roulette-item {
-    width: 170px; /* Increased size */
+    width: 170px;
     height: 170px;
     display: flex;
     flex-direction: column;
@@ -288,10 +285,10 @@ main {
 }
 
 .roulette-item img {
-    width: 120px; /* Larger image */
+    width: 120px;
     height: 120px;
     object-fit: contain;
-    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); /* Add a shadow to the image */
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
 }
 
 .roulette-item p {
@@ -308,39 +305,22 @@ main {
 }
 
 @keyframes winner-pulse {
-    0% {
-        box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 60px #ff8a00, inset 0 0 30px rgba(255, 193, 7, 0.7);
-    }
-    100% {
-        box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5);
-    }
+    0% { box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5); }
+    50% { box-shadow: 0 0 60px #ff8a00, inset 0 0 30px rgba(255, 193, 7, 0.7); }
+    100% { box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5); }
 }
 
 .roulette-item.winner {
     border: 4px solid #ffc107;
-    transform: scale(1.1); /* Pop out more */
+    transform: scale(1.1);
     border-radius: 10px;
     animation: winner-pulse 1.5s infinite ease-in-out;
 }
 
-
-/* Winning Skin Info - This is now an overlay on top of the roulette */
 @keyframes pop-in {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    70% {
-        transform: scale(1.05);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 #winning-skin-modal {
@@ -362,24 +342,33 @@ main {
 
 #winning-skin-info {
     background: linear-gradient(145deg, #1F1F1F, #141414);
-    padding: 40px;
+    padding: 25px;
     border-radius: 10px;
     text-align: center;
     animation: pop-in 0.5s ease-out forwards;
-    border: 5px solid transparent; /* Placeholder for rarity color */
+    border: 5px solid transparent;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+
+.winning-skin-image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 15px auto;
 }
 
 #winning-skin-image {
-    width: 250px; /* Larger image */
-    height: 250px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 #winning-skin-name {
     color: #ffc107;
-    font-size: 2.5em;
+    font-size: 2em;
     margin: 10px 0;
 }
 
@@ -388,7 +377,6 @@ main {
     font-size: 1.2em;
 }
 
-/* --- Modal Buttons --- */
 .modal-buttons {
     display: flex;
     justify-content: center;
@@ -431,8 +419,6 @@ main {
     transform: scale(1.05);
 }
 
-
-/* 2. Open Button */
 #open-case-button {
     background: #ffc107;
     border: none;
@@ -440,14 +426,14 @@ main {
     display: inline-block;
     font-size: 15px;
     font-weight: 600;
-    width: 150px; /* Adjusted width */
+    width: 150px;
     text-transform: uppercase;
     cursor: pointer;
     transform: skew(-21deg);
     color: #1a1a1a;
     margin-bottom: 30px;
-    position: relative; /* Needed for the ::before element */
-    z-index: 1; /* Needed for the ::before element */
+    position: relative;
+    z-index: 1;
 }
 
 #open-case-button span {
@@ -494,24 +480,22 @@ main {
     letter-spacing: 1px;
 }
 
-
-/* 3. Skins Grid */
 #case-items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+    padding: 15px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     width: 100%;
-    max-width: 900px;
+    max-width: 800px;
     margin-top: 20px;
 }
 
 .case-skin-item {
     background-color: #2a2a2a;
     border-radius: 10px;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
     border: 2px solid #333;
     position: relative;
@@ -531,23 +515,21 @@ main {
 }
 
 .case-skin-item img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
 }
 
 .case-skin-item span {
     display: block;
     margin-top: 5px;
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-
-/* --- General Buttons --- */
 #back-to-main-btn, #close-winning-btn {
     background-color: #2a2a2a;
     color: #ffc107;
@@ -648,15 +630,73 @@ main {
     text-overflow: ellipsis;
 }
 
-
 :root {
     --rarity-covert-color: #d32ce6;
     --rarity-classified-color: #eb4b4b;
     --rarity-restricted-color: #8847ff;
     --rarity-mil-spec-color: #4b69ff;
+    --rarity-color: var(--rarity-mil-spec-color); /* Default color */
 }
-/* --- Rarity Colors --- */
-.rarity-covert { border-bottom: 5px solid #d32ce6; }
-.rarity-classified { border-bottom: 5px solid #eb4b4b; }
-.rarity-restricted { border-bottom: 5px solid #8847ff; }
-.rarity-mil-spec { border-bottom: 5px solid #4b69ff; }
+
+.rarity-covert { border-bottom: 3px solid var(--rarity-covert-color); --rarity-color: var(--rarity-covert-color); }
+.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); --rarity-color: var(--rarity-classified-color); }
+.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); --rarity-color: var(--rarity-restricted-color); }
+.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); --rarity-color: var(--rarity-mil-spec-color); }
+
+.inventory-item.rarity-covert { border-bottom: 3px solid var(--rarity-covert-color); }
+.inventory-item.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); }
+.inventory-item.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); }
+.inventory-item.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); }
+
+/* Smoke Effect */
+@keyframes smoke-animation {
+    0% {
+        transform: scale(0.5) translateY(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1) translateY(-50px);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1.5) translateY(-100px);
+        opacity: 0;
+    }
+}
+
+.smoke-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.smoke-particle {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background-color: transparent;
+    border-radius: 50%;
+    box-shadow: 0 0 20px 10px var(--rarity-color);
+    transform: translateX(-50%);
+    animation: smoke-animation 4s infinite ease-out;
+}
+
+.smoke-particle:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    animation-delay: 1s;
+    box-shadow: 0 0 15px 8px var(--rarity-color);
+}
+
+.smoke-particle:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    animation-delay: 2s;
+    box-shadow: 0 0 25px 12px var(--rarity-color);
+}
