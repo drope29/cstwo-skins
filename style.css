@@ -280,11 +280,9 @@ main {
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    background-size: 80%;
-    background-position: center;
-    background-repeat: no-repeat;
     padding: 10px;
     transition: transform 0.3s ease, filter 0.3s ease;
+    background: radial-gradient(circle, var(--rarity-color, #444) 0%, rgba(0,0,0,0) 70%);
 }
 
 .roulette-item img {
@@ -343,6 +341,21 @@ main {
     }
 }
 
+@keyframes flare-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
+
 #winning-skin-modal {
     position: fixed;
     top: 0;
@@ -363,11 +376,38 @@ main {
 #winning-skin-info {
     background: linear-gradient(145deg, #1F1F1F, #141414);
     padding: 40px;
+    padding-bottom: 10px; /* Make space for the bar */
     border-radius: 10px;
     text-align: center;
     animation: pop-in 0.5s ease-out forwards;
-    border: 5px solid transparent; /* Placeholder for rarity color */
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+#winning-skin-info::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px; /* Thicker bar for the winner */
+    background-color: var(--rarity-color, transparent);
+    border-radius: 0 0 10px 10px;
+}
+
+#winning-skin-flare {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--rarity-color, transparent) 0%, rgba(0,0,0,0) 60%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: flare-pulse 2s infinite ease-in-out;
+    opacity: 0;
 }
 
 #winning-skin-image {
@@ -513,7 +553,6 @@ main {
     border-radius: 10px;
     padding: 10px;
     text-align: center;
-    border: 2px solid #333;
     position: relative;
     overflow: hidden;
 }
@@ -629,7 +668,8 @@ main {
     border-radius: 10px;
     padding: 10px;
     text-align: center;
-    border: 2px solid #333;
+    position: relative;
+    overflow: hidden;
 }
 
 .inventory-item img {
@@ -656,7 +696,27 @@ main {
     --rarity-mil-spec-color: #4b69ff;
 }
 /* --- Rarity Colors --- */
-.rarity-covert { border-bottom: 5px solid #d32ce6; }
-.rarity-classified { border-bottom: 5px solid #eb4b4b; }
-.rarity-restricted { border-bottom: 5px solid #8847ff; }
-.rarity-mil-spec { border-bottom: 5px solid #4b69ff; }
+.case-skin-item, .inventory-item {
+    border: none; /* Remove default border */
+}
+
+.case-skin-item::after, .inventory-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 0 0 10px 10px;
+    background-color: transparent; /* Default */
+}
+
+.rarity-covert { --rarity-color: var(--rarity-covert-color); }
+.rarity-classified { --rarity-color: var(--rarity-classified-color); }
+.rarity-restricted { --rarity-color: var(--rarity-restricted-color); }
+.rarity-mil-spec { --rarity-color: var(--rarity-mil-spec-color); }
+
+.rarity-covert::after { background-color: var(--rarity-covert-color); }
+.rarity-classified::after { background-color: var(--rarity-classified-color); }
+.rarity-restricted::after { background-color: var(--rarity-restricted-color); }
+.rarity-mil-spec::after { background-color: var(--rarity-mil-spec-color); }
