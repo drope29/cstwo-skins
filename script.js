@@ -3,6 +3,7 @@ let userBalance = 1000.00;
 let currentCaseId = null;
 let userInventory = [];
 let currentWinningSkin = null;
+let skinPrices = {}; // Stores prices fetched from the API
 
 // --- DOM Elements ---
 const userBalanceSpan = document.getElementById('user-balance');
@@ -20,6 +21,7 @@ const winningSkinInfo = document.getElementById('winning-skin-info');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
+const winningSkinPrice = document.getElementById('winning-skin-price');
 const sellSkinBtn = document.getElementById('sell-skin-btn');
 const keepSkinBtn = document.getElementById('keep-skin-btn');
 const openCaseButton = document.getElementById('open-case-button');
@@ -81,6 +83,32 @@ const cases = {
 };
 
 // --- Functions ---
+async function fetchSkinPrices() {
+    const allSkins = [];
+    for (const caseId in cases) {
+        cases[caseId].skins.forEach(skin => {
+            allSkins.push(skin.name);
+        });
+    }
+
+    const uniqueSkins = [...new Set(allSkins)];
+    const apiUrl = window.location.origin.replace('8080', '3000');
+    const url = `${apiUrl}/api/prices?market_hash_names=${uniqueSkins.join(',')}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.success) {
+            skinPrices = data.prices;
+            console.log('Preços das skins atualizados com sucesso!');
+        } else {
+            console.error('Erro ao buscar os preços das skins:', data.message);
+        }
+    } catch (error) {
+        console.error('Erro na requisição da API:', error);
+    }
+}
+
 function getWeightedRandomSkin(skins) {
     const rand = Math.random() * 100;
     let cumulativePercentage = 0;
@@ -144,9 +172,11 @@ function showCaseOpeningScreen(caseId) {
     sortedSkins.forEach(skin => {
         const rarityCount = skinsByRarity[skin.rarity] || 1;
         const percentage = (rarityPercentages[skin.rarity] || 0) / rarityCount;
+        const price = skinPrices[skin.name] ? `R$ ${skinPrices[skin.name].toFixed(2)}` : `R$ ${skin.price.toFixed(2)}`;
         const skinElement = document.createElement('div');
         skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
+            <div class="skin-price">${price}</div>
             <div class="skin-percentage">${percentage.toFixed(2)}%</div>
             <img src="${skin.image}" alt="${skin.name}">
             <span>${skin.name}</span>`;
@@ -207,11 +237,13 @@ function startRoulette() {
     }, 100);
 
     setTimeout(() => {
+        const price = skinPrices[currentWinningSkin.name] || currentWinningSkin.price;
         winningSkinInfo.className = '';
         winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
         winningSkinImage.src = currentWinningSkin.image;
         winningSkinName.textContent = currentWinningSkin.name;
         winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
+        winningSkinPrice.textContent = `Preço: R$ ${price.toFixed(2)}`;
         winningSkinModal.style.opacity = '1';
         winningSkinModal.style.pointerEvents = 'auto';
         if (winningItemElement) {
@@ -244,7 +276,8 @@ function goBackToMain() {
 
 function sellSkin() {
     if (currentWinningSkin) {
-        userBalance += currentWinningSkin.price;
+        const price = skinPrices[currentWinningSkin.name] || currentWinningSkin.price;
+        userBalance += price;
         updateUserBalance();
         closeOpeningScreen();
     }
@@ -278,6 +311,7 @@ loginBtn.addEventListener('click', () => {
     loginContainer.style.display = 'none';
     mainContainer.style.display = 'block';
     updateUserBalance();
+    fetchSkinPrices();
 });
 
 document.querySelectorAll('.case').forEach(caseElement => {
