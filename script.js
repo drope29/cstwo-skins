@@ -55,7 +55,11 @@ const cases = {
             { name: 'Glock-18 | Vogue', rarity: 'restricted', image: 'images/glock18_vogue.png', price: 11.25 },
             { name: 'Desert Eagle | Printstream', rarity: 'classified', image: 'images/deagle_printstream.png', price: 12.00 },
             { name: 'P90 | Asiimov', rarity: 'classified', image: 'images/p90_asiimov.png', price: 12.00 },
-            { name: 'MAC-10 | Neon Rider', rarity: 'classified', image: 'images/mac10_neon_rider.png', price: 12.00 }
+            { name: 'MAC-10 | Neon Rider', rarity: 'classified', image: 'images/mac10_neon_rider.png', price: 12.00 },
+            { name: 'Tec-9 | Isaac', rarity: 'mil-spec', image: 'images/tec9-isaac.png', price: 10.50 },
+            { name: 'M4A1-S | Knight', rarity: 'covert', image: 'images/m4a1-knight.png', price: 13.50 },
+            { name: 'Galil AR | Chatterbox', rarity: 'classified', image: 'images/galil-chatterbox.png', price: 12.00 },
+            { name: 'P2000 | Fire Elemental', rarity: 'restricted', image: 'images/p2000-fire-elemental.png', price: 11.25 }
         ]
     },
     case2: {
@@ -70,12 +74,16 @@ const cases = {
             { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/p250_see_ya_later.png', price: 18.75 },
             { name: 'FAMAS | Mecha Industries', rarity: 'mil-spec', image: 'images/famas_mecha_industries.png', price: 17.50 },
             { name: 'AK-47 | Gold Arabesque', rarity: 'covert', image: 'images/ak47_gold_arabesque.png', price: 22.50 },
-            { name: 'M4A1-S | Printstream', rarity: 'covert', image: 'images/m4a1s_printstream.png', price: 22.50 },
+            { name: 'M4A1-S | Printstream', rarity: 'covert', image: 'images/m4a1-printstream.png', price: 22.50 },
             { name: 'Five-SeveN | Case Hardened', rarity: 'restricted', image: 'images/five_seven_case_hardened.png', price: 18.75 },
             { name: 'MP9 | Starlight Protector', rarity: 'restricted', image: 'images/mp9_starlight_protector.png', price: 18.75 },
             { name: 'Sawed-Off | The Kraken', rarity: 'mil-spec', image: 'images/sawed_off_the_kraken.png', price: 17.50 },
             { name: 'AUG | Akihabara Accept', rarity: 'covert', image: 'images/aug_akihabara_accept.png', price: 22.50 },
-            { name: 'Galil AR | Cerberus', rarity: 'restricted', image: 'images/galil_ar_cerberus.png', price: 18.75 }
+            { name: 'Galil AR | Cerberus', rarity: 'restricted', image: 'images/galil_ar_cerberus.png', price: 18.75 },
+            { name: 'AK-47 | Vulcan', rarity: 'classified', image: 'images/ak-vulcan.png', price: 20.00 },
+            { name: 'USP-S | Kill Confirmed', rarity: 'covert', image: 'images/usp-kill-confirmed.png', price: 22.50 },
+            { name: 'Glock-18 | Water Elemental', rarity: 'restricted', image: 'images/glock-water-elemental.png', price: 18.75 },
+            { name: 'FAMAS | Roll Cage', rarity: 'mil-spec', image: 'images/famas-roll-cage.png', price: 17.50 }
         ]
     }
 };
