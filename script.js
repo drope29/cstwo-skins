@@ -211,7 +211,7 @@ function startRoulette() {
         winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
         winningSkinImage.src = currentWinningSkin.image;
         winningSkinName.textContent = currentWinningSkin.name;
-        winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
+        // winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
         winningSkinModal.style.opacity = '1';
         winningSkinModal.style.pointerEvents = 'auto';
         if (winningItemElement) {
