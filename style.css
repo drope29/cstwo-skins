@@ -207,22 +207,22 @@ main {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh; /* Use vh for full viewport height */
     background-color: rgba(18, 18, 18, 0.98);
     backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     z-index: 100;
-    padding: 80px 20px 20px;
-    overflow-y: auto;
+    padding: 20px;
+    overflow: hidden; /* Prevent the whole page from scrolling */
 }
 
 #case-name-title {
     font-size: 2.5em;
     color: #ffc107;
     margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 #roulette-container {
@@ -236,6 +236,7 @@ main {
     border: 1px solid #222;
     margin-bottom: 30px;
     box-shadow: inset 0 0 15px rgba(0,0,0,0.7);
+    flex-shrink: 0;
 }
 
 #roulette-container::before {
@@ -439,6 +440,7 @@ main {
     margin-bottom: 30px;
     position: relative;
     z-index: 1;
+    flex-shrink: 0;
 }
 
 #open-case-button span {
@@ -483,24 +485,28 @@ main {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
+    flex-shrink: 0; /* Prevent from shrinking */
 }
 
 #case-items-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
-    padding: 20px;
+    gap: 10px; /* Reduced gap */
+    padding: 15px; /* Reduced padding */
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     width: 100%;
     max-width: 1200px;
     margin-top: 20px;
+    flex-grow: 1; /* Allow the grid to grow and take up space */
+    overflow-y: auto; /* Enable vertical scrolling within the grid */
+    min-height: 0; /* Important for flex-grow to work in a flex column */
 }
 
 .case-skin-item {
     background-color: #2a2a2a;
     border-radius: 10px;
-    padding: 15px;
+    padding: 8px; /* Reduced padding */
     text-align: center;
     border: 2px solid #333;
     position: relative;
@@ -525,8 +531,8 @@ main {
 }
 
 .case-skin-item img {
-    width: 120px;
-    height: 120px;
+    width: 80px; /* Reduced image size */
+    height: 80px; /* Reduced image size */
     object-fit: contain;
 }
 
