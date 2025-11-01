@@ -205,7 +205,7 @@ function startRoulette() {
     });
 
     setTimeout(() => {
-        const itemWidth = 170;
+        const itemWidth = 140; // Adjusted width
         const containerWidth = roulette.parentElement.offsetWidth;
         const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
         const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
