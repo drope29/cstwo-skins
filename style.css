@@ -504,20 +504,95 @@ main {
 }
 
 .case-skin-item {
-    background-color: #2a2a2a;
-    border-radius: 10px;
-    padding: 8px; /* Reduced padding */
-    text-align: center;
-    border: 2px solid #333;
-    position: relative;
+    background: #171717;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    box-shadow: 0px 0px 3px 1px #00000088;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 2px; /* Small padding for the content box */
+    border: none;
 }
 
-.case-skin-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+.case-skin-item .content {
+    border-radius: 8px;
+    background: #171717;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    padding: 8px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
+
+.case-skin-item .content::before {
+    opacity: 0;
+    transition: opacity 300ms;
+    content: " ";
+    display: block;
+    background: white;
+    width: 5px;
+    height: 50px;
+    position: absolute;
+    filter: blur(50px);
+}
+
+.case-skin-item:hover .content::before {
+    opacity: 1;
+}
+
+.case-skin-item::before {
+    opacity: 0;
+    content: " ";
+    position: absolute;
+    display: block;
+    width: 80px;
+    height: 150%;
+    background: linear-gradient(to top, transparent, var(--rarity-color), transparent);
+    transition: opacity 300ms;
+    animation: shine 2s infinite linear;
+    animation-play-state: paused;
+    filter: blur(10px);
+}
+
+@keyframes shine {
+    0% {
+        top: -50%;
+        left: -50%;
+        transform: rotate(45deg);
+    }
+    100% {
+        top: 50%;
+        left: 150%;
+        transform: rotate(45deg);
+    }
+}
+
+.case-skin-item:hover::before {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+.case-skin-item::after {
+    position: absolute;
+    content: " ";
+    display: block;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    top: 2px;
+    left: 2px;
+    background: #17171733;
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+}
+
 
 .skin-percentage {
     position: absolute;
@@ -544,6 +619,7 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #e0e0e0; /* Explicitly set text color */
 }
 
 #back-to-main-btn, #close-winning-btn {
@@ -647,17 +723,26 @@ main {
 }
 
 :root {
-    --rarity-covert-color: #d32ce6;
-    --rarity-classified-color: #eb4b4b;
-    --rarity-restricted-color: #8847ff;
-    --rarity-mil-spec-color: #4b69ff;
+    --rarity-covert-color: #e44dff;
+    --rarity-classified-color: #ff5555;
+    --rarity-restricted-color: #aa75ff;
+    --rarity-mil-spec-color: #6a8dff;
     --rarity-color: var(--rarity-mil-spec-color); /* Default color */
 }
 
-.rarity-covert { border-bottom: 3px solid var(--rarity-covert-color); --rarity-color: var(--rarity-covert-color); }
-.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); --rarity-color: var(--rarity-classified-color); }
-.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); --rarity-color: var(--rarity-restricted-color); }
-.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); --rarity-color: var(--rarity-mil-spec-color); }
+.rarity-covert { --rarity-color: var(--rarity-covert-color); }
+.rarity-classified { --rarity-color: var(--rarity-classified-color); }
+.rarity-restricted { --rarity-color: var(--rarity-restricted-color); }
+.rarity-mil-spec { --rarity-color: var(--rarity-mil-spec-color); }
+
+.rarity-covert .content { border-bottom: 2px solid var(--rarity-covert-color); transition: border-color 0.3s ease; }
+.rarity-classified .content { border-bottom: 2px solid var(--rarity-classified-color); transition: border-color 0.3s ease; }
+.rarity-restricted .content { border-bottom: 2px solid var(--rarity-restricted-color); transition: border-color 0.3s ease; }
+.rarity-mil-spec .content { border-bottom: 2px solid var(--rarity-mil-spec-color); transition: border-color 0.3s ease; }
+
+.case-skin-item:hover .content {
+    border-bottom-color: transparent;
+}
 
 .inventory-item.rarity-covert { border-bottom: 3px solid var(--rarity-covert-color); }
 .inventory-item.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); }
