@@ -155,9 +155,11 @@ function showCaseOpeningScreen(caseId) {
         const skinElement = document.createElement('div');
         skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
         skinElement.innerHTML = `
-            <div class="skin-percentage">${percentage.toFixed(2)}%</div>
-            <img src="${skin.image}" alt="${skin.name}">
-            <span>${skin.name}</span>`;
+            <div class="content">
+                <div class="skin-percentage">${percentage.toFixed(2)}%</div>
+                <img src="${skin.image}" alt="${skin.name}">
+                <span>${skin.name}</span>
+            </div>`;
         caseItemsGrid.appendChild(skinElement);
     });
 
