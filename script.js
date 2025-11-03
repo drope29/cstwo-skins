@@ -6,7 +6,7 @@ let currentWinningSkin = null;
 
 // --- DOM Elements ---
 const userBalanceSpan = document.getElementById('user-balance');
-const loginContainer = document.getElementById('login-container');
+const loginModalBackdrop = document.getElementById('login-modal-backdrop');
 const mainContainer = document.getElementById('main-container');
 const loginBtn = document.getElementById('login-btn');
 
@@ -285,8 +285,7 @@ function closeInventory() {
 }
 
 loginBtn.addEventListener('click', () => {
-    loginContainer.style.display = 'none';
-    mainContainer.style.display = 'block';
+    loginModalBackdrop.style.display = 'none';
     updateUserBalance();
 });
 
