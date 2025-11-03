@@ -3,12 +3,15 @@ let userBalance = 1000.00;
 let currentCaseId = null;
 let userInventory = [];
 let currentWinningSkin = null;
+let isLoggedIn = false;
 
 // --- DOM Elements ---
 const userBalanceSpan = document.getElementById('user-balance');
 const loginModalBackdrop = document.getElementById('login-modal-backdrop');
 const mainContainer = document.getElementById('main-container');
 const loginBtn = document.getElementById('login-btn');
+const headerLoginBtn = document.getElementById('header-login-btn');
+const userInfo = document.querySelector('.user-info');
 
 // Unified Case Opening Screen Elements
 const caseOpeningScreen = document.getElementById('case-opening-screen');
@@ -89,6 +92,26 @@ const cases = {
 };
 
 // --- Functions ---
+
+function updateUIForLoginState() {
+    if (isLoggedIn) {
+        userInfo.style.display = 'flex';
+        inventoryBtn.style.display = 'block';
+        headerLoginBtn.style.display = 'none';
+        loginModalBackdrop.style.display = 'none';
+        updateUserBalance();
+    } else {
+        userInfo.style.display = 'none';
+        inventoryBtn.style.display = 'none';
+        headerLoginBtn.style.display = 'block';
+    }
+}
+
+function handleLogin() {
+    isLoggedIn = true;
+    updateUIForLoginState();
+}
+
 function getWeightedRandomSkin(skins) {
     const rand = Math.random() * 100;
     let cumulativePercentage = 0;
@@ -118,7 +141,9 @@ function getWeightedRandomSkin(skins) {
 }
 
 function updateUserBalance() {
-    userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2).replace('.', ',')}`;
+    if (isLoggedIn) {
+        userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2).replace('.', ',')}`;
+    }
 }
 
 function resetOpeningScreen() {
@@ -136,6 +161,10 @@ function resetOpeningScreen() {
 }
 
 function showCaseOpeningScreen(caseId) {
+    if (!isLoggedIn) {
+        loginModalBackdrop.style.display = 'flex';
+        return;
+    }
     currentCaseId = caseId;
     const selectedCase = cases[caseId];
     resetOpeningScreen();
@@ -176,7 +205,7 @@ function showCaseOpeningScreen(caseId) {
 }
 
 function startRoulette() {
-    if (!currentCaseId) return;
+    if (!currentCaseId || !isLoggedIn) return;
     const selectedCase = cases[currentCaseId];
     if (userBalance < selectedCase.price) {
         alert('Saldo insuficiente!');
@@ -268,6 +297,7 @@ function keepSkin() {
 }
 
 function openInventory() {
+    if (!isLoggedIn) return;
     inventoryGrid.innerHTML = '';
     userInventory.forEach(skin => {
         const skinElement = document.createElement('div');
@@ -284,9 +314,10 @@ function closeInventory() {
     inventoryModal.style.display = 'none';
 }
 
-loginBtn.addEventListener('click', () => {
-    loginModalBackdrop.style.display = 'none';
-    updateUserBalance();
+// --- Event Listeners ---
+loginBtn.addEventListener('click', handleLogin);
+headerLoginBtn.addEventListener('click', () => {
+    loginModalBackdrop.style.display = 'flex';
 });
 
 document.querySelectorAll('.case').forEach(caseElement => {
@@ -303,4 +334,7 @@ keepSkinBtn.addEventListener('click', keepSkin);
 inventoryBtn.addEventListener('click', openInventory);
 closeInventoryBtn.addEventListener('click', closeInventory);
 
-updateUserBalance();
+// --- Initial Page Load ---
+document.addEventListener('DOMContentLoaded', () => {
+    updateUIForLoginState();
+});
