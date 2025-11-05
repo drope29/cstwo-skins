@@ -75,6 +75,7 @@ body {
     border-color: #ffc107;
 }
 
+
 header {
     position: fixed;
     top: 0;
@@ -119,48 +120,6 @@ header {
     border: 1px solid #444;
 }
 
-.user-profile {
-  width: 131px;
-  height: 51px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  background: linear-gradient(
-    to bottom right,
-    #ffc107 0%,
-    rgba(255, 193, 7, 0) 30%
-  );
-  background-color: rgba(255, 193, 7, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.user-profile:hover,
-.user-profile:focus {
-  background-color: rgba(255, 193, 7, 0.7);
-  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
-  outline: none;
-}
-
-.user-profile-inner {
-  width: 127px;
-  height: 47px;
-  border-radius: 13px;
-  background-color: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  color: #fff;
-  font-weight: 600;
-}
-
-.user-profile-inner svg {
-  width: 27px;
-  height: 27px;
-  fill: #fff;
-}
 
 main {
     padding: 30px;
@@ -852,4 +811,97 @@ main {
     height: 80px;
     animation-delay: 1s;
     background-color: var(--rarity-color);
+}
+
+/* From Uiverse.io by ryota1231 */
+.animated-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 24px;
+  border: 2px solid transparent;
+  font-size: 14px;
+  background-color: #1a1a1a;
+  border-radius: 100px;
+  font-weight: 600;
+  color: #ffc107;
+  box-shadow: 0 0 0 2px #ffc107;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button svg {
+  position: absolute;
+  width: 24px;
+  fill: #ffc107;
+  z-index: 9;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button .arr-1 {
+  right: 16px;
+}
+
+.animated-button .arr-2 {
+  left: -25%;
+}
+
+.animated-button .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: #ffc107;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button .text {
+  position: relative;
+  z-index: 1;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button:hover {
+  box-shadow: 0 0 0 12px transparent;
+  color: #1a1a1a;
+  border-radius: 12px;
+}
+
+.animated-button:hover .arr-1 {
+  right: -25%;
+}
+
+.animated-button:hover .arr-2 {
+  left: 16px;
+}
+
+.animated-button:hover .text {
+}
+
+.animated-button:hover svg {
+  fill: #1a1a1a;
+}
+
+.animated-button:active {
+  scale: 0.95;
+  box-shadow: 0 0 0 4px #ffc107;
+}
+
+.animated-button:hover .circle {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+
+#login-btn {
+    width: 100%;
+    justify-content: center; /* Centraliza o conteúdo do botão animado */
 }
