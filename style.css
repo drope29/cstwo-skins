@@ -119,7 +119,8 @@ header {
     border: 1px solid #444;
 }
 
-.user-profile {
+#login-btn,
+#header-login-btn {
   width: 131px;
   height: 51px;
   border-radius: 15px;
@@ -136,8 +137,10 @@ header {
   justify-content: center;
 }
 
-.user-profile:hover,
-.user-profile:focus {
+#login-btn:hover,
+#login-btn:focus,
+#header-login-btn:hover,
+#header-login-btn:focus {
   background-color: rgba(255, 193, 7, 0.7);
   box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
   outline: none;
