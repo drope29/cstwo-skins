@@ -119,47 +119,57 @@ header {
     border: 1px solid #444;
 }
 
-.user-profile {
-  width: 131px;
-  height: 51px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  background: linear-gradient(
-    to bottom right,
-    #ffc107 0%,
-    rgba(255, 193, 7, 0) 30%
-  );
-  background-color: rgba(255, 193, 7, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.animated-button {
+    position: relative;
+    padding: 12px 18px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffc107;
+    background-color: transparent;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
 }
 
-.user-profile:hover,
-.user-profile:focus {
-  background-color: rgba(255, 193, 7, 0.7);
-  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
-  outline: none;
+.animated-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: #ffc107;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
 }
 
-.user-profile-inner {
-  width: 127px;
-  height: 47px;
-  border-radius: 13px;
-  background-color: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  color: #fff;
-  font-weight: 600;
+.animated-button:hover::before {
+    width: 250px;
+    height: 250px;
 }
 
-.user-profile-inner svg {
-  width: 27px;
-  height: 27px;
-  fill: #fff;
+.animated-button:hover {
+    color: #1a1a1a;
+    border-color: transparent;
+}
+
+.animated-button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.animated-button svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    transition: fill 0.3s ease;
 }
 
 main {
