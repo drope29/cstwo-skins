@@ -6,6 +6,7 @@ test.describe('Image Path Verification', () => {
     await page.goto('http://localhost:8080');
 
     // 1. Simulate login
+    await page.click('#header-login-btn');
     await page.click('#login-btn');
     await expect(page.locator('#main-container')).toBeVisible();
 
