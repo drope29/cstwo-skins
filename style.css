@@ -120,9 +120,9 @@ header {
 }
 
 .user-profile {
-  width: 131px;
-  height: 51px;
-  border-radius: 15px;
+  width: 110px; /* Reduced width */
+  height: 45px; /* Reduced height */
+  border-radius: 12px; /* Adjusted border-radius */
   cursor: pointer;
   transition: 0.3s ease;
   background: linear-gradient(
@@ -134,6 +134,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0; /* Prevent stretching */
 }
 
 .user-profile:hover,
@@ -144,21 +145,21 @@ header {
 }
 
 .user-profile-inner {
-  width: 127px;
-  height: 47px;
-  border-radius: 13px;
+  width: 106px; /* Adjusted width */
+  height: 41px; /* Adjusted height */
+  border-radius: 10px; /* Adjusted border-radius */
   background-color: #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 8px; /* Reduced gap */
   color: #fff;
   font-weight: 600;
 }
 
 .user-profile-inner svg {
-  width: 27px;
-  height: 27px;
+  width: 22px; /* Reduced icon size */
+  height: 22px; /* Reduced icon size */
   fill: #fff;
 }
 
