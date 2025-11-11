@@ -221,27 +221,29 @@ function startRoulette() {
     currentWinningSkin = getWeightedRandomSkin(skins);
     let winningItemElement = null;
     const rouletteItems = [];
-    for (let i = 0; i < 50; i++) {
+    const winningPosition = Math.floor(Math.random() * 40) + 20; // Random position between 20 and 59
+
+    for (let i = 0; i < 80; i++) {
         rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
     }
-    rouletteItems[45] = currentWinningSkin;
+    rouletteItems[winningPosition] = currentWinningSkin;
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
         rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
-        if (index === 45) {
+        if (index === winningPosition) {
             winningItemElement = rouletteItem;
         }
     });
 
     setTimeout(() => {
-        const itemWidth = 170;
+        const itemWidth = 150;
         const containerWidth = roulette.parentElement.offsetWidth;
         const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
-        const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
+        const winningItemCenter = (itemWidth * winningPosition) + (itemWidth / 2);
         const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
-        roulette.style.transition = 'transform 8s cubic-bezier(0.1, 0.8, 0.2, 1)';
+        roulette.style.transition = 'transform 12s cubic-bezier(0.1, 0.8, 0.2, 1)';
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
@@ -256,7 +258,7 @@ function startRoulette() {
         if (winningItemElement) {
             winningItemElement.classList.add('winner');
         }
-    }, 8500);
+    }, 12500);
 }
 
 function closeOpeningScreen() {
