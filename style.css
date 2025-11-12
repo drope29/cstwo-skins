@@ -120,46 +120,40 @@ header {
 }
 
 .user-profile {
-  width: 131px;
-  height: 51px;
-  border-radius: 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s ease;
-  background: linear-gradient(
-    to bottom right,
-    #ffc107 0%,
-    rgba(255, 193, 7, 0) 30%
-  );
-  background-color: rgba(255, 193, 7, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0; /* Prevent stretching */
 }
 
 .user-profile:hover,
 .user-profile:focus {
-  background-color: rgba(255, 193, 7, 0.7);
-  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  background-color: rgba(255, 193, 7, 0.2);
+  border-color: rgba(255, 193, 7, 0.8);
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
   outline: none;
 }
 
 .user-profile-inner {
-  width: 127px;
-  height: 47px;
-  border-radius: 13px;
-  background-color: #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  color: #fff;
+  gap: 8px;
+  color: #ffc107;
   font-weight: 600;
 }
 
 .user-profile-inner svg {
-  width: 27px;
-  height: 27px;
-  fill: #fff;
+  width: 22px;
+  height: 22px;
+  fill: #ffc107;
 }
 
 main {
