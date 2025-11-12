@@ -11,6 +11,10 @@ body {
     overflow-x: hidden;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
 /* Login Modal Styles */
 #login-modal-backdrop {
     position: fixed;
@@ -47,6 +51,7 @@ body {
 }
 
 .login-modal-content h2 {
+    font-family: 'Montserrat', sans-serif;
     color: #ffc107;
     margin-bottom: 1rem;
 }
@@ -120,46 +125,49 @@ header {
 }
 
 .user-profile {
-  width: 131px;
-  height: 51px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  background: linear-gradient(
-    to bottom right,
-    #ffc107 0%,
-    rgba(255, 193, 7, 0) 30%
-  );
-  background-color: rgba(255, 193, 7, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.05); /* More transparent */
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.15); /* Thicker and slightly less visible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .user-profile:hover,
 .user-profile:focus {
-  background-color: rgba(255, 193, 7, 0.7);
-  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
-  outline: none;
+    background-color: rgba(255, 255, 255, 0.1); /* Adjusted hover transparency */
+    border-color: rgba(255, 193, 7, 0.5);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+    outline: none;
 }
 
 .user-profile-inner {
-  width: 127px;
-  height: 47px;
-  border-radius: 13px;
-  background-color: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  color: #fff;
-  font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Slightly reduced gap */
+    color: #ffc107;
+    font-weight: 600;
+    font-size: 0.9rem; /* Slightly smaller font */
+}
+
+.user-profile-inner p {
+    margin: 0;
+    font-weight: 400; /* Use Roboto regular for the text */
+}
+
+#login-modal .user-profile {
+    width: 100%;
 }
 
 .user-profile-inner svg {
-  width: 27px;
-  height: 27px;
-  fill: #fff;
+    width: 22px;
+    height: 22px;
+    fill: #ffc107;
 }
 
 main {
@@ -376,14 +384,14 @@ main {
 #winning-skin-info {
     background: rgba(31, 31, 31, 0.8);
     backdrop-filter: blur(15px);
-    padding: 30px 20px;
+    padding: 40px 30px; /* Increased padding */
     border-radius: 15px;
     text-align: center;
     animation: pop-in 0.5s ease-out forwards;
     border: 2px solid var(--rarity-color);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 50px rgba(0,0,0,0.9), 0 0 25px var(--rarity-color); /* Enhanced glow */
     position: relative;
-    width: 320px;
+    width: 350px; /* Slightly wider */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -405,14 +413,18 @@ main {
 }
 
 #winning-skin-name {
-    color: #ffc107;
-    font-size: 2em;
-    margin: 10px 0;
+    color: #ffffff; /* Brighter color for more pop */
+    font-size: 2.2em; /* Slightly larger */
+    margin: 15px 0 5px 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 #winning-skin-rarity {
-    margin: 0 0 20px 0;
-    font-size: 1.2em;
+    margin: 0 0 25px 0;
+    font-size: 1.1em;
+    color: #a0aec0; /* Subtler color */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .modal-buttons {
@@ -423,30 +435,35 @@ main {
 }
 
 .modal-buttons button {
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-size: 1em;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 0.9em;
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.modal-buttons button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 #keep-skin-btn {
-    background: #ffc107;
-    color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+    color: #ffc107;
+    border-color: #ffc107;
 }
 
 #keep-skin-btn:hover {
-    background: #ffca2c;
-    box-shadow: 0 0 25px rgba(255, 193, 7, 0.8);
-    transform: scale(1.05);
+    background-color: #ffc107;
+    color: #1a1a1a;
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.7);
 }
 
 #sell-skin-btn {
-    background-color: transparent;
     color: #28a745;
     border-color: #28a745;
 }
@@ -454,7 +471,7 @@ main {
 #sell-skin-btn:hover {
     background-color: #28a745;
     color: #1a1a1a;
-    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(40, 167, 69, 0.7);
 }
 
 #open-case-button {
@@ -780,76 +797,3 @@ main {
 .inventory-item.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); }
 .inventory-item.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); }
 .inventory-item.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); }
-
-/* Smoke Effect */
-@keyframes smoke-animation {
-    0% {
-        transform: scale(1) translate(0, 0);
-        opacity: 0;
-        filter: blur(20px);
-    }
-    20% {
-        transform: scale(1.3) translate(-15px, -25px);
-        opacity: 0.3;
-        filter: blur(10px);
-    }
-    40% {
-        transform: scale(1.6) translate(20px, -60px);
-        opacity: 0.5;
-        filter: blur(5px);
-    }
-    60% {
-        transform: scale(1.9) translate(-10px, -100px);
-        opacity: 0.3;
-        filter: blur(10px);
-    }
-    80% {
-        transform: scale(2.2) translate(15px, -140px);
-        opacity: 0.1;
-        filter: blur(15px);
-    }
-    100% {
-        transform: scale(2.5) translate(0, -180px);
-        opacity: 0;
-        filter: blur(20px);
-    }
-}
-
-.smoke-effect {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 200px;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    filter: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg"><filter id="x"><feGaussianBlur stdDeviation="10" /></filter></svg>#x');
-}
-
-.smoke-particle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 100px;
-    background-color: var(--rarity-color);
-    border-radius: 50%;
-    transform-origin: center;
-    opacity: 0;
-    animation: smoke-animation 5s infinite ease-out;
-    box-shadow: 0 0 20px 10px var(--rarity-color), 0 0 40px 20px rgba(255, 255, 255, 0.1);
-}
-
-.smoke-particle:nth-child(2) {
-    width: 120px;
-    height: 120px;
-    animation-delay: 0.5s;
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.smoke-particle:nth-child(3) {
-    width: 80px;
-    height: 80px;
-    animation-delay: 1s;
-    background-color: var(--rarity-color);
-}
