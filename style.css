@@ -130,16 +130,33 @@ header {
     cursor: pointer;
     transition: all 0.3s ease;
     background-color: rgba(255, 255, 255, 0.05); /* More transparent */
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.15); /* Thicker and slightly less visible */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+#header-login-btn {
+    padding: 5px 10px;
+    height: 38px;
+}
+
+#header-login-btn .user-profile-inner {
+    margin-top: 4px;
+    font-size: 13px;
+    gap: 4px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#header-login-btn .user-profile-inner svg {
+    width: 15px;
+    height: 15px;
+}
+
 .user-profile:hover,
 .user-profile:focus {
-    background-color: rgba(255, 255, 255, 0.1); /* Adjusted hover transparency */
+    background-color: rgba(255, 255, 255, 0.2); /* Adjusted hover transparency */
     border-color: rgba(255, 193, 7, 0.5);
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
     outline: none;
