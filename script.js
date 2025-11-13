@@ -88,6 +88,19 @@ const cases = {
             { name: 'Glock-18 | Water Elemental', rarity: 'restricted', image: 'images/glock-water-elemental.png', price: 18.75 },
             { name: 'FAMAS | Roll Cage', rarity: 'mil-spec', image: 'images/famas-roll-cage.png', price: 17.50 }
         ]
+    },
+    case3: {
+        name: 'Caixa de Facas',
+        price: 200.00,
+        type: 'knife', // Add a type to distinguish this case
+        skins: [
+            { name: 'Karambit | Fade', rarity: 'covert', image: 'images/karambit_fade.png', price: 8000.00 },
+            { name: 'Butterfly Knife | Tiger Tooth', rarity: 'covert', image: 'images/butterfly_tiger_tooth.png', price: 6500.00 },
+            { name: 'M9 Bayonet | Doppler', rarity: 'covert', image: 'images/karambit_fade.png', price: 4000.00 },
+            { name: 'Huntsman Knife | Slaughter', rarity: 'covert', image: 'images/butterfly_tiger_tooth.png', price: 2500.00 },
+            { name: 'Falchion Knife | Case Hardened', rarity: 'covert', image: 'images/ssg08_dragonfire.png', price: 1000.00 },
+            { name: 'Navaja Knife | Boreal Forest', rarity: 'covert', image: 'images/ssg08_dragonfire.png', price: 500.00 }
+        ]
     }
 };
 
@@ -110,6 +123,27 @@ function updateUIForLoginState() {
 function handleLogin() {
     isLoggedIn = true;
     updateUIForLoginState();
+}
+
+function getPriceWeightedRandomSkin(skins) {
+    let totalWeight = 0;
+    const skinWeights = skins.map(skin => {
+        // Higher price = lower weight/chance. Using inverse of price.
+        const weight = 1 / skin.price;
+        totalWeight += weight;
+        return { skin, weight };
+    });
+
+    let random = Math.random() * totalWeight;
+
+    for (const weightedSkin of skinWeights) {
+        random -= weightedSkin.weight;
+        if (random <= 0) {
+            return weightedSkin.skin;
+        }
+    }
+    // Fallback in case of floating point issues
+    return skinWeights[skinWeights.length - 1].skin;
 }
 
 function getWeightedRandomSkin(skins) {
@@ -171,28 +205,62 @@ function showCaseOpeningScreen(caseId) {
     caseNameTitle.textContent = selectedCase.name;
     caseItemsGrid.innerHTML = '';
 
-    const rarityOrder = { 'covert': 1, 'classified': 2, 'restricted': 3, 'mil-spec': 4 };
-    const sortedSkins = [...selectedCase.skins].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
-    const skinsByRarity = selectedCase.skins.reduce((acc, skin) => {
-        acc[skin.rarity] = (acc[skin.rarity] || 0) + 1;
-        return acc;
-    }, {});
+    caseItemsGrid.innerHTML = '';
 
-    sortedSkins.forEach(skin => {
-        const rarityCount = skinsByRarity[skin.rarity] || 1;
-        const percentage = (rarityPercentages[skin.rarity] || 0) / rarityCount;
-        const skinElement = document.createElement('div');
-        skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
-        skinElement.innerHTML = `
-            <div class="content">
-                <div class="skin-percentage">${percentage.toFixed(2)}%</div>
-                <img src="${skin.image}" alt="${skin.name}">
-                <span>${skin.name}</span>
-            </div>`;
-        caseItemsGrid.appendChild(skinElement);
-    });
+    if (selectedCase.type === 'knife') {
+        let totalWeight = 0;
+        selectedCase.skins.forEach(skin => {
+            totalWeight += 1 / skin.price;
+        });
 
-    const previewItems = [...sortedSkins, ...sortedSkins, ...sortedSkins];
+        const sortedSkins = [...selectedCase.skins].sort((a, b) => a.price - b.price);
+
+        sortedSkins.forEach(skin => {
+            const weight = 1 / skin.price;
+            const percentage = (weight / totalWeight) * 100;
+            const skinElement = document.createElement('div');
+            skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
+            skinElement.innerHTML = `
+                <div class="content">
+                    <div class="skin-percentage">${percentage.toFixed(4)}%</div>
+                    <img src="${skin.image}" alt="${skin.name}">
+                    <span>${skin.name}</span>
+                </div>`;
+            caseItemsGrid.appendChild(skinElement);
+        });
+    } else {
+        const rarityOrder = { 'covert': 1, 'classified': 2, 'restricted': 3, 'mil-spec': 4 };
+        const sortedSkins = [...selectedCase.skins].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
+        const skinsByRarity = selectedCase.skins.reduce((acc, skin) => {
+            acc[skin.rarity] = (acc[skin.rarity] || 0) + 1;
+            return acc;
+        }, {});
+
+        sortedSkins.forEach(skin => {
+            const rarityCount = skinsByRarity[skin.rarity] || 1;
+            const percentage = (rarityPercentages[skin.rarity] || 0) / rarityCount;
+            const skinElement = document.createElement('div');
+            skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
+            skinElement.innerHTML = `
+                <div class="content">
+                    <div class="skin-percentage">${percentage.toFixed(2)}%</div>
+                    <img src="${skin.image}" alt="${skin.name}">
+                    <span>${skin.name}</span>
+                </div>`;
+            caseItemsGrid.appendChild(skinElement);
+        });
+    }
+
+    // This variable needs to be accessible outside the if/else blocks
+    const skinsToDisplay = selectedCase.type === 'knife'
+        ? [...selectedCase.skins].sort((a, b) => a.price - b.price)
+        : [...selectedCase.skins].sort((a, b) => {
+            const rarityOrder = { 'covert': 1, 'classified': 2, 'restricted': 3, 'mil-spec': 4 };
+            return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+          });
+
+
+    const previewItems = [...skinsToDisplay, ...skinsToDisplay, ...skinsToDisplay];
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
@@ -218,7 +286,11 @@ function startRoulette() {
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
     const skins = selectedCase.skins;
-    currentWinningSkin = getWeightedRandomSkin(skins);
+    if (selectedCase.type === 'knife') {
+        currentWinningSkin = getPriceWeightedRandomSkin(skins);
+    } else {
+        currentWinningSkin = getWeightedRandomSkin(skins);
+    }
     let winningItemElement = null;
     const rouletteItems = [];
     for (let i = 0; i < 50; i++) {
