@@ -130,11 +130,26 @@ header {
     cursor: pointer;
     transition: all 0.3s ease;
     background-color: rgba(255, 255, 255, 0.05); /* More transparent */
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.15); /* Thicker and slightly less visible */
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#header-login-btn {
+    padding: 5px 10px;
+    height: 38px;
+}
+
+#header-login-btn .user-profile-inner {
+    font-size: 0.8rem;
+    gap: 6px;
+}
+
+#header-login-btn .user-profile-inner svg {
+    width: 20px;
+    height: 20px;
 }
 
 .user-profile:hover,
