@@ -243,17 +243,18 @@ main {
 }
 
 .case img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     object-fit: contain;
 }
 
 .case h3 {
-    margin: 10px 0;
+    margin: 8px 0;
+    font-size: 1.1em;
 }
 
 .case p {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
     color: #ffc107;
     margin: 0;
