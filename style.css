@@ -201,10 +201,10 @@ main {
 
 .case {
     background: linear-gradient(145deg, #1F1F1F, #141414);
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     text-align: center;
-    width: 220px;
+    width: 200px;
     border: 2px solid transparent;
     background-clip: padding-box;
     transition: all 0.4s ease-in-out;
@@ -249,11 +249,12 @@ main {
 }
 
 .case h3 {
-    margin: 10px 0;
+    margin: 8px 0;
+    font-size: 1.1em;
 }
 
 .case p {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
     color: #ffc107;
     margin: 0;
@@ -286,7 +287,7 @@ main {
     position: relative;
     width: 100%;
     max-width: 1200px;
-    height: 180px;
+    height: 160px;
     overflow: hidden;
     border-radius: 10px;
     background: #111;
@@ -328,8 +329,8 @@ main {
 }
 
 .roulette-item {
-    width: 170px;
-    height: 170px;
+    width: 150px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -343,14 +344,14 @@ main {
 }
 
 .roulette-item img {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
 }
 
 .roulette-item p {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: bold;
     color: #fff;
     text-shadow: 2px 2px 4px #000;
@@ -680,7 +681,7 @@ main {
 .case-skin-item span {
     display: block;
     margin-top: 5px;
-    font-size: 0.8em;
+    font-size: 0.75em;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -814,3 +815,9 @@ main {
 .inventory-item.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); }
 .inventory-item.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); }
 .inventory-item.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); }
+
+/* Specific adjustments for case images */
+[data-case="case1"] img,
+[data-case="case2"] img {
+    transform: scale(1.5);
+}
