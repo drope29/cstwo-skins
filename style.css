@@ -38,6 +38,16 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     width: 400px; /* Increased width */
     transition: all 200ms ease-in-out;
+    position: relative;
+}
+
+#login-modal-image {
+    position: absolute;
+    top: 33.33%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    opacity: 0.5;
 }
 
 .login-modal-content {
@@ -47,6 +57,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     gap: 1.5rem;
     padding: 3rem;
+    padding-top: 150px;
     color: #e0e0e0;
 }
 
