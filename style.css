@@ -44,11 +44,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .login-modal-image-container {
     flex: 1;
-    background-color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
 }
 
 #login-modal-image {
