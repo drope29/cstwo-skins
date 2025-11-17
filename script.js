@@ -421,4 +421,39 @@ closeInventoryBtn.addEventListener('click', closeInventory);
 // --- Initial Page Load ---
 document.addEventListener('DOMContentLoaded', () => {
     updateUIForLoginState();
+
+    // Carousel Logic
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevArrow = document.querySelector('.carousel-arrow.prev');
+    const nextArrow = document.querySelector('.carousel-arrow.next');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active-slide');
+        });
+        slides[index].classList.add('active-slide');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    if (slides.length > 1) {
+        prevArrow.addEventListener('click', prevSlide);
+        nextArrow.addEventListener('click', nextSlide);
+        showSlide(currentSlide); // Show the first slide initially
+    } else {
+        if (slides.length === 1) {
+          slides[0].classList.add('active-slide'); // Make sure the single slide is visible
+        }
+        prevArrow.style.display = 'none';
+        nextArrow.style.display = 'none';
+    }
 });
