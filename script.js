@@ -427,31 +427,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevArrow = document.querySelector('.carousel-arrow.prev');
     const nextArrow = document.querySelector('.carousel-arrow.next');
     let currentSlide = 0;
+    let isAnimating = false;
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.remove('active-slide');
-        });
-        slides[index].classList.add('active-slide');
+    function showSlide(index, direction) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const nextSlideIndex = index;
+        const currentSlideElement = slides[currentSlide];
+        const nextSlideElement = slides[nextSlideIndex];
+
+        // Position the next slide
+        nextSlideElement.style.transform = `translateX(${direction === 'next' ? 100 : -100}%)`;
+        nextSlideElement.classList.add('active-slide');
+
+        // Animate
+        setTimeout(() => {
+            currentSlideElement.style.transform = `translateX(${direction === 'next' ? -100 : 100}%)`;
+            nextSlideElement.style.transform = 'translateX(0)';
+        }, 20);
+
+
+        setTimeout(() => {
+            currentSlideElement.classList.remove('active-slide');
+            currentSlide = nextSlideIndex;
+            isAnimating = false;
+        }, 500); // Should match CSS transition duration
     }
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
+    function next() {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex, 'next');
     }
 
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
+    function prev() {
+        const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prevIndex, 'prev');
     }
 
     if (slides.length > 1) {
-        prevArrow.addEventListener('click', prevSlide);
-        nextArrow.addEventListener('click', nextSlide);
-        showSlide(currentSlide); // Show the first slide initially
+        prevArrow.addEventListener('click', prev);
+        nextArrow.addEventListener('click', next);
+        // Initial setup
+        slides.forEach((slide, index) => {
+            slide.style.transform = index === currentSlide ? 'translateX(0)' : 'translateX(100%)';
+        });
+        slides[currentSlide].classList.add('active-slide');
     } else {
         if (slides.length === 1) {
-          slides[0].classList.add('active-slide'); // Make sure the single slide is visible
+          slides[0].classList.add('active-slide');
+          slides[0].style.transform = 'translateX(0)';
         }
         prevArrow.style.display = 'none';
         nextArrow.style.display = 'none';
