@@ -427,31 +427,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevArrow = document.querySelector('.carousel-arrow.prev');
     const nextArrow = document.querySelector('.carousel-arrow.next');
     let currentSlide = 0;
+    let isAnimating = false;
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.remove('active-slide');
-        });
-        slides[index].classList.add('active-slide');
+    function showSlide(index, direction) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const nextSlideIndex = index;
+        const currentSlideElement = slides[currentSlide];
+        const nextSlideElement = slides[nextSlideIndex];
+        const outgoingDirection = direction === 'next' ? -100 : 100;
+        const incomingDirection = direction === 'next' ? 100 : -100;
+
+        // Position the incoming slide off-screen without animation
+        nextSlideElement.style.transition = 'none';
+        nextSlideElement.style.transform = `translateX(${incomingDirection}%)`;
+        // Force a reflow to apply the transform instantly
+        nextSlideElement.offsetHeight;
+
+        // Add active-slide class to bring it into view (opacity)
+        nextSlideElement.classList.add('active-slide');
+
+        // Re-enable transition and start the animation
+        currentSlideElement.style.transition = 'transform 0.5s ease-in-out';
+        nextSlideElement.style.transition = 'transform 0.5s ease-in-out';
+
+        currentSlideElement.style.transform = `translateX(${outgoingDirection}%)`;
+        nextSlideElement.style.transform = 'translateX(0)';
+
+        setTimeout(() => {
+            currentSlideElement.classList.remove('active-slide');
+            // Clean up old transition to prevent interference
+            currentSlideElement.style.transition = 'none';
+            currentSlide = nextSlideIndex;
+            isAnimating = false;
+        }, 500); // Match CSS transition duration
     }
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
+    function next() {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex, 'next');
     }
 
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
+    function prev() {
+        const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prevIndex, 'prev');
     }
 
     if (slides.length > 1) {
-        prevArrow.addEventListener('click', prevSlide);
-        nextArrow.addEventListener('click', nextSlide);
-        showSlide(currentSlide); // Show the first slide initially
+        prevArrow.addEventListener('click', prev);
+        nextArrow.addEventListener('click', next);
+
+        // Initial setup: all slides are off-screen to the right, except the active one
+        slides.forEach((slide, index) => {
+            slide.style.transform = index === currentSlide ? 'translateX(0)' : 'translateX(100%)';
+            slide.style.transition = 'transform 0.5s ease-in-out';
+        });
+        slides[currentSlide].classList.add('active-slide');
     } else {
         if (slides.length === 1) {
-          slides[0].classList.add('active-slide'); // Make sure the single slide is visible
+          slides[0].classList.add('active-slide');
+          slides[0].style.transform = 'translateX(0)';
         }
         prevArrow.style.display = 'none';
         nextArrow.style.display = 'none';

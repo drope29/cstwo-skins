@@ -846,11 +846,11 @@ main {
 /* Carousel Styles */
 .carousel-container {
     position: relative;
-    width: 80%;
-    max-width: 800px;
-    margin: -10px auto 20px; /* Movido para cima e ajustado margem inferior */
+    width: 90%; /* Aumentado */
+    max-width: 1200px; /* Aumentado */
+    margin: 20px auto 20px; /* Margem inferior diminuída */
     overflow: hidden;
-    min-height: 290px;
+    min-height: 180px; /* Diminuído mais uma vez */
 }
 
 .carousel-slide {
@@ -859,13 +859,14 @@ main {
     left: 0;
     width: 100%;
     opacity: 0;
-    transition: opacity 0.6s ease-in-out;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
     z-index: 1;
 }
 
 .carousel-slide.active-slide {
     opacity: 1;
-    position: relative;
+    pointer-events: auto;
     z-index: 2;
 }
 
@@ -876,11 +877,13 @@ main {
     background: transparent;
     padding: 20px;
     color: #fff;
-    min-height: 290px; /* Garante altura consistente */
+    min-height: 180px; /* Garante altura consistente */
 }
 
 .carousel-content img {
     max-width: 250px;
+    max-height: 140px; /* Diminuído para evitar corte */
+    object-fit: contain; /* Garante que a imagem inteira apareça */
     margin-right: 30px;
     animation: float 8s ease-in-out infinite;
 }
@@ -912,10 +915,10 @@ main {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: transparent; /* Fundo da seta removido */
+    background-color: transparent;
     border: none;
     color: #fff;
-    font-size: 48px; /* Setas maiores para compensar a falta de fundo */
+    font-size: 36px; /* Diminuído */
     cursor: pointer;
     transition: color 0.3s ease;
     z-index: 10;
@@ -923,13 +926,21 @@ main {
 }
 
 .carousel-arrow:hover {
-    color: #ffc107; /* Efeito hover na cor da seta */
+    color: #ffc107;
 }
 
 .carousel-arrow.prev {
-    left: -50px; /* Movido mais para a esquerda */
+    left: 15px;
 }
 
 .carousel-arrow.next {
-    right: -50px; /* Movido mais para a direita */
+    right: 15px;
+}
+
+.separator-line {
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    margin: 40px auto;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0);
 }
