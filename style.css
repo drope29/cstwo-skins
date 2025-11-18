@@ -114,10 +114,26 @@ header {
     border-bottom: 1px solid #222;
 }
 
-.header-right {
+.header-left, .header-right {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex: 1;
+}
+
+.header-right {
+    justify-content: flex-end;
+}
+
+.logo-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navbar-logo {
+    height: 50px;
 }
 
 .user-info {
