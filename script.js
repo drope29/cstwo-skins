@@ -28,9 +28,6 @@ const keepSkinBtn = document.getElementById('keep-skin-btn');
 const openCaseButton = document.getElementById('open-case-button');
 const caseItemsGrid = document.getElementById('case-items-grid');
 const inventoryBtn = document.getElementById('inventory-btn');
-const inventoryModal = document.getElementById('inventory-modal');
-const inventoryGrid = document.getElementById('inventory-grid');
-const closeInventoryBtn = document.getElementById('close-inventory-btn');
 
 // --- Data ---
 const rarityPercentages = {
@@ -189,6 +186,7 @@ function getWeightedRandomSkin(skins) {
 function updateUserBalance() {
     if (isLoggedIn) {
         userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2).replace('.', ',')}`;
+        localStorage.setItem('userBalance', userBalance.toString());
     }
 }
 
@@ -376,26 +374,13 @@ function sellSkin() {
 function keepSkin() {
     if (currentWinningSkin) {
         userInventory.push(currentWinningSkin);
+        localStorage.setItem('userInventory', JSON.stringify(userInventory));
         closeOpeningScreen();
     }
 }
 
-function openInventory() {
-    if (!isLoggedIn) return;
-    inventoryGrid.innerHTML = '';
-    userInventory.forEach(skin => {
-        const skinElement = document.createElement('div');
-        skinElement.classList.add('inventory-item', `rarity-${skin.rarity}`);
-        skinElement.innerHTML = `
-            <img src="${skin.image}" alt="${skin.name}">
-            <span>${skin.name}</span>`;
-        inventoryGrid.appendChild(skinElement);
-    });
-    inventoryModal.style.display = 'flex';
-}
-
-function closeInventory() {
-    inventoryModal.style.display = 'none';
+function openInventoryPage() {
+    window.location.href = 'inventory.html';
 }
 
 // --- Event Listeners ---
@@ -415,11 +400,24 @@ openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
 sellSkinBtn.addEventListener('click', sellSkin);
 keepSkinBtn.addEventListener('click', keepSkin);
-inventoryBtn.addEventListener('click', openInventory);
-closeInventoryBtn.addEventListener('click', closeInventory);
+inventoryBtn.addEventListener('click', openInventoryPage);
 
 // --- Initial Page Load ---
 document.addEventListener('DOMContentLoaded', () => {
+    const storedBalance = localStorage.getItem('userBalance');
+    if (storedBalance) {
+        userBalance = parseFloat(storedBalance);
+    } else {
+        localStorage.setItem('userBalance', userBalance.toString());
+    }
+
+    const storedInventory = localStorage.getItem('userInventory');
+    if (storedInventory) {
+        userInventory = JSON.parse(storedInventory);
+    } else {
+        localStorage.setItem('userInventory', JSON.stringify(userInventory));
+    }
+
     updateUIForLoginState();
 
     // Carousel Logic
