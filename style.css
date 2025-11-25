@@ -801,13 +801,15 @@ main {
 }
 
 .sell-button-inventory {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+    background-color: rgba(40, 167, 69, 0.15);
+    backdrop-filter: blur(10px);
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 8px;
     padding: 6px 10px;
     font-size: 12px;
     font-weight: bold;
+    text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
@@ -815,8 +817,10 @@ main {
 }
 
 .sell-button-inventory:hover {
-    background-color: #218838;
+    background-color: #28a745;
+    color: #1a1a1a;
     box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+    transform: translateY(-2px);
 }
 
 .inventory-item {
