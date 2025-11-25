@@ -781,28 +781,42 @@ main {
     z-index: 200;
 }
 
-#inventory-content {
-    background: linear-gradient(145deg, #1F1F1F, #141414);
-    padding: 30px;
-    border-radius: 10px;
+#inventory-container {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
     text-align: center;
-    width: 80%;
-    max-width: 1000px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-    border: 2px solid #ffc107;
 }
 
-#inventory-grid {
+#inventory-container h2 {
+    font-size: 2.5em;
+    color: #ffc107;
+    margin-bottom: 30px;
+}
+
+#inventory-grid-page {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 20px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    max-height: 60vh;
-    overflow-y: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+}
+
+.sell-button-inventory {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.sell-button-inventory:hover {
+    background-color: #218838;
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
 }
 
 .inventory-item {
