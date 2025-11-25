@@ -767,42 +767,58 @@ main {
     color: #1a1a1a;
 }
 
-#inventory-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(18, 18, 18, 0.98);
-    backdrop-filter: blur(8px);
+
+#inventory-container {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#inventory-container h2 {
+    font-size: 2.2em;
+    color: #ffc107;
+    margin-bottom: 25px;
+}
+
+#inventory-grid-container {
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 200;
 }
 
-#inventory-content {
-    background: linear-gradient(145deg, #1F1F1F, #141414);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    width: 80%;
-    max-width: 1000px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-    border: 2px solid #ffc107;
-}
-
-#inventory-grid {
+#inventory-grid-page {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 20px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    max-height: 60vh;
-    overflow-y: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    width: 100%;
+}
+
+.sell-button-inventory {
+    background-color: rgba(40, 167, 69, 0.15);
+    backdrop-filter: blur(10px);
+    color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.sell-button-inventory:hover {
+    background-color: #28a745;
+    color: #1a1a1a;
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+    transform: translateY(-2px);
 }
 
 .inventory-item {
@@ -962,4 +978,13 @@ main {
     background-color: #333;
     margin: 40px auto;
     box-shadow: 0 0 15px rgba(255, 193, 7, 0);
+}
+
+.skin-rarity-text {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 5px 0;
+    color: var(--rarity-color); /* Uses the CSS variable for rarity color */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
