@@ -4,6 +4,7 @@ let currentCaseId = null;
 let userInventory = [];
 let currentWinningSkin = null;
 let isLoggedIn = false;
+let isRouletteSpinning = false;
 
 // --- DOM Elements ---
 const userBalanceSpan = document.getElementById('user-balance');
@@ -28,9 +29,6 @@ const keepSkinBtn = document.getElementById('keep-skin-btn');
 const openCaseButton = document.getElementById('open-case-button');
 const caseItemsGrid = document.getElementById('case-items-grid');
 const inventoryBtn = document.getElementById('inventory-btn');
-const inventoryModal = document.getElementById('inventory-modal');
-const inventoryGrid = document.getElementById('inventory-grid');
-const closeInventoryBtn = document.getElementById('close-inventory-btn');
 
 // --- Data ---
 const rarityPercentages = {
@@ -189,6 +187,7 @@ function getWeightedRandomSkin(skins) {
 function updateUserBalance() {
     if (isLoggedIn) {
         userBalanceSpan.textContent = `R$ ${userBalance.toFixed(2).replace('.', ',')}`;
+        localStorage.setItem('userBalance', userBalance.toString());
     }
 }
 
@@ -215,6 +214,7 @@ function showCaseOpeningScreen(caseId) {
     const selectedCase = cases[caseId];
     resetOpeningScreen();
     caseNameTitle.textContent = selectedCase.name;
+    openCaseButton.querySelector('span').textContent = `Abrir Caixa (R$ ${selectedCase.price.toFixed(2).replace('.', ',')})`;
     caseItemsGrid.innerHTML = '';
 
     caseItemsGrid.innerHTML = '';
@@ -285,7 +285,7 @@ function showCaseOpeningScreen(caseId) {
 }
 
 function startRoulette() {
-    if (!currentCaseId || !isLoggedIn) return;
+    if (!currentCaseId || !isLoggedIn || isRouletteSpinning) return;
     const selectedCase = cases[currentCaseId];
     if (userBalance < selectedCase.price) {
         alert('Saldo insuficiente!');
@@ -294,6 +294,7 @@ function startRoulette() {
     userBalance -= selectedCase.price;
     updateUserBalance();
     openCaseButton.disabled = true;
+    isRouletteSpinning = true;
     roulette.style.transition = 'none';
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
@@ -330,16 +331,18 @@ function startRoulette() {
     }, 100);
 
     setTimeout(() => {
-        winningSkinInfo.className = '';
-        winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
-        winningSkinImage.src = currentWinningSkin.image;
-        winningSkinName.textContent = currentWinningSkin.name;
-        // winningSkinRarity.textContent = `Raridade: ${currentWinningSkin.rarity.charAt(0).toUpperCase() + currentWinningSkin.rarity.slice(1)}`;
-        winningSkinModal.style.opacity = '1';
-        winningSkinModal.style.pointerEvents = 'auto';
-        if (winningItemElement) {
-            winningItemElement.classList.add('winner');
+        if (isRouletteSpinning) { // Only show modal if the user hasn't navigated away
+            winningSkinInfo.className = '';
+            winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
+            winningSkinImage.src = currentWinningSkin.image;
+            winningSkinName.textContent = currentWinningSkin.name;
+            winningSkinModal.style.opacity = '1';
+            winningSkinModal.style.pointerEvents = 'auto';
+            if (winningItemElement) {
+                winningItemElement.classList.add('winner');
+            }
         }
+        isRouletteSpinning = false; // Reset state after animation finishes
     }, 8500);
 }
 
@@ -361,6 +364,16 @@ function closeOpeningScreen() {
 }
 
 function goBackToMain() {
+    if (isRouletteSpinning) {
+        // Stop the roulette from showing the modal
+        isRouletteSpinning = false;
+
+        // Add the winning skin directly to inventory
+        if (currentWinningSkin) {
+            userInventory.push(currentWinningSkin);
+            localStorage.setItem('userInventory', JSON.stringify(userInventory));
+        }
+    }
     caseOpeningScreen.style.display = 'none';
     mainContainer.style.display = 'block';
 }
@@ -376,26 +389,13 @@ function sellSkin() {
 function keepSkin() {
     if (currentWinningSkin) {
         userInventory.push(currentWinningSkin);
+        localStorage.setItem('userInventory', JSON.stringify(userInventory));
         closeOpeningScreen();
     }
 }
 
-function openInventory() {
-    if (!isLoggedIn) return;
-    inventoryGrid.innerHTML = '';
-    userInventory.forEach(skin => {
-        const skinElement = document.createElement('div');
-        skinElement.classList.add('inventory-item', `rarity-${skin.rarity}`);
-        skinElement.innerHTML = `
-            <img src="${skin.image}" alt="${skin.name}">
-            <span>${skin.name}</span>`;
-        inventoryGrid.appendChild(skinElement);
-    });
-    inventoryModal.style.display = 'flex';
-}
-
-function closeInventory() {
-    inventoryModal.style.display = 'none';
+function openInventoryPage() {
+    window.location.href = 'inventory.html';
 }
 
 // --- Event Listeners ---
@@ -415,11 +415,24 @@ openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
 sellSkinBtn.addEventListener('click', sellSkin);
 keepSkinBtn.addEventListener('click', keepSkin);
-inventoryBtn.addEventListener('click', openInventory);
-closeInventoryBtn.addEventListener('click', closeInventory);
+inventoryBtn.addEventListener('click', openInventoryPage);
 
 // --- Initial Page Load ---
 document.addEventListener('DOMContentLoaded', () => {
+    const storedBalance = localStorage.getItem('userBalance');
+    if (storedBalance) {
+        userBalance = parseFloat(storedBalance);
+    } else {
+        localStorage.setItem('userBalance', userBalance.toString());
+    }
+
+    const storedInventory = localStorage.getItem('userInventory');
+    if (storedInventory) {
+        userInventory = JSON.parse(storedInventory);
+    } else {
+        localStorage.setItem('userInventory', JSON.stringify(userInventory));
+    }
+
     updateUIForLoginState();
 
     // Carousel Logic
