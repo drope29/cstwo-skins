@@ -132,6 +132,7 @@ function updateUIForLoginState() {
 
 function handleLogin() {
     isLoggedIn = true;
+    localStorage.setItem('isLoggedIn', 'true');
     updateUIForLoginState();
 }
 
@@ -431,6 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
         userInventory = JSON.parse(storedInventory);
     } else {
         localStorage.setItem('userInventory', JSON.stringify(userInventory));
+    }
+
+    const storedLoginState = localStorage.getItem('isLoggedIn');
+    if (storedLoginState === 'true') {
+        isLoggedIn = true;
     }
 
     updateUIForLoginState();
