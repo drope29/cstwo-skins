@@ -744,7 +744,14 @@ main {
 #back-to-main-btn {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
+}
+
+#back-to-main-btn span {
+    font-size: 1.5em;
+    vertical-align: middle;
+    margin-right: 5px;
+    line-height: 1;
 }
 
 #back-to-main-btn:hover, #keep-skin-btn:hover {
@@ -805,14 +812,14 @@ main {
     color: #28a745;
     border: 1px solid #28a745;
     border-radius: 6px;
-    padding: 3px 6px;
-    font-size: 10px;
+    padding: 2px 4px;
+    font-size: 9px;
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 100%;
-    margin-top: 10px;
+    width: 80%;
+    margin: 8px auto 0;
 }
 
 .sell-button-inventory:hover {
