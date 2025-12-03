@@ -132,6 +132,7 @@ function updateUIForLoginState() {
 
 function handleLogin() {
     isLoggedIn = true;
+    sessionStorage.setItem('isLoggedIn', 'true');
     updateUIForLoginState();
 }
 
@@ -214,7 +215,7 @@ function showCaseOpeningScreen(caseId) {
     const selectedCase = cases[caseId];
     resetOpeningScreen();
     caseNameTitle.textContent = selectedCase.name;
-    openCaseButton.querySelector('span').textContent = `Abrir Caixa (R$ ${selectedCase.price.toFixed(2).replace('.', ',')})`;
+    openCaseButton.querySelector('span').innerHTML = `Abrir Caixa <span class="btn-price">(R$ ${selectedCase.price.toFixed(2).replace('.', ',')})</span>`;
     caseItemsGrid.innerHTML = '';
 
     caseItemsGrid.innerHTML = '';
@@ -431,6 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
         userInventory = JSON.parse(storedInventory);
     } else {
         localStorage.setItem('userInventory', JSON.stringify(userInventory));
+    }
+
+    const storedLoginState = sessionStorage.getItem('isLoggedIn');
+    if (storedLoginState === 'true') {
+        isLoggedIn = true;
     }
 
     updateUIForLoginState();
