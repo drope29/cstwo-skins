@@ -110,7 +110,7 @@ header {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
-    z-index: 50;
+    z-index: 200;
     border-bottom: 1px solid #222;
     height: 70px;
 }
@@ -314,7 +314,7 @@ main {
     flex-direction: column;
     align-items: center;
     z-index: 100;
-    padding: 20px;
+    padding: 90px 20px 20px 20px;
     overflow: hidden; /* Prevent the whole page from scrolling */
 }
 
@@ -329,14 +329,16 @@ main {
     position: relative;
     width: 100%;
     max-width: 1200px;
-    height: 160px;
+    height: 180px; /* Increased height for scaling items */
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 0; /* Square corners */
     background: #111;
     border: 1px solid #222;
     margin-bottom: 30px;
     box-shadow: inset 0 0 15px rgba(0,0,0,0.7);
     flex-shrink: 0;
+    display: flex;
+    align-items: center; /* Center items vertically */
 }
 
 #roulette-container::before {
@@ -366,8 +368,9 @@ main {
 #roulette {
     display: flex;
     position: absolute;
-    top: 5px;
     left: 0;
+    height: 100%;
+    align-items: center;
 }
 
 .roulette-item {
@@ -524,14 +527,76 @@ main {
 }
 
 #sell-skin-btn {
-    color: #28a745;
-    border-color: #28a745;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: #ffffff !important;
+    border: none;
+    min-width: 220px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px; /* Pill shape for "nicer" look */
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row; /* Fixed: user wants single line */
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
 }
 
 #sell-skin-btn:hover {
-    background-color: #28a745;
-    color: #1a1a1a;
-    box-shadow: 0 0 20px rgba(40, 167, 69, 0.7);
+    background: linear-gradient(135deg, #34ce57, #28a745);
+    box-shadow: 0 15px 30px rgba(40, 167, 69, 0.5);
+    transform: translateY(-3px) scale(1.02);
+}
+
+#sell-skin-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(40, 167, 69, 0.3);
+}
+
+#sell-skin-btn .btn-price {
+    font-size: 0.85em;
+    font-weight: 500;
+    opacity: 0.9;
+    margin: 0;
+    font-family: 'Science Gothic', sans-serif;
+}
+
+#action-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-shrink: 0;
+    min-height: 44px; /* Maintain height to avoid layout shift */
+}
+
+#result-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+#result-buttons button {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+#result-buttons button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 #open-case-button {
@@ -547,7 +612,6 @@ main {
     cursor: pointer;
     transform: skew(-21deg);
     color: #1a1a1a;
-    margin-bottom: 30px;
     position: relative;
     z-index: 1;
     flex-shrink: 0;
@@ -563,11 +627,13 @@ main {
 
 #open-case-button span {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin-top: 2px;
+    gap: 8px; /* Spacing between text and price */
     align-items: center;
     justify-content: center;
     line-height: 1.2;
-    transform: skew(21deg);
+    transform: skew(15deg);
 }
 
 #open-case-button::before {

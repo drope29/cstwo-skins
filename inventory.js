@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="content">
                     <img src="${skin.image}" alt="${skin.name}">
                     <span>${skin.name}</span>
-                    <button class="sell-button-inventory" data-index="${index}">Vender <span class="btn-price">(R$ ${skin.price.toFixed(2).replace('.', ',')})</span></button>
+                    <button class="sell-button-inventory" data-index="${index}">Vender<span class="btn-price">(R$ ${skin.price.toFixed(2).replace('.', ',')})</span></button>
                 </div>
             `;
             inventoryGrid.appendChild(skinElement);
