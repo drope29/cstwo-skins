@@ -34,7 +34,9 @@
     </div>
 
     <header>
-        <div class="header-left"></div>
+        <div class="header-left">
+            <button id="back-to-main-btn" style="display: none;"><span>&times;</span> Voltar</button>
+        </div>
         <div class="logo-container">
             <img src="images/logo.png" alt="CSTWO Logo" id="navbar-logo">
         </div>
@@ -110,7 +112,6 @@
 
     <!-- Unified Case Opening Screen -->
     <div id="case-opening-screen" style="display: none;">
-        <button id="back-to-main-btn"><span>&times;</span> Voltar</button>
         <h2 id="case-name-title"></h2>
 
         <!-- 1. Roulette -->
@@ -119,23 +120,25 @@
             <div id="roulette"></div>
         </div>
 
-        <!-- Winning Skin Modal -->
-        <div id="winning-skin-modal">
-            <div id="winning-skin-info">
-                <div class="winning-skin-image-container">
-                    <img id="winning-skin-image" src="" alt="Winning Skin">
-                </div>
-                <h2 id="winning-skin-name"></h2>
-                <p id="winning-skin-rarity"></p>
-                <div class="modal-buttons">
-                    <button id="sell-skin-btn">Vender</button>
-                    <button id="keep-skin-btn">Guardar</button>
-                </div>
+        <!-- Winning Skin Info (Hidden/Removed from Modal) -->
+        <div id="winning-skin-info" style="display: none;">
+            <div class="winning-skin-image-container">
+                <img id="winning-skin-image" src="" alt="Winning Skin">
             </div>
+            <h2 id="winning-skin-name"></h2>
+            <p id="winning-skin-rarity"></p>
         </div>
 
-        <!-- 2. Open Button -->
-        <button id="open-case-button"><span>Abrir Caixa</span></button>
+        <!-- Winning Skin Modal (Removed) -->
+        <div id="winning-skin-modal" style="display: none;"></div>
+
+        <!-- 2. Action Buttons -->
+        <div id="action-buttons-container">
+            <button id="open-case-button"><span>Abrir Caixa</span></button>
+            <div id="result-buttons" style="display: none;">
+                <button id="sell-skin-btn">Vender</button>
+            </div>
+        </div>
 
         <!-- 3. Skins Grid Title -->
         <h3 id="case-contents-title">Você pode ganhar</h3>
