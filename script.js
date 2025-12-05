@@ -25,8 +25,8 @@ const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
 const sellSkinBtn = document.getElementById('sell-skin-btn');
-const keepSkinBtn = document.getElementById('keep-skin-btn');
 const openCaseButton = document.getElementById('open-case-button');
+const resultButtons = document.getElementById('result-buttons');
 const caseItemsGrid = document.getElementById('case-items-grid');
 const inventoryBtn = document.getElementById('inventory-btn');
 
@@ -196,14 +196,16 @@ function resetOpeningScreen() {
     roulette.style.transition = 'none';
     roulette.style.transform = 'translateX(0)';
     roulette.innerHTML = '';
-    winningSkinModal.style.opacity = '0';
-    winningSkinModal.style.pointerEvents = 'none';
+
+    // Reset buttons logic
+    openCaseButton.style.display = 'inline-block';
+    resultButtons.style.display = 'none';
+    openCaseButton.disabled = false;
+
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
         oldWinner.classList.remove('winner');
     }
-    const winningSkinInfo = document.getElementById('winning-skin-info');
-    winningSkinInfo.className = '';
 }
 
 function showCaseOpeningScreen(caseId) {
@@ -214,6 +216,7 @@ function showCaseOpeningScreen(caseId) {
     currentCaseId = caseId;
     const selectedCase = cases[caseId];
     resetOpeningScreen();
+    backToMainBtn.style.display = 'flex'; // Show back button in header
     caseNameTitle.textContent = selectedCase.name;
     openCaseButton.querySelector('span').innerHTML = `Abrir Caixa <span class="btn-price">(R$ ${selectedCase.price.toFixed(2).replace('.', ',')})</span>`;
     caseItemsGrid.innerHTML = '';
@@ -324,73 +327,86 @@ function startRoulette() {
     setTimeout(() => {
         const itemWidth = 150;
         const containerWidth = roulette.parentElement.offsetWidth;
-        const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
+        // Make the stop position slightly random but always centered on the item
+        const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.5);
         const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
         const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
-        roulette.style.transition = 'transform 8s cubic-bezier(0.1, 0.8, 0.2, 1)';
+
+        // Smoother animation: cubic-bezier(0.2, 0, 0.2, 1) and 7s duration
+        roulette.style.transition = 'transform 7s cubic-bezier(0.15, 0.85, 0.35, 1)';
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
     setTimeout(() => {
-        if (isRouletteSpinning) { // Only show modal if the user hasn't navigated away
-            winningSkinInfo.className = '';
-            winningSkinInfo.classList.add(`rarity-${currentWinningSkin.rarity}`);
-            winningSkinImage.src = currentWinningSkin.image;
-            winningSkinName.textContent = currentWinningSkin.name;
-            winningSkinModal.style.opacity = '1';
-            winningSkinModal.style.pointerEvents = 'auto';
+        if (isRouletteSpinning) { // If user is still here
             if (winningItemElement) {
                 winningItemElement.classList.add('winner');
             }
+            // Swap buttons
+            openCaseButton.style.display = 'none';
+
+            // Update Sell Button Text with Price
+            sellSkinBtn.innerHTML = `VENDER <span class="btn-price">R$ ${currentWinningSkin.price.toFixed(2).replace('.', ',')}</span>`;
+
+            resultButtons.style.display = 'flex';
+
+            // IMMEDIATE KEEP: Add to inventory immediately
+            userInventory.push(currentWinningSkin);
+            localStorage.setItem('userInventory', JSON.stringify(userInventory));
         }
         isRouletteSpinning = false; // Reset state after animation finishes
-    }, 8500);
+    }, 7500); // slightly shorter than 8s to match new animation duration
 }
 
 function closeOpeningScreen() {
-    winningSkinModal.style.opacity = '0';
-    winningSkinModal.style.pointerEvents = 'none';
-    setTimeout(() => {
-        openCaseButton.disabled = false;
-        resetOpeningScreen();
-        const selectedCase = cases[currentCaseId];
-        const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins];
-        previewItems.forEach(item => {
-            const rouletteItem = document.createElement('div');
-            rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-            rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
-            roulette.appendChild(rouletteItem);
-        });
-    }, 500);
+    // Just reset screen immediately since there is no modal fade out
+    openCaseButton.disabled = false;
+    resetOpeningScreen();
+    const selectedCase = cases[currentCaseId];
+    const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins];
+    previewItems.forEach(item => {
+        const rouletteItem = document.createElement('div');
+        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        roulette.appendChild(rouletteItem);
+    });
 }
 
 function goBackToMain() {
     if (isRouletteSpinning) {
-        // Stop the roulette from showing the modal
+        // Stop the roulette logic if they leave mid-spin
         isRouletteSpinning = false;
 
-        // Add the winning skin directly to inventory
+        // Even if they leave mid-spin, we should probably award the item if it was decided?
+        // But currentWinningSkin is decided at start.
+        // Let's stick to the previous logic: if spinning, add it.
         if (currentWinningSkin) {
             userInventory.push(currentWinningSkin);
             localStorage.setItem('userInventory', JSON.stringify(userInventory));
         }
     }
+    // If spin finished, item is ALREADY in inventory (added in setTimeout).
+    // So we just close.
+
+    backToMainBtn.style.display = 'none'; // Hide back button
     caseOpeningScreen.style.display = 'none';
     mainContainer.style.display = 'block';
 }
 
 function sellSkin() {
     if (currentWinningSkin) {
+        // Remove from inventory (it was added immediately after spin)
+        // Find the index of the object. Since we just pushed it, it should be at the end,
+        // but let's be safe and find the LAST instance of this specific object or matching props.
+        // Since objects in JS are references, and we pushed `currentWinningSkin`, we can find it.
+        const index = userInventory.lastIndexOf(currentWinningSkin);
+        if (index > -1) {
+            userInventory.splice(index, 1);
+            localStorage.setItem('userInventory', JSON.stringify(userInventory));
+        }
+
         userBalance += currentWinningSkin.price;
         updateUserBalance();
-        closeOpeningScreen();
-    }
-}
-
-function keepSkin() {
-    if (currentWinningSkin) {
-        userInventory.push(currentWinningSkin);
-        localStorage.setItem('userInventory', JSON.stringify(userInventory));
         closeOpeningScreen();
     }
 }
@@ -415,7 +431,6 @@ document.querySelectorAll('.case').forEach(caseElement => {
 openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
 sellSkinBtn.addEventListener('click', sellSkin);
-keepSkinBtn.addEventListener('click', keepSkin);
 inventoryBtn.addEventListener('click', openInventoryPage);
 
 // --- Initial Page Load ---
