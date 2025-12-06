@@ -24,6 +24,7 @@ const winningSkinInfo = document.getElementById('winning-skin-info');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
+const winnerNameDisplay = document.getElementById('winner-name-display');
 const sellSkinBtn = document.getElementById('sell-skin-btn');
 const openCaseButton = document.getElementById('open-case-button');
 const resultButtons = document.getElementById('result-buttons');
@@ -202,6 +203,13 @@ function resetOpeningScreen() {
     resultButtons.style.display = 'none';
     openCaseButton.disabled = false;
 
+    // Hide winner display
+    if (winnerNameDisplay) {
+        winnerNameDisplay.style.display = 'none';
+        winnerNameDisplay.querySelector('h2').textContent = '';
+        winnerNameDisplay.querySelector('p').textContent = '';
+    }
+
     const oldWinner = document.querySelector('.roulette-item.winner');
     if (oldWinner) {
         oldWinner.classList.remove('winner');
@@ -347,6 +355,14 @@ function startRoulette() {
 
             // Update Sell Button Text with Price
             sellSkinBtn.innerHTML = `VENDER <span class="btn-price">R$ ${currentWinningSkin.price.toFixed(2).replace('.', ',')}</span>`;
+
+            // Show Winner Name
+            if (winnerNameDisplay) {
+                winnerNameDisplay.querySelector('h2').textContent = currentWinningSkin.name;
+                winnerNameDisplay.querySelector('p').textContent = currentWinningSkin.rarity;
+                // Add rarity class for color if needed, or just set text
+                winnerNameDisplay.style.display = 'block';
+            }
 
             resultButtons.style.display = 'flex';
 
