@@ -415,7 +415,7 @@ main {
 }
 
 .roulette-item.winner {
-    border: 4px solid #ffc107;
+    border: 2px solid #ffc107;
     transform: scale(1.1);
     border-radius: 10px;
     animation: winner-pulse 1.5s infinite ease-in-out;
@@ -707,11 +707,13 @@ main {
     border-radius: 10px;
     padding: 2px; /* Small padding for the content box */
     border: none;
+    min-height: 140px; /* Ensure space for names */
+    height: auto;
 }
 
 .case-skin-item .content {
     border-radius: 8px;
-    background: #171717;
+    /* background: #171717; Removed to allow symbols */
     width: 100%;
     height: 100%;
     z-index: 1;
@@ -783,6 +785,45 @@ main {
     background: #17171733;
     backdrop-filter: blur(5px);
     border-radius: 8px;
+}
+
+/* Background Symbols */
+.bg-symbol {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.item-type-weapon .bg-symbol {
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--rarity-color);
+    border-radius: 50%;
+    opacity: 0.15;
+}
+
+.item-type-weapon .bg-symbol::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 1px solid var(--rarity-color);
+    border-radius: 50%;
+}
+
+.item-type-knife .bg-symbol {
+    width: 120px;
+    height: 3px;
+    background: var(--rarity-color);
+    transform: translate(-50%, -50%) rotate(-45deg);
+    opacity: 0.3;
+    box-shadow: 0 0 10px var(--rarity-color);
 }
 
 

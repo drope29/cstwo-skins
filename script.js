@@ -235,8 +235,12 @@ function showCaseOpeningScreen(caseId) {
             const weight = 1 / skin.price;
             const percentage = (weight / totalWeight) * 100;
             const skinElement = document.createElement('div');
-            skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
+            const isKnife = skin.name.includes('Knife') || skin.name.includes('Karambit') || skin.name.includes('Bayonet') || skin.name.includes('Daggers') || skin.name.includes('Falchion') || skin.name.includes('Flip') || skin.name.includes('Gut') || skin.name.includes('Huntsman') || skin.name.includes('Navaja') || skin.name.includes('Nomad') || skin.name.includes('Paracord') || skin.name.includes('Skeleton') || skin.name.includes('Stiletto') || skin.name.includes('Survival') || skin.name.includes('Talon') || skin.name.includes('Ursus') || skin.name.includes('Bowie') || skin.name.includes('Butterfly') || skin.name.includes('Classic') || skin.name.includes('Cord') || skin.name.includes('Hand') || skin.name.includes('Driver') || skin.name.includes('Specialist') || skin.name.includes('Sport') || skin.name.includes('Moto') || skin.name.includes('Hydra') || skin.name.includes('Broken Fang');
+            const typeClass = isKnife ? 'item-type-knife' : 'item-type-weapon';
+
+            skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`, typeClass);
             skinElement.innerHTML = `
+                <div class="bg-symbol"></div>
                 <div class="content">
                     <div class="skin-percentage">${percentage.toFixed(4)}%</div>
                     <img src="${skin.image}" alt="${skin.name}">
@@ -256,8 +260,12 @@ function showCaseOpeningScreen(caseId) {
             const rarityCount = skinsByRarity[skin.rarity] || 1;
             const percentage = (rarityPercentages[skin.rarity] || 0) / rarityCount;
             const skinElement = document.createElement('div');
-            skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
+            const isKnife = skin.name.includes('Knife') || skin.name.includes('Karambit') || skin.name.includes('Bayonet') || skin.name.includes('Daggers') || skin.name.includes('Falchion') || skin.name.includes('Flip') || skin.name.includes('Gut') || skin.name.includes('Huntsman') || skin.name.includes('Navaja') || skin.name.includes('Nomad') || skin.name.includes('Paracord') || skin.name.includes('Skeleton') || skin.name.includes('Stiletto') || skin.name.includes('Survival') || skin.name.includes('Talon') || skin.name.includes('Ursus') || skin.name.includes('Bowie') || skin.name.includes('Butterfly') || skin.name.includes('Classic') || skin.name.includes('Cord') || skin.name.includes('Hand') || skin.name.includes('Driver') || skin.name.includes('Specialist') || skin.name.includes('Sport') || skin.name.includes('Moto') || skin.name.includes('Hydra') || skin.name.includes('Broken Fang');
+            const typeClass = isKnife ? 'item-type-knife' : 'item-type-weapon';
+
+            skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`, typeClass);
             skinElement.innerHTML = `
+                <div class="bg-symbol"></div>
                 <div class="content">
                     <div class="skin-percentage">${percentage.toFixed(2)}%</div>
                     <img src="${skin.image}" alt="${skin.name}">
