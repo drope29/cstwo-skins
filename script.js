@@ -238,6 +238,7 @@ function showCaseOpeningScreen(caseId) {
             skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
             skinElement.innerHTML = `
                 <div class="content">
+                    <div class="hexagon-bg"></div>
                     <div class="skin-percentage">${percentage.toFixed(4)}%</div>
                     <img src="${skin.image}" alt="${skin.name}">
                     <span>${skin.name}</span>
@@ -259,6 +260,7 @@ function showCaseOpeningScreen(caseId) {
             skinElement.classList.add('case-skin-item', `rarity-${skin.rarity}`);
             skinElement.innerHTML = `
                 <div class="content">
+                    <div class="hexagon-bg"></div>
                     <div class="skin-percentage">${percentage.toFixed(2)}%</div>
                     <img src="${skin.image}" alt="${skin.name}">
                     <span>${skin.name}</span>
@@ -280,7 +282,7 @@ function showCaseOpeningScreen(caseId) {
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        rouletteItem.innerHTML = `<div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
     });
 
@@ -317,7 +319,7 @@ function startRoulette() {
     rouletteItems.forEach((item, index) => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        rouletteItem.innerHTML = `<div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
         if (index === 45) {
             winningItemElement = rouletteItem;
@@ -367,7 +369,7 @@ function closeOpeningScreen() {
     previewItems.forEach(item => {
         const rouletteItem = document.createElement('div');
         rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+        rouletteItem.innerHTML = `<div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
         roulette.appendChild(rouletteItem);
     });
 }

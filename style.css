@@ -385,7 +385,10 @@ main {
     background-position: center;
     background-repeat: no-repeat;
     padding: 10px;
-    transition: transform 0.3s ease, filter 0.3s ease;
+    transition: transform 0.5s ease-out, border-color 0.5s ease; /* Smoother transition */
+    position: relative; /* For hexagon positioning */
+    border: 4px solid transparent; /* Prepare for border transition */
+    border-radius: 10px;
 }
 
 .roulette-item img {
@@ -393,6 +396,7 @@ main {
     height: 100px;
     object-fit: contain;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+    z-index: 1;
 }
 
 .roulette-item p {
@@ -406,19 +410,26 @@ main {
     text-overflow: ellipsis;
     width: 95%;
     text-align: center;
+    z-index: 1;
 }
 
 @keyframes winner-pulse {
-    0% { box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5); }
-    50% { box-shadow: 0 0 60px #ff8a00, inset 0 0 30px rgba(255, 193, 7, 0.7); }
-    100% { box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5); }
+    0% {
+        box-shadow: 0 0 30px rgba(255, 193, 7, 0.3), inset 0 0 10px rgba(255, 193, 7, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 193, 7, 0.6), inset 0 0 20px rgba(255, 193, 7, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(255, 193, 7, 0.3), inset 0 0 10px rgba(255, 193, 7, 0.2);
+    }
 }
 
 .roulette-item.winner {
-    border: 4px solid #ffc107;
+    border-color: #ffc107;
     transform: scale(1.1);
-    border-radius: 10px;
-    animation: winner-pulse 1.5s infinite ease-in-out;
+    animation: winner-pulse 2s infinite ease-in-out; /* Slower, smoother pulse */
+    background-color: rgba(255, 193, 7, 0.05); /* Very subtle background tint */
 }
 
 @keyframes pop-in {
@@ -700,13 +711,14 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: visible; /* Allow content to be seen if slight overflow */
     position: relative;
     box-shadow: 0px 0px 3px 1px #00000088;
     cursor: pointer;
     border-radius: 10px;
     padding: 2px; /* Small padding for the content box */
     border: none;
+    min-height: 160px; /* Increased min-height to ensure name is visible */
 }
 
 .case-skin-item .content {
@@ -722,6 +734,7 @@ main {
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden; /* Keep hidden on content for rounded corners */
 }
 
 .case-skin-item .content::before {
@@ -806,13 +819,36 @@ main {
 
 .case-skin-item span {
     display: block;
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 0.75em;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #e0e0e0; /* Explicitly set text color */
+    width: 100%; /* Ensure it takes width to ellipse correctly */
+    text-align: center;
+    z-index: 2; /* Above hexagon */
+    position: relative;
+}
+
+.hexagon-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    background-color: var(--rarity-color);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.roulette-item .hexagon-bg {
+    width: 110px;
+    height: 110px;
 }
 
 #back-to-main-btn, #close-winning-btn {
