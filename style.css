@@ -315,7 +315,7 @@ main {
     align-items: center;
     z-index: 100;
     padding: 90px 20px 20px 20px;
-    overflow: hidden; /* Prevent the whole page from scrolling */
+    overflow-y: auto; /* Allow the page to scroll if content is tall */
 }
 
 #case-name-title {
@@ -375,7 +375,7 @@ main {
 
 .roulette-item {
     width: 150px;
-    height: 150px;
+    height: 170px; /* Increased height for text */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -384,8 +384,11 @@ main {
     background-size: 80%;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 10px;
-    transition: transform 0.3s ease, filter 0.3s ease;
+    padding: 5px; /* Reduced padding */
+    transition: transform 0.5s ease-out, border-color 0.5s ease;
+    position: relative;
+    border: 4px solid transparent;
+    border-radius: 10px;
 }
 
 .roulette-item img {
@@ -393,6 +396,7 @@ main {
     height: 100px;
     object-fit: contain;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+    z-index: 1;
 }
 
 .roulette-item p {
@@ -406,19 +410,26 @@ main {
     text-overflow: ellipsis;
     width: 95%;
     text-align: center;
+    z-index: 1;
 }
 
 @keyframes winner-pulse {
-    0% { box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5); }
-    50% { box-shadow: 0 0 60px #ff8a00, inset 0 0 30px rgba(255, 193, 7, 0.7); }
-    100% { box-shadow: 0 0 40px #ffc107, inset 0 0 20px rgba(255, 193, 7, 0.5); }
+    0% {
+        box-shadow: 0 0 30px rgba(255, 193, 7, 0.3), inset 0 0 10px rgba(255, 193, 7, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 193, 7, 0.6), inset 0 0 20px rgba(255, 193, 7, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(255, 193, 7, 0.3), inset 0 0 10px rgba(255, 193, 7, 0.2);
+    }
 }
 
 .roulette-item.winner {
-    border: 4px solid #ffc107;
+    border-color: #ffc107;
     transform: scale(1.1);
-    border-radius: 10px;
-    animation: winner-pulse 1.5s infinite ease-in-out;
+    animation: winner-pulse 2s infinite ease-in-out; /* Slower, smoother pulse */
+    background-color: rgba(255, 193, 7, 0.05); /* Very subtle background tint */
 }
 
 @keyframes pop-in {
@@ -690,9 +701,8 @@ main {
     width: 100%;
     max-width: 1200px;
     margin-top: 20px;
-    flex-grow: 1; /* Allow the grid to grow and take up space */
-    overflow-y: auto; /* Enable vertical scrolling within the grid */
-    min-height: 0; /* Important for flex-grow to work in a flex column */
+    /* Removed flex-grow and overflow to prevent inner scrollbar */
+    height: auto;
 }
 
 .case-skin-item {
@@ -707,6 +717,8 @@ main {
     border-radius: 10px;
     padding: 2px; /* Small padding for the content box */
     border: none;
+    height: auto;
+    min-height: 120px; /* Reduced to help with scroll */
 }
 
 .case-skin-item .content {
@@ -715,7 +727,7 @@ main {
     width: 100%;
     height: 100%;
     z-index: 1;
-    padding: 8px;
+    padding: 4px; /* Reduced padding */
     color: white;
     display: flex;
     flex-direction: column;
@@ -799,20 +811,46 @@ main {
 }
 
 .case-skin-item img {
-    width: 70px;
-    height: 70px;
+    width: 60px; /* Reduced size */
+    height: 60px;
     object-fit: contain;
+    z-index: 1; /* Ensure image is above hexagon */
+    position: relative;
 }
 
 .case-skin-item span {
     display: block;
     margin-top: 5px;
-    font-size: 0.75em;
+    font-size: 0.7em; /* Slightly smaller text */
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #e0e0e0; /* Explicitly set text color */
+    color: #e0e0e0;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+    position: relative;
+}
+
+.hexagon-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 86.6px;
+    background: linear-gradient(135deg, var(--rarity-color) 0%, rgba(0,0,0,0.8) 100%);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    opacity: 0.10;
+    z-index: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
+}
+
+.roulette-item .hexagon-bg {
+    width: 110px;
+    height: 110px;
 }
 
 #back-to-main-btn, #close-winning-btn {
