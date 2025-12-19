@@ -315,7 +315,7 @@ main {
     align-items: center;
     z-index: 100;
     padding: 90px 20px 20px 20px;
-    overflow-y: auto; /* Allow the page to scroll if content is tall */
+    overflow: hidden; /* Prevent the whole page from scrolling */
 }
 
 #case-name-title {
@@ -701,8 +701,9 @@ main {
     width: 100%;
     max-width: 1200px;
     margin-top: 20px;
-    /* Removed flex-grow and overflow to prevent inner scrollbar */
-    height: auto;
+    flex-grow: 1; /* Allow the grid to grow and take up space */
+    overflow-y: auto; /* Enable vertical scrolling within the grid */
+    min-height: 0; /* Important for flex-grow to work in a flex column */
 }
 
 .case-skin-item {
@@ -840,11 +841,13 @@ main {
     transform: translate(-50%, -50%);
     width: 100px;
     height: 86.6px;
+    /* Gradient for depth */
     background: linear-gradient(135deg, var(--rarity-color) 0%, rgba(0,0,0,0.8) 100%);
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-    opacity: 0.10;
+    opacity: 0.35;
     z-index: 0;
     pointer-events: none;
+    /* Drop shadow for depth (works with clip-path if applied to filter) */
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
 }
 
