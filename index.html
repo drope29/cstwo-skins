@@ -55,6 +55,7 @@
                     <p>Log In</p>
                 </div>
             </div>
+            <button id="scratchcard-btn" style="display: none;">Raspadinha</button>
             <button id="inventory-btn" style="display: none;">Inventário</button>
         </div>
     </header>
@@ -155,6 +156,20 @@
             <h2>Inventário</h2>
             <div id="inventory-grid"></div>
             <button id="close-inventory-btn">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scratchcard Modal -->
+    <div id="scratchcard-modal-backdrop" style="display: none;">
+        <div id="scratchcard-modal">
+            <div class="scratchcard-header">
+                <h2>Raspadinha</h2>
+                <button id="close-scratchcard-btn">&times;</button>
+            </div>
+            <div id="scratchcard-grid">
+                <!-- 16 items will be generated here -->
+            </div>
+            <p class="scratch-instruction">Raspe para revelar seus prêmios!</p>
         </div>
     </div>
 

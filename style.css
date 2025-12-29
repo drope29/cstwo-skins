@@ -1437,3 +1437,144 @@ main {
     color: #666;
     font-size: 1.2em;
 }
+
+/* Scratchcard Button */
+#scratchcard-btn {
+    background-color: #2a2a2a;
+    color: #ffc107;
+    border: 1px solid #ffc107;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#scratchcard-btn:hover {
+    background-color: #ffc107;
+    color: #1a1a1a;
+}
+
+/* Scratchcard Modal */
+#scratchcard-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#scratchcard-modal {
+    background-color: rgba(26, 32, 44, 0.95);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 1rem;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+}
+
+.scratchcard-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.scratchcard-header h2 {
+    color: #ffc107;
+    margin: 0;
+    font-size: 2em;
+    text-transform: uppercase;
+}
+
+#close-scratchcard-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 2em;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#close-scratchcard-btn:hover {
+    color: #fff;
+}
+
+#scratchcard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+    background: #121212;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #333;
+}
+
+.scratch-cell {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer; /* Change cursor to pointer to indicate interaction */
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #444;
+}
+
+.scratch-cell img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    z-index: 1;
+}
+
+.scratch-cell .item-info {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    font-size: 0.7em;
+    color: #ccc;
+    font-weight: bold;
+    text-shadow: 0 1px 2px black;
+    pointer-events: none;
+}
+
+.scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    /* Optional: custom cursor for scratching */
+    /* cursor: url('coin.png'), auto; */
+}
+
+.scratch-instruction {
+    color: #aaa;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* Rarity colors for scratchcard */
+.scratch-cell.rarity-covert { border-bottom: 3px solid var(--rarity-covert-color); }
+.scratch-cell.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); }
+.scratch-cell.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); }
+.scratch-cell.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); }

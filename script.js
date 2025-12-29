@@ -533,3 +533,165 @@ document.addEventListener('DOMContentLoaded', () => {
         nextArrow.style.display = 'none';
     }
 });
+
+/* Scratchcard Logic */
+const scratchcardBtn = document.getElementById('scratchcard-btn');
+const scratchcardModalBackdrop = document.getElementById('scratchcard-modal-backdrop');
+const closeScratchcardBtn = document.getElementById('close-scratchcard-btn');
+const scratchcardGrid = document.getElementById('scratchcard-grid');
+
+function openScratchcard() {
+    if (!isLoggedIn) {
+        loginModalBackdrop.style.display = 'flex';
+        return;
+    }
+    scratchcardModalBackdrop.style.display = 'flex';
+    generateScratchcard();
+}
+
+function closeScratchcard() {
+    scratchcardModalBackdrop.style.display = 'none';
+    scratchcardGrid.innerHTML = ''; // Clean up
+}
+
+function generateScratchcard() {
+    scratchcardGrid.innerHTML = '';
+    const allSkins = [];
+    // Combine all skins from all cases
+    Object.values(cases).forEach(c => {
+        allSkins.push(...c.skins);
+    });
+
+    // Remove duplicates based on name to have a diverse pool
+    const uniqueSkins = Array.from(new Map(allSkins.map(item => [item.name, item])).values());
+
+    // Sort by price descending
+    uniqueSkins.sort((a, b) => b.price - a.price);
+
+    // Pick 1 Expensive (Top 5%)
+    const expensivePool = uniqueSkins.slice(0, Math.ceil(uniqueSkins.length * 0.05));
+    const expensiveSkin = expensivePool[Math.floor(Math.random() * expensivePool.length)];
+
+    // Pick 2 Medium (Next 30%)
+    const mediumStartIndex = Math.ceil(uniqueSkins.length * 0.05);
+    const mediumEndIndex = Math.ceil(uniqueSkins.length * 0.35);
+    const mediumPool = uniqueSkins.slice(mediumStartIndex, mediumEndIndex);
+    const mediumSkins = [];
+    for (let i = 0; i < 2; i++) {
+        mediumSkins.push(mediumPool[Math.floor(Math.random() * mediumPool.length)]);
+    }
+
+    // Pick 13 Cheap (Rest)
+    const cheapPool = uniqueSkins.slice(mediumEndIndex);
+    const cheapSkins = [];
+    for (let i = 0; i < 13; i++) {
+        cheapSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
+    }
+
+    // Combine and shuffle
+    const selectedSkins = [expensiveSkin, ...mediumSkins, ...cheapSkins];
+
+    // Shuffle logic (Fisher-Yates)
+    for (let i = selectedSkins.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selectedSkins[i], selectedSkins[j]] = [selectedSkins[j], selectedSkins[i]];
+    }
+
+    // Render Grid
+    selectedSkins.forEach(skin => {
+        const cell = document.createElement('div');
+        cell.classList.add('scratch-cell', `rarity-${skin.rarity}`);
+
+        // Inner Content (Revealed)
+        const img = document.createElement('img');
+        img.src = skin.image;
+        img.alt = skin.name;
+        // Make sure image is not draggable to avoid interfering with scratch
+        img.draggable = false;
+
+        const info = document.createElement('div');
+        info.classList.add('item-info');
+        info.textContent = skin.name;
+
+        // Canvas (Cover)
+        const canvas = document.createElement('canvas');
+        canvas.classList.add('scratch-canvas');
+        canvas.width = 140; // Match CSS width
+        canvas.height = 140; // Match CSS height
+
+        cell.appendChild(img);
+        cell.appendChild(info);
+        cell.appendChild(canvas);
+        scratchcardGrid.appendChild(cell);
+
+        // Initialize Scratch Logic for this cell
+        initScratchCanvas(canvas);
+    });
+}
+
+function initScratchCanvas(canvas) {
+    const ctx = canvas.getContext('2d');
+
+    // Fill with scratch cover style
+    ctx.fillStyle = '#2a2a2a'; // Dark grey
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Add some pattern/text to the cover
+    ctx.font = '20px Montserrat';
+    ctx.fillStyle = '#444';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('RASPE', canvas.width / 2, canvas.height / 2);
+
+    // Scratch logic
+    let isDrawing = false;
+
+    function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX || e.touches[0].clientX;
+        const clientY = e.clientY || e.touches[0].clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    }
+
+    function scratch(e) {
+        if (!isDrawing) return;
+        e.preventDefault(); // Prevent scroll on touch
+        const pos = getMousePos(e);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 15, 0, Math.PI * 2); // Brush size
+        ctx.fill();
+    }
+
+    canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('mouseup', () => { isDrawing = false; });
+    canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+
+    // Touch support
+    canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+    canvas.addEventListener('touchmove', scratch);
+    canvas.addEventListener('touchend', () => { isDrawing = false; });
+}
+
+// Event Listeners for Scratchcard
+scratchcardBtn.addEventListener('click', openScratchcard);
+closeScratchcardBtn.addEventListener('click', closeScratchcard);
+
+// Update Login State UI to show Scratchcard button
+const originalUpdateUIForLoginState = updateUIForLoginState;
+updateUIForLoginState = function() {
+    originalUpdateUIForLoginState();
+    if (isLoggedIn) {
+        scratchcardBtn.style.display = 'block';
+    } else {
+        scratchcardBtn.style.display = 'none';
+    }
+}
+// Re-run it immediately in case we missed the initial load
+if (typeof isLoggedIn !== 'undefined' && isLoggedIn) {
+    scratchcardBtn.style.display = 'block';
+}
