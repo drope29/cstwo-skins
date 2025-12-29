@@ -329,13 +329,13 @@ main {
     position: relative;
     width: 100%;
     max-width: 1200px;
-    height: 180px; /* Increased height for scaling items */
+    height: 260px; /* Further increased height to prevent glow clipping */
     overflow: hidden;
-    border-radius: 0; /* Square corners */
-    background: #111;
+    border-radius: 4px; /* Slight radius for modern feel */
+    background: #0f0f0f; /* Even darker background */
     border: 1px solid #222;
     margin-bottom: 30px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.7);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
     flex-shrink: 0;
     display: flex;
     align-items: center; /* Center items vertically */
@@ -350,7 +350,7 @@ main {
     height: 100%;
     z-index: 3;
     pointer-events: none;
-    background: linear-gradient(to right, rgba(17,17,17,1) 0%, rgba(17,17,17,0) 15%, rgba(17,17,17,0) 85%, rgba(17,17,17,1) 100%);
+    background: linear-gradient(to right, #0f0f0f 0%, transparent 15%, transparent 85%, #0f0f0f 100%);
 }
 
 #roulette-pin {
@@ -358,11 +358,39 @@ main {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 3px;
+    width: 2px;
     height: 100%;
-    background-color: #ffc107;
-    z-index: 2;
-    box-shadow: 0 0 10px #ffc107, 0 0 3px #ff8a00;
+    background: linear-gradient(to bottom, transparent, #ffc107, transparent);
+    z-index: 20; /* Ensure it is above the winner card */
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
+#roulette-pin::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #ffc107;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+#roulette-pin::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #ffc107;
+    filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.5));
 }
 
 #roulette {
@@ -374,43 +402,59 @@ main {
 }
 
 .roulette-item {
-    width: 150px;
-    height: 170px; /* Increased height for text */
+    width: 170px; /* Slightly wider */
+    height: 145px; /* Slightly taller to balance */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end; /* Push text to bottom */
     align-items: center;
     flex-shrink: 0;
-    background-size: 80%;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 5px; /* Reduced padding */
-    transition: transform 0.5s ease-out, border-color 0.5s ease;
+    background: #191919; /* Card background */
+    margin: 0 5px; /* Spacing between cards */
+    padding: 0;
+    transition: transform 0.5s ease-out, border-color 0.5s ease, box-shadow 0.5s ease;
     position: relative;
-    border: 4px solid transparent;
-    border-radius: 10px;
+    border-bottom: 3px solid var(--rarity-color); /* Rarity indicator at bottom */
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* Subtle gradient overlay */
+.roulette-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.8) 100%);
+    z-index: 1;
 }
 
 .roulette-item img {
-    width: 100px;
-    height: 100px;
+    max-width: 120px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
     object-fit: contain;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
     z-index: 1;
 }
 
 .roulette-item p {
-    font-size: 0.8em;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 2px 2px 4px #000;
-    margin-top: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75em;
+    font-weight: 500;
+    color: #e0e0e0;
+    margin: 0 0 8px 0; /* Position at bottom */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 95%;
+    width: 90%;
     text-align: center;
-    z-index: 1;
+    z-index: 2; /* Above gradient */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
 @keyframes winner-pulse {
@@ -426,10 +470,43 @@ main {
 }
 
 .roulette-item.winner {
-    border-color: #ffc107;
-    transform: scale(1.1);
-    animation: winner-pulse 2s infinite ease-in-out; /* Slower, smoother pulse */
-    background-color: rgba(255, 193, 7, 0.05); /* Very subtle background tint */
+    transform: scale(1.1); /* Increased scale slightly for emphasis */
+    z-index: 10;
+    /* Spotlight effect using radial gradient */
+    background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, #202020 100%);
+    border-bottom-width: 4px;
+    /* Add top and side highlights for 3D feel */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    animation: winner-subtle-pulse 2s infinite ease-in-out; /* Faster pulse */
+}
+
+.roulette-item.winner .hexagon-bg {
+    opacity: 0.15; /* Kept subtle even for winner */
+    filter: drop-shadow(0 0 5px var(--rarity-color)); /* Glow the hexagon */
+    animation: winner-hex-pulse 3s infinite ease-in-out;
+}
+
+@keyframes winner-hex-pulse {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) rotate(15deg) scale(1); }
+    50% { opacity: 0.5; transform: translate(-50%, -50%) rotate(15deg) scale(1.05); }
+}
+
+@keyframes winner-subtle-pulse {
+    0% {
+        box-shadow: 0 0 15px rgba(0,0,0,0.6), 0 0 8px var(--rarity-color);
+        border-bottom-color: var(--rarity-color);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(0,0,0,0.8), 0 0 15px var(--rarity-color);
+        border-bottom-color: #fff; /* Subtle flash of white */
+        background-color: #252525; /* Slightly lighter background */
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(0,0,0,0.6), 0 0 8px var(--rarity-color);
+        border-bottom-color: var(--rarity-color);
+    }
 }
 
 @keyframes pop-in {
@@ -837,21 +914,29 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100px;
-    height: 86.6px;
-    /* Gradient for depth */
-    background: linear-gradient(135deg, var(--rarity-color) 0%, rgba(0,0,0,0.8) 100%);
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-    opacity: 0.35;
+    width: 75px; /* Reduced size (from 100px) */
+    height: 65px; /* Reduced size (from 86.6px) */
+    background-color: var(--rarity-color);
+    /* Use mask to create a true transparent border */
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 87'%3E%3Cpath d='M 25 1.5 L 75 1.5 L 98.5 43.3 L 75 85.1 L 25 85.1 L 1.5 43.3 Z' fill='none' stroke='white' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 87'%3E%3Cpath d='M 25 1.5 L 75 1.5 L 98.5 43.3 L 75 85.1 L 25 85.1 L 1.5 43.3 Z' fill='none' stroke='white' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / contain;
+    opacity: 0.4; /* Reduced opacity (from 0.8) for "mais apagadinho" */
     z-index: 0;
     pointer-events: none;
-    /* Drop shadow for depth (works with clip-path if applied to filter) */
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.7));
+    /* Slightly subtler glow */
+    filter: drop-shadow(0 0 5px var(--rarity-color));
+}
+
+/* Remove the hacky cutout pseudo-element */
+.hexagon-bg::after {
+    display: none;
 }
 
 .roulette-item .hexagon-bg {
-    width: 110px;
-    height: 110px;
+    width: 95px; /* Reduced size (from 120px) */
+    height: 82px; /* Reduced size (from 104px) */
+    opacity: 0.4;
+    transform: translate(-50%, -50%) rotate(15deg);
 }
 
 #back-to-main-btn, #close-winning-btn {

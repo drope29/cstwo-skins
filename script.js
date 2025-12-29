@@ -327,7 +327,7 @@ function startRoulette() {
     });
 
     setTimeout(() => {
-        const itemWidth = 150;
+        const itemWidth = 180; // Width (170px) + Margin (10px)
         const containerWidth = roulette.parentElement.offsetWidth;
         // Make the stop position slightly random but always centered on the item
         const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.5);
