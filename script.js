@@ -533,3 +533,282 @@ document.addEventListener('DOMContentLoaded', () => {
         nextArrow.style.display = 'none';
     }
 });
+
+/* Scratchcard Logic */
+const scratchcardBtn = document.getElementById('scratchcard-btn');
+const scratchcardModalBackdrop = document.getElementById('scratchcard-modal-backdrop');
+const closeScratchcardBtn = document.getElementById('close-scratchcard-btn');
+const scratchcardGrid = document.getElementById('scratchcard-grid');
+
+let hasStartedScratching = false; // Flag to lock interaction to one card
+
+function openScratchcard() {
+    if (!isLoggedIn) {
+        loginModalBackdrop.style.display = 'flex';
+        return;
+    }
+    scratchcardModalBackdrop.style.display = 'flex';
+    // Always regenerate to ensure randomness and reset state
+    generateScratchcard();
+}
+
+function closeScratchcard() {
+    scratchcardModalBackdrop.style.display = 'none';
+    scratchcardGrid.innerHTML = ''; // Clean up
+}
+
+function generateScratchcard() {
+    scratchcardGrid.innerHTML = '';
+    hasStartedScratching = false; // Reset lock state
+
+    const allSkins = [];
+    // Combine all skins from all cases
+    Object.values(cases).forEach(c => {
+        allSkins.push(...c.skins);
+    });
+
+    // Remove duplicates based on name to have a diverse pool
+    const uniqueSkins = Array.from(new Map(allSkins.map(item => [item.name, item])).values());
+
+    // Sort by price descending
+    uniqueSkins.sort((a, b) => b.price - a.price);
+
+    // Probabilistic Selection to increase difficulty
+    const expensivePool = uniqueSkins.slice(0, 3);
+    const mediumPool = uniqueSkins.slice(3, 13);
+    const cheapPool = uniqueSkins.slice(13);
+
+    const selectedSkins = [];
+
+    // 10% Chance for Expensive Item
+    if (Math.random() < 0.10) {
+        selectedSkins.push(expensivePool[Math.floor(Math.random() * expensivePool.length)]);
+    } else {
+        selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
+    }
+
+    // 30% Chance for Medium Item
+    if (Math.random() < 0.30) {
+        selectedSkins.push(mediumPool[Math.floor(Math.random() * mediumPool.length)]);
+    } else {
+        selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
+    }
+
+    // Fill the rest (14 items) with Cheap
+    for (let i = 0; i < 14; i++) {
+        selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
+    }
+
+    // Shuffle logic (Fisher-Yates)
+    for (let i = selectedSkins.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selectedSkins[i], selectedSkins[j]] = [selectedSkins[j], selectedSkins[i]];
+    }
+
+    // Render Grid
+    selectedSkins.forEach(skin => {
+        const cell = document.createElement('div');
+        // Do NOT add rarity class initially to keep it hidden
+        cell.classList.add('scratch-cell');
+
+        // Store skin data for later use (winning logic)
+        cell.dataset.skinData = JSON.stringify(skin);
+
+        // Inner Content (Revealed)
+        const img = document.createElement('img');
+        img.src = skin.image;
+        img.alt = skin.name;
+        img.draggable = false;
+
+        const info = document.createElement('div');
+        info.classList.add('item-info');
+        info.textContent = skin.name;
+
+        // Canvas (Cover)
+        const canvas = document.createElement('canvas');
+        canvas.classList.add('scratch-canvas');
+        canvas.width = 150; // Match CSS width
+        canvas.height = 150; // Match CSS height
+
+        cell.appendChild(img);
+        cell.appendChild(info);
+        cell.appendChild(canvas);
+        scratchcardGrid.appendChild(cell);
+
+        // Initialize Scratch Logic for this cell
+        initScratchCanvas(canvas, cell, skin);
+    });
+}
+
+function initScratchCanvas(canvas, cell, skin) {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Professional Gradient Cover
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#2b2b2b');
+    gradient.addColorStop(0.5, '#3a3a3a');
+    gradient.addColorStop(1, '#2b2b2b');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    // Add Pattern (Subtle grid)
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    for(let i=0; i<width; i+=20) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, height);
+        ctx.stroke();
+    }
+
+    // Add Text with Shadow
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 4;
+    ctx.font = 'bold 24px Montserrat';
+    ctx.fillStyle = '#666'; // Slightly lighter text
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('?', width / 2, height / 2); // Icon instead of text for cleaner look
+    ctx.font = 'bold 12px Montserrat';
+    ctx.fillStyle = '#555';
+    ctx.fillText('RASPE', width / 2, height / 2 + 25);
+
+    // Reset shadow for scratching
+    ctx.shadowBlur = 0;
+
+    let isDrawing = false;
+    let isRevealed = false;
+
+    function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX || e.touches[0].clientX;
+        const clientY = e.clientY || e.touches[0].clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    }
+
+    function checkRevealPercentage() {
+        if (isRevealed) return;
+
+        // Optimization: check every 10th pixel or similar if performance is bad,
+        // but for 140x140 it's fine.
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const pixels = imageData.data;
+        let transparentPixels = 0;
+
+        // Iterate over alpha channel (every 4th value)
+        for (let i = 3; i < pixels.length; i += 4) {
+            if (pixels[i] < 128) { // Considered transparent
+                transparentPixels++;
+            }
+        }
+
+        const percentage = (transparentPixels / (width * height)) * 100;
+
+        if (percentage > 40) { // 40% cleared triggers win
+            isRevealed = true;
+            revealItem(cell, skin, canvas);
+        }
+    }
+
+    function revealItem(cell, skin, canvas) {
+        // Remove canvas (fade out effect could be better but direct removal is snappy)
+        canvas.style.display = 'none';
+
+        // Add visual cues
+        cell.classList.add('revealed');
+        cell.classList.add(`rarity-${skin.rarity}`);
+
+        // Add to inventory
+        userInventory.push(skin);
+        localStorage.setItem('userInventory', JSON.stringify(userInventory));
+        updateUserBalance(); // Doesn't change balance but good practice if we tracked inventory value
+
+        // Alert user (simple toast or text update would be better, but alert is standard for now)
+        // Using a slight timeout to let the DOM update first
+        setTimeout(() => {
+            alert(`Você ganhou: ${skin.name}!`);
+        }, 100);
+
+        // Disable all other cells
+        const allCells = document.querySelectorAll('.scratch-cell');
+        allCells.forEach(c => {
+            if (c !== cell) {
+                c.classList.add('disabled');
+            }
+        });
+    }
+
+    function startScratch(e) {
+        if (isRevealed) return;
+
+        // Locking Logic
+        if (hasStartedScratching && !cell.classList.contains('active-scratch')) {
+            return; // Already scratching another one
+        }
+
+        if (!hasStartedScratching) {
+            hasStartedScratching = true;
+            cell.classList.add('active-scratch');
+            // Visually dim others immediately?
+            const allCells = document.querySelectorAll('.scratch-cell');
+            allCells.forEach(c => {
+                if (c !== cell) {
+                    c.classList.add('disabled');
+                }
+            });
+        }
+
+        isDrawing = true;
+        scratch(e);
+    }
+
+    function scratch(e) {
+        if (!isDrawing) return;
+        e.preventDefault(); // Prevent scroll
+        const pos = getMousePos(e);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Throttling the check could be good, but check on every move is smoother for small grids
+        checkRevealPercentage();
+    }
+
+    function stopScratch() {
+        isDrawing = false;
+    }
+
+    canvas.addEventListener('mousedown', startScratch);
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('mouseup', stopScratch);
+    canvas.addEventListener('mouseleave', stopScratch);
+
+    canvas.addEventListener('touchstart', startScratch);
+    canvas.addEventListener('touchmove', scratch);
+    canvas.addEventListener('touchend', stopScratch);
+}
+
+// Event Listeners for Scratchcard
+scratchcardBtn.addEventListener('click', openScratchcard);
+closeScratchcardBtn.addEventListener('click', closeScratchcard);
+
+// Update Login State UI to show Scratchcard button
+const originalUpdateUIForLoginState = updateUIForLoginState;
+updateUIForLoginState = function() {
+    originalUpdateUIForLoginState();
+    if (isLoggedIn) {
+        scratchcardBtn.style.display = 'block';
+    } else {
+        scratchcardBtn.style.display = 'none';
+    }
+}
+// Re-run it immediately in case we missed the initial load
+if (typeof isLoggedIn !== 'undefined' && isLoggedIn) {
+    scratchcardBtn.style.display = 'block';
+}

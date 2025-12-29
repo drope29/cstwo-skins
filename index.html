@@ -36,6 +36,7 @@
     <header>
         <div class="header-left">
             <button id="back-to-main-btn" style="display: none;"><span>&times;</span> Voltar</button>
+            <button id="scratchcard-btn" style="display: none;">RASPADINHA</button>
         </div>
         <div class="logo-container">
             <img src="images/logo.png" alt="CSTWO Logo" id="navbar-logo">
@@ -155,6 +156,20 @@
             <h2>Inventário</h2>
             <div id="inventory-grid"></div>
             <button id="close-inventory-btn">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Scratchcard Modal -->
+    <div id="scratchcard-modal-backdrop" style="display: none;">
+        <div id="scratchcard-modal">
+            <div class="scratchcard-header">
+                <h2>Raspadinha</h2>
+                <button id="close-scratchcard-btn">&times;</button>
+            </div>
+            <div id="scratchcard-grid">
+                <!-- 16 items will be generated here -->
+            </div>
+            <p class="scratch-instruction">Raspe para revelar seus prêmios!</p>
         </div>
     </div>
 
