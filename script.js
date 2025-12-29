@@ -580,15 +580,15 @@ function generateScratchcard() {
 
     const selectedSkins = [];
 
-    // 10% Chance for Expensive Item
-    if (Math.random() < 0.10) {
+    // 5% Chance for Expensive Item
+    if (Math.random() < 0.05) {
         selectedSkins.push(expensivePool[Math.floor(Math.random() * expensivePool.length)]);
     } else {
         selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
     }
 
-    // 30% Chance for Medium Item
-    if (Math.random() < 0.30) {
+    // 15% Chance for Medium Item
+    if (Math.random() < 0.15) {
         selectedSkins.push(mediumPool[Math.floor(Math.random() * mediumPool.length)]);
     } else {
         selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);

@@ -124,7 +124,7 @@ header {
 
 .header-left {
     justify-content: flex-end;
-    padding-right: 5px; /* Space from logo */
+    padding-right: 0px; /* Space from logo */
 }
 
 .header-right {
@@ -132,7 +132,7 @@ header {
 }
 
 .logo-container {
-    flex-grow: 1;
+    flex: 0 1 auto; /* Allow it to shrink to content size */
     display: flex;
     justify-content: center;
     align-items: center;
