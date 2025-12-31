@@ -124,7 +124,7 @@ header {
 
 .header-left {
     justify-content: flex-end;
-    padding-right: 5px; /* Space from logo */
+    padding-right: 0px; /* Space from logo */
 }
 
 .header-right {
@@ -132,7 +132,7 @@ header {
 }
 
 .logo-container {
-    flex-grow: 1;
+    flex: 0 1 auto; /* Allow it to shrink to content size */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1621,4 +1621,28 @@ main {
     opacity: 0.3;
     pointer-events: none;
     filter: grayscale(100%);
+}
+.cooldown-timer {
+    font-family: 'Science Gothic', sans-serif;
+    color: #ffc107;
+    font-size: 1.2em;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+}
+#scratchcard-grid.locked {
+    filter: grayscale(100%) opacity(0.5);
+    pointer-events: none;
+    position: relative;
+}
+
+#scratchcard-grid.locked::after {
+    content: "🔒";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5em;
+    z-index: 20;
+    opacity: 0.8;
 }

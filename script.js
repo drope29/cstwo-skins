@@ -541,25 +541,87 @@ const closeScratchcardBtn = document.getElementById('close-scratchcard-btn');
 const scratchcardGrid = document.getElementById('scratchcard-grid');
 
 let hasStartedScratching = false; // Flag to lock interaction to one card
+let scratchcardTimerInterval = null;
 
 function openScratchcard() {
     if (!isLoggedIn) {
         loginModalBackdrop.style.display = 'flex';
         return;
     }
+
     scratchcardModalBackdrop.style.display = 'flex';
+
+    const lastTime = localStorage.getItem('lastScratchTime');
+    if (lastTime) {
+        const timeSince = Date.now() - parseInt(lastTime);
+        const cooldownTime = 24 * 60 * 60 * 1000; // 24 hours in ms
+        if (timeSince < cooldownTime) {
+            const finishTime = parseInt(lastTime) + cooldownTime;
+            // Generate grid but in locked state
+            generateScratchcard(true);
+            startCooldownTimer(finishTime);
+            return;
+        }
+    }
+
     // Always regenerate to ensure randomness and reset state
     generateScratchcard();
+}
+
+function startCooldownTimer(finishTime) {
+    const instruction = document.querySelector('.scratch-instruction');
+    instruction.classList.add('cooldown-timer');
+
+    // Initial update
+    updateTimer();
+
+    scratchcardTimerInterval = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+        const remaining = finishTime - Date.now();
+        if (remaining <= 0) {
+            clearInterval(scratchcardTimerInterval);
+            instruction.textContent = "Raspe para revelar seus prêmios!";
+            instruction.classList.remove('cooldown-timer');
+            generateScratchcard();
+            return;
+        }
+
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+        const hStr = hours.toString().padStart(2, '0');
+        const mStr = minutes.toString().padStart(2, '0');
+        const sStr = seconds.toString().padStart(2, '0');
+
+        instruction.textContent = `Disponível em: ${hStr}:${mStr}:${sStr}`;
+    }
 }
 
 function closeScratchcard() {
     scratchcardModalBackdrop.style.display = 'none';
     scratchcardGrid.innerHTML = ''; // Clean up
+    if (scratchcardTimerInterval) {
+        clearInterval(scratchcardTimerInterval);
+        scratchcardTimerInterval = null;
+    }
+    const instruction = document.querySelector('.scratch-instruction');
+    if (instruction) {
+        instruction.textContent = "Raspe para revelar seus prêmios!";
+        instruction.classList.remove('cooldown-timer');
+    }
 }
 
-function generateScratchcard() {
+function generateScratchcard(isLocked = false) {
     scratchcardGrid.innerHTML = '';
     hasStartedScratching = false; // Reset lock state
+
+    if (isLocked) {
+        scratchcardGrid.classList.add('locked');
+    } else {
+        scratchcardGrid.classList.remove('locked');
+    }
 
     const allSkins = [];
     // Combine all skins from all cases
@@ -573,36 +635,36 @@ function generateScratchcard() {
     // Sort by price descending
     uniqueSkins.sort((a, b) => b.price - a.price);
 
-    // Probabilistic Selection to increase difficulty
-    const expensivePool = uniqueSkins.slice(0, 3);
-    const mediumPool = uniqueSkins.slice(3, 13);
-    const cheapPool = uniqueSkins.slice(13);
-
     const selectedSkins = [];
 
-    // 10% Chance for Expensive Item
-    if (Math.random() < 0.10) {
-        selectedSkins.push(expensivePool[Math.floor(Math.random() * expensivePool.length)]);
-    } else {
-        selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
-    }
+    // Generate 16 items using roulette rarity logic
+    for (let i = 0; i < 16; i++) {
+        const rand = Math.random() * 100;
+        let cumulativePercentage = 0;
+        let selectedRarity = null;
 
-    // 30% Chance for Medium Item
-    if (Math.random() < 0.30) {
-        selectedSkins.push(mediumPool[Math.floor(Math.random() * mediumPool.length)]);
-    } else {
-        selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
-    }
+        for (const rarity in rarityPercentages) {
+            cumulativePercentage += rarityPercentages[rarity];
+            if (rand < cumulativePercentage) {
+                selectedRarity = rarity;
+                break;
+            }
+        }
 
-    // Fill the rest (14 items) with Cheap
-    for (let i = 0; i < 14; i++) {
-        selectedSkins.push(cheapPool[Math.floor(Math.random() * cheapPool.length)]);
-    }
+        if (!selectedRarity) {
+            const rarities = Object.keys(rarityPercentages);
+            selectedRarity = rarities[rarities.length - 1];
+        }
 
-    // Shuffle logic (Fisher-Yates)
-    for (let i = selectedSkins.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [selectedSkins[i], selectedSkins[j]] = [selectedSkins[j], selectedSkins[i]];
+        const skinsOfSelectedRarity = uniqueSkins.filter(skin => skin.rarity === selectedRarity);
+
+        if (skinsOfSelectedRarity.length > 0) {
+            const randomIndex = Math.floor(Math.random() * skinsOfSelectedRarity.length);
+            selectedSkins.push(skinsOfSelectedRarity[randomIndex]);
+        } else {
+            // Fallback: Pick any random skin if rarity pool is empty (unlikely)
+            selectedSkins.push(uniqueSkins[Math.floor(Math.random() * uniqueSkins.length)]);
+        }
     }
 
     // Render Grid
@@ -636,7 +698,9 @@ function generateScratchcard() {
         scratchcardGrid.appendChild(cell);
 
         // Initialize Scratch Logic for this cell
-        initScratchCanvas(canvas, cell, skin);
+        if (!isLocked) {
+            initScratchCanvas(canvas, cell, skin);
+        }
     });
 }
 
@@ -726,13 +790,19 @@ function initScratchCanvas(canvas, cell, skin) {
         // Add to inventory
         userInventory.push(skin);
         localStorage.setItem('userInventory', JSON.stringify(userInventory));
+        const now = Date.now();
+        localStorage.setItem('lastScratchTime', now.toString());
         updateUserBalance(); // Doesn't change balance but good practice if we tracked inventory value
+
+        // Start cooldown timer immediately
+        const cooldownTime = 24 * 60 * 60 * 1000;
+        startCooldownTimer(now + cooldownTime);
 
         // Alert user (simple toast or text update would be better, but alert is standard for now)
         // Using a slight timeout to let the DOM update first
-        setTimeout(() => {
-            alert(`Você ganhou: ${skin.name}!`);
-        }, 100);
+        // setTimeout(() => {
+        //    alert(`Você ganhou: ${skin.name}!`);
+        // }, 100);
 
         // Disable all other cells
         const allCells = document.querySelectorAll('.scratch-cell');
