@@ -343,6 +343,10 @@ function startRoulette() {
         roulette.style.transform = `translateX(-${scrollAmount}px)`;
     }, 100);
 
+    // IMMEDIATE KEEP: Add to inventory immediately at start of spin
+    userInventory.push(currentWinningSkin);
+    localStorage.setItem('userInventory', JSON.stringify(userInventory));
+
     setTimeout(() => {
         if (isRouletteSpinning) { // If user is still here
             if (winningItemElement) {
@@ -355,10 +359,6 @@ function startRoulette() {
             sellSkinBtn.innerHTML = `VENDER <span class="btn-price">R$ ${currentWinningSkin.price.toFixed(2).replace('.', ',')}</span>`;
 
             resultButtons.style.display = 'flex';
-
-            // IMMEDIATE KEEP: Add to inventory immediately
-            userInventory.push(currentWinningSkin);
-            localStorage.setItem('userInventory', JSON.stringify(userInventory));
         }
         isRouletteSpinning = false; // Reset state after animation finishes
     }, 7500); // slightly shorter than 8s to match new animation duration
@@ -382,17 +382,8 @@ function goBackToMain() {
     if (isRouletteSpinning) {
         // Stop the roulette logic if they leave mid-spin
         isRouletteSpinning = false;
-
-        // Even if they leave mid-spin, we should probably award the item if it was decided?
-        // But currentWinningSkin is decided at start.
-        // Let's stick to the previous logic: if spinning, add it.
-        if (currentWinningSkin) {
-            userInventory.push(currentWinningSkin);
-            localStorage.setItem('userInventory', JSON.stringify(userInventory));
-        }
+        // Item was already added at start of spin, so no need to add here.
     }
-    // If spin finished, item is ALREADY in inventory (added in setTimeout).
-    // So we just close.
 
     backToMainBtn.style.display = 'none'; // Hide back button
     caseOpeningScreen.style.display = 'none';

@@ -1234,12 +1234,6 @@ main {
 .inventory-item.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); }
 .inventory-item.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); }
 
-/* Specific adjustments for case images */
-[data-case="case1"] img,
-[data-case="case2"] img {
-    transform: scale(1.5);
-}
-
 /* Carousel Styles */
 .carousel-container {
     position: relative;
