@@ -156,8 +156,8 @@ header {
 }
 
 .header-left {
-    justify-content: flex-end;
-    padding-right: 0px; /* Space from logo */
+    justify-content: flex-start; /* Items aligned to the left */
+    padding-left: 0;
 }
 
 .header-right {
@@ -334,10 +334,10 @@ main {
 }
 
 .case:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 193, 7, 0.2);
-    border-color: rgba(255, 193, 7, 0.3);
-    background: rgba(40, 40, 40, 0.8);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 193, 7, 0.4), inset 0 0 10px rgba(255, 193, 7, 0.1);
+    border-color: #ffc107;
+    background: rgba(45, 45, 45, 0.9);
 }
 
 .case img {
@@ -345,12 +345,13 @@ main {
     height: 110px;
     object-fit: contain;
     filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 1;
 }
 
 .case:hover img {
-    transform: scale(1.1) rotate(2deg);
+    transform: scale(1.15) rotate(3deg) translateY(-5px);
+    filter: drop-shadow(0 10px 20px rgba(255, 193, 7, 0.3));
 }
 
 .case h3 {
@@ -849,8 +850,8 @@ main {
 #case-items-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px; /* Reduced gap */
-    padding: 15px; /* Reduced padding */
+    gap: 15px;
+    padding: 20px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     width: 100%;
@@ -869,10 +870,10 @@ main {
     box-shadow: 0px 0px 3px 1px #00000088;
     cursor: pointer;
     border-radius: 10px;
-    padding: 2px; /* Small padding for the content box */
+    padding: 4px;
     border: none;
     height: auto;
-    min-height: 120px; /* Reduced to help with scroll */
+    min-height: 170px; /* Increased size */
 }
 
 .case-skin-item .content {
@@ -973,8 +974,8 @@ main {
 }
 
 .case-skin-item img {
-    width: 60px; /* Reduced size */
-    height: 60px;
+    width: 110px; /* Increased size */
+    height: 100px;
     object-fit: contain;
     z-index: 1; /* Ensure image is above hexagon */
     position: relative;
@@ -982,8 +983,8 @@ main {
 
 .case-skin-item span {
     display: block;
-    margin-top: 5px;
-    font-size: 0.7em; /* Slightly smaller text */
+    margin-top: 10px;
+    font-size: 0.85em; /* Increased text size */
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -1000,8 +1001,8 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px; /* Reduced size */
-    height: 52px; /* Reduced size */
+    width: 100px; /* Increased size */
+    height: 86px; /* Increased size */
     background-color: var(--rarity-color);
     /* Use mask to create a true transparent border */
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 87'%3E%3Cpath d='M 25 1.5 L 75 1.5 L 98.5 43.3 L 75 85.1 L 25 85.1 L 1.5 43.3 Z' fill='none' stroke='white' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / contain;
@@ -1041,49 +1042,60 @@ main {
     transform: scale(0.95);
 }
 
-#back-to-main-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    font-size: 12px;
-}
-
-#back-to-main-btn span {
-    font-size: 16px;
-    margin-right: 6px;
-    line-height: 1;
-}
-
-#inventory-back-btn {
-    position: absolute;
-    top: 90px;
-    left: 20px;
-    background-color: #2a2a2a;
+/* Professional Back Button Style - Unified */
+.btn-back-professional {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
     color: #ffc107;
-    border: 1px solid #ffc107;
-    border-radius: 5px;
-    padding: 6px 12px;
-    font-weight: bold;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    font-size: 12px;
+    gap: 8px;
+    position: absolute;
     z-index: 50;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-#inventory-back-btn span {
-    font-size: 16px;
-    margin-right: 6px;
+.btn-back-professional span {
+    font-size: 1.2em;
     line-height: 1;
+    font-weight: 300;
 }
 
-#inventory-back-btn:hover {
-    background-color: #ffc107;
-    color: #1a1a1a;
+.btn-back-professional:hover {
+    background-color: rgba(255, 193, 7, 0.15);
+    border-color: #ffc107;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
+    transform: translateX(-3px);
+    color: #fff;
+}
+
+.btn-back-professional:active {
+    transform: translateX(-1px);
+}
+
+#back-to-main-btn {
+    /* Uses .btn-back-professional class logic but ID for positioning override if needed */
+    top: auto; /* Allow flex container to position it if in header */
+    left: auto;
+    position: relative; /* Changed from absolute to flow in header */
+    margin-right: 15px;
+}
+
+#inventory-back-btn {
+    /* Uses .btn-back-professional class logic */
+    position: relative;
+    top: auto;
+    left: auto;
 }
 
 #back-to-main-btn:hover, #keep-skin-btn:hover {
@@ -1134,9 +1146,10 @@ main {
 
 #inventory-grid-page {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Slightly wider minimum */
+    gap: 20px;
     width: 100%;
+    padding: 10px;
 }
 
 .sell-button-inventory {
@@ -1145,18 +1158,20 @@ main {
     color: rgba(40, 167, 69, 0.8);
     border: 1px solid #28a745;
     border-radius: 6px;
-    padding: 2px 4px;
-    font-size: 8px;
+    padding: 6px 12px;
+    font-size: 10px; /* Increased font size */
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 80%;
-    margin: 8px auto 0;
+    width: auto; /* Auto width */
+    min-width: 80px;
+    margin: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Horizontal layout */
     align-items: center;
     justify-content: center;
+    gap: 5px;
 }
 
 .sell-button-inventory .btn-price {
@@ -1178,7 +1193,8 @@ main {
 }
 
 .inventory-item {
-    background-color: #2a2a2a;
+    background-color: rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(10px);
     border-radius: 10px;
     padding: 10px;
     text-align: center;
@@ -1233,12 +1249,6 @@ main {
 .inventory-item.rarity-classified { border-bottom: 3px solid var(--rarity-classified-color); }
 .inventory-item.rarity-restricted { border-bottom: 3px solid var(--rarity-restricted-color); }
 .inventory-item.rarity-mil-spec { border-bottom: 3px solid var(--rarity-mil-spec-color); }
-
-/* Specific adjustments for case images */
-[data-case="case1"] img,
-[data-case="case2"] img {
-    transform: scale(1.5);
-}
 
 /* Carousel Styles */
 .carousel-container {
@@ -1410,21 +1420,25 @@ main {
 }
 
 .inventory-card {
-    background: #181818;
-    border-radius: 8px;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
     overflow: hidden;
     position: relative;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    height: 210px;
+    height: 230px; /* Slightly taller */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
 .inventory-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    border-color: #444;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(40, 40, 40, 0.8);
+    z-index: 2;
 }
 
 .inventory-card-top {
@@ -1488,17 +1502,24 @@ main {
 
 .inventory-card-actions {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
+    height: auto; /* Only cover bottom part */
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.6));
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.2s ease;
-    backdrop-filter: blur(2px);
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.inventory-card:hover .inventory-card-actions {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .inventory-card:hover .inventory-card-actions {
