@@ -47,6 +47,18 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
 }
 
+button {
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
 /* Login Modal Styles */
 #login-modal-backdrop {
     position: fixed;
@@ -210,6 +222,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 #header-login-btn {
@@ -231,14 +244,16 @@ header {
 
 .user-profile:hover,
 .user-profile:focus {
-    background-color: rgba(255, 255, 255, 0.15); /* Adjusted hover transparency */
-    border-color: rgba(255, 193, 7, 0.5);
-    box-shadow: 0 0 20px rgba(255, 193, 7, 0.2);
+    background-color: rgba(255, 255, 255, 0.12); /* Slightly brighter on hover */
+    border-color: rgba(255, 193, 7, 0.4);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.15);
     outline: none;
+    transform: translateY(-1px);
 }
 
 .user-profile:active {
     transform: scale(0.98);
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .user-profile-inner {
@@ -253,7 +268,7 @@ header {
 
 .user-profile-inner p {
     margin: 0;
-    font-weight: 400; /* Use Roboto regular for the text */
+    font-weight: 500; /* Medium weight */
 }
 
 #login-modal .user-profile {
@@ -694,7 +709,7 @@ main {
 }
 
 #sell-skin-btn {
-    background: linear-gradient(135deg, #28a745, #218838);
+    background: linear-gradient(135deg, #28a745, #1e7e34);
     color: #ffffff !important;
     border: none;
     min-width: 220px;
@@ -702,7 +717,7 @@ main {
     font-size: 1.2em;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     border-radius: 50px; /* Pill shape for "nicer" look */
     box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
     position: relative;
@@ -713,6 +728,19 @@ main {
     align-items: center;
     justify-content: center;
     line-height: 1.2;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+#sell-skin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 #sell-skin-btn:hover {
@@ -721,8 +749,12 @@ main {
     transform: translateY(-3px) scale(1.02);
 }
 
+#sell-skin-btn:hover::before {
+    opacity: 1;
+}
+
 #sell-skin-btn:active {
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(0.98);
     box-shadow: 0 5px 10px rgba(40, 167, 69, 0.3);
 }
 
@@ -769,12 +801,12 @@ main {
 #open-case-button {
     background: #ffc107;
     border: none;
-    padding: 12px 30px; /* Increased padding */
+    padding: 14px 35px; /* Increased padding */
     display: inline-block;
-    font-size: 12px; /* Increased text size */
-    font-weight: 600;
+    font-size: 13px; /* Slightly larger */
+    font-weight: 700;
     width: auto;
-    min-width: 160px; /* Increased min-width */
+    min-width: 170px;
     text-transform: uppercase;
     cursor: pointer;
     transform: skew(-21deg);
@@ -782,12 +814,14 @@ main {
     position: relative;
     z-index: 1;
     flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
 }
 
 #open-case-button .btn-price {
     font-family: 'Science Gothic', sans-serif;
-    font-size: 0.8em; /* Smaller relative to button text */
-    color: rgba(26, 26, 26, 0.7); /* Faded black/gray to contrast with yellow button */
+    font-size: 0.85em; /* Smaller relative to button text */
+    color: rgba(26, 26, 26, 0.8);
     font-weight: normal;
     transition: color 0.3s ease;
 }
@@ -796,7 +830,7 @@ main {
     display: flex;
     flex-direction: row;
     margin-top: 2px;
-    gap: 8px; /* Spacing between text and price */
+    gap: 10px; /* Spacing between text and price */
     align-items: center;
     justify-content: center;
     line-height: 1.2;
@@ -810,30 +844,32 @@ main {
     bottom: 0;
     right: 100%;
     left: 0;
-    background: rgb(20, 20, 20);
-    opacity: 0;
+    background: #fff;
+    opacity: 0.2;
     z-index: -1;
     transition: all 0.5s;
 }
 
 #open-case-button:hover {
-    color: #fff;
+    transform: skew(-21deg) translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(255, 193, 7, 0.6);
+    background: #ffca28; /* Slightly lighter yellow */
 }
 
 #open-case-button:hover .btn-price {
-    color: rgba(255, 193, 7, 0.6);
+    color: rgba(26, 26, 26, 0.9);
 }
 
-#open-case-button:hover::before {
-    left: 0;
-    right: 0;
-    opacity: 1;
+#open-case-button:active {
+    transform: skew(-21deg) translateY(1px) scale(0.98);
 }
 
 #open-case-button:disabled {
-    background-color: #555;
+    background-color: #444;
     color: #888;
+    box-shadow: none;
     cursor: not-allowed;
+    transform: skew(-21deg);
 }
 
 #case-contents-title {
@@ -1049,20 +1085,20 @@ main {
     color: #ffc107;
     border: 1px solid rgba(255, 193, 7, 0.3);
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 10px 20px; /* Better padding */
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 0.8em;
+    font-size: 0.85em;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     position: absolute;
     z-index: 50;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .btn-back-professional span {
@@ -1080,7 +1116,7 @@ main {
 }
 
 .btn-back-professional:active {
-    transform: translateX(-1px);
+    transform: translateX(-1px) scale(0.98);
 }
 
 #back-to-main-btn {
@@ -1104,19 +1140,30 @@ main {
 }
 
 #inventory-btn {
-    background-color: #2a2a2a;
+    background-color: transparent;
     color: #ffc107;
-    border: 1px solid #ffc107;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-weight: bold;
+    border: 1px solid rgba(255, 193, 7, 0.6);
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 0.85em;
 }
 
 #inventory-btn:hover {
-    background-color: #ffc107;
-    color: #1a1a1a;
+    background-color: rgba(255, 193, 7, 0.15);
+    border-color: #ffc107;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+#inventory-btn:active {
+    transform: translateY(-1px) scale(0.98);
 }
 
 
@@ -1153,43 +1200,49 @@ main {
 }
 
 .sell-button-inventory {
-    background-color: rgba(40, 167, 69, 0.15);
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.2), rgba(40, 167, 69, 0.1));
     backdrop-filter: blur(10px);
-    color: rgba(40, 167, 69, 0.8);
-    border: 1px solid #28a745;
+    color: #4cd964;
+    border: 1px solid rgba(40, 167, 69, 0.6);
     border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 10px; /* Increased font size */
-    font-weight: bold;
+    padding: 8px 16px;
+    font-size: 11px; /* Increased font size */
+    font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
     width: auto; /* Auto width */
-    min-width: 80px;
+    min-width: 90px;
     margin: 0;
     display: flex;
     flex-direction: row; /* Horizontal layout */
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .sell-button-inventory .btn-price {
     font-family: 'Science Gothic', sans-serif;
-    font-size: 0.9em;
-    color: rgba(40, 167, 69, 0.6); /* Faded green match */
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.8);
     transition: color 0.3s ease;
 }
 
 .sell-button-inventory:hover {
-    background-color: #28a745;
-    color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+    background: #28a745;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
     transform: translateY(-2px);
+    border-color: #28a745;
 }
 
 .sell-button-inventory:hover .btn-price {
-    color: rgba(26, 26, 26, 0.7);
+    color: #fff;
+}
+
+.sell-button-inventory:active {
+    transform: translateY(-1px) scale(0.98);
 }
 
 .inventory-item {
@@ -1557,33 +1610,19 @@ main {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     cursor: pointer;
-    padding: 5px 0;
+    padding: 8px 12px;
     position: relative;
-    transition: color 0.3s ease;
-    font-size: 0.75em; /* Smaller font */
-}
-
-#scratchcard-btn::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 5px;
-    left: 0;
-    background-color: #ffc107;
-    transition: width 0.3s ease;
-    box-shadow: 0 0 10px #ffc107;
+    transition: all 0.3s ease;
+    font-size: 0.85em; /* Smaller font */
+    border-radius: 4px;
 }
 
 #scratchcard-btn:hover {
     color: #ffc107;
-    text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
-}
-
-#scratchcard-btn:hover::after {
-    width: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    text-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
 }
 
 /* Scratchcard Modal */
