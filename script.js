@@ -347,7 +347,10 @@ function startRoulette() {
     userInventory.push(currentWinningSkin);
     localStorage.setItem('userInventory', JSON.stringify(userInventory));
 
-    setTimeout(() => {
+    // Use transitionend event for better timing accuracy
+    const handleAnimationEnd = () => {
+        roulette.removeEventListener('transitionend', handleAnimationEnd);
+
         if (isRouletteSpinning) { // If user is still here
             if (winningItemElement) {
                 winningItemElement.classList.add('winner');
@@ -361,7 +364,9 @@ function startRoulette() {
             resultButtons.style.display = 'flex';
         }
         isRouletteSpinning = false; // Reset state after animation finishes
-    }, 7500); // slightly shorter than 8s to match new animation duration
+    };
+
+    roulette.addEventListener('transitionend', handleAnimationEnd);
 }
 
 function closeOpeningScreen() {
