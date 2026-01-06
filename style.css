@@ -369,14 +369,9 @@ main {
     filter: drop-shadow(0 10px 20px rgba(255, 193, 7, 0.3));
 }
 
-#case1 img, #case2 img {
+#case1 img, #case2 img, #case3 img {
     width: 150px;
     height: 150px;
-}
-
-#case3 img {
-    width: 110px;
-    height: 110px;
 }
 
 .case h3 {
@@ -1613,7 +1608,7 @@ main {
 }
 
 /* Scratchcard Button - Professional Text Link Style */
-#scratchcard-btn {
+#scratchcard-btn, #upgrade-btn {
     background: transparent;
     color: #fff;
     border: none;
@@ -1627,9 +1622,10 @@ main {
     transition: all 0.3s ease;
     font-size: 0.85em; /* Smaller font */
     border-radius: 4px;
+    display: flex; /* Ensure flex for centering if needed */
 }
 
-#scratchcard-btn:hover {
+#scratchcard-btn:hover, #upgrade-btn:hover {
     color: #ffc107;
     background-color: rgba(255, 255, 255, 0.05);
     text-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
