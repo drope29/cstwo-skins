@@ -111,6 +111,54 @@ const cases = {
             { name: 'Navaja Knife | Boreal Forest', rarity: 'covert', image: 'images/caixa3/navaja-boreal.png', price: 500.00 },
             { name: 'Shadow Daggers | Rust Coat', rarity: 'covert', image: 'images/caixa3/shadow-rust-coat.png', price: 450.00 }
         ]
+    },
+    case4: {
+        name: 'Caixa Lendária',
+        price: 50.00,
+        skins: [
+            { name: 'AWP | Dragon Lore', rarity: 'covert', image: 'images/caixa4/awp-dragon-lore.png', price: 45000.00 },
+            { name: 'M4A4 | Howl', rarity: 'covert', image: 'images/caixa4/m4a4-howl.png', price: 25000.00 },
+            { name: 'AK-47 | Wild Lotus', rarity: 'classified', image: 'images/caixa4/ak47-wild-lotus.png', price: 18000.00 },
+            { name: 'AWP | Medusa', rarity: 'classified', image: 'images/caixa4/awp-medusa.png', price: 12000.00 },
+            { name: 'M4A1-S | Welcome to the Jungle', rarity: 'classified', image: 'images/caixa4/m4a1s-welcome-to-the-jungle.png', price: 8000.00 },
+            { name: 'AWP | The Prince', rarity: 'restricted', image: 'images/caixa4/awp-the-prince.png', price: 6000.00 },
+            { name: 'AK-47 | X-Ray', rarity: 'restricted', image: 'images/caixa4/ak47-xray.png', price: 4500.00 },
+            { name: 'Glock-18 | Fade', rarity: 'restricted', image: 'images/caixa4/glock18_vogue.png', price: 3500.00 },
+            { name: 'USP-S | The Traitor', rarity: 'restricted', image: 'images/caixa4/usp-kill-confirmed.png', price: 150.00 },
+            { name: 'P250 | Nuclear Threat', rarity: 'restricted', image: 'images/caixa4/p250_see_ya_later.png', price: 300.00 },
+            { name: 'Five-SeveN | Hyper Beast', rarity: 'mil-spec', image: 'images/caixa4/five_seven_case_hardened.png', price: 200.00 },
+            { name: 'SSG 08 | Blood in the Water', rarity: 'mil-spec', image: 'images/caixa4/awp_asiimov.png', price: 250.00 },
+            { name: 'Galil AR | Sugar Rush', rarity: 'mil-spec', image: 'images/caixa4galil-chatterbox.png', price: 120.00 },
+            { name: 'SG 553 | Integrale', rarity: 'mil-spec', image: 'images/caixa4/famas-roll-cage.png', price: 180.00 },
+            { name: 'MP7 | Bloodsport', rarity: 'mil-spec', image: 'images/caixa4/mp9_starlight_protector.png', price: 50.00 },
+            { name: 'P90 | Emerald Dragon', rarity: 'mil-spec', image: 'images/caixa4/p90_asiimov.png', price: 400.00 },
+            { name: 'SCAR-20 | Splash Jam', rarity: 'mil-spec', image: 'images/caixa4/awp_gungnir.png', price: 80.00 },
+            { name: 'MAC-10 | Graven', rarity: 'mil-spec', image: 'images/caixa4/mac10_neon_rider.png', price: 90.00 }
+        ]
+    },
+    case5: {
+        name: 'Caixa Vulpina',
+        price: 35.00,
+        skins: [
+            { name: 'Desert Eagle | Fennec Fox', rarity: 'covert', image: 'images/caixa1/deagle_printstream.png', price: 2500.00 },
+            { name: 'AWP | Wildfire', rarity: 'covert', image: 'images/caixa1/awp_asiimov.png', price: 800.00 },
+            { name: 'M4A1-S | Player Two', rarity: 'classified', image: 'images/caixa2/m4a1-printstream.png', price: 400.00 },
+            { name: 'AK-47 | Legion of Anubis', rarity: 'classified', image: 'images/caixa2/ak47_gold_arabesque.png', price: 150.00 },
+            { name: 'M4A4 | Cyber Security', rarity: 'classified', image: 'images/caixa1/m4a4_desolate_space.png', price: 120.00 },
+            { name: 'USP-S | Cortex', rarity: 'restricted', image: 'images/caixa2/usp-kill-confirmed.png', price: 80.00 },
+            { name: 'Glock-18 | Bullet Queen', rarity: 'restricted', image: 'images/caixa1/glock18_vogue.png', price: 200.00 },
+            { name: 'P250 | Bengal Tiger', rarity: 'restricted', image: 'images/caixa1/p250_see_ya_later.png', price: 100.00 },
+            { name: 'SSG 08 | Big Iron', rarity: 'restricted', image: 'images/caixa1/awp_gungnir.png', price: 60.00 },
+            { name: 'XM1014 | Incinegator', rarity: 'restricted', image: 'images/caixa2/sawed_off_the_kraken.png', price: 50.00 },
+            { name: 'MP9 | Food Chain', rarity: 'mil-spec', image: 'images/caixa2/mp9_starlight_protector.png', price: 30.00 },
+            { name: 'MAC-10 | Stalker', rarity: 'mil-spec', image: 'images/caixa1/mac10_neon_rider.png', price: 80.00 },
+            { name: 'UMP-45 | Momentum', rarity: 'mil-spec', image: 'images/caixa1/ump45_primal_saber.png', price: 25.00 },
+            { name: 'MAG-7 | Justice', rarity: 'mil-spec', image: 'images/caixa2/sawed_off_the_kraken.png', price: 20.00 },
+            { name: 'Nova | Hyper Beast', rarity: 'mil-spec', image: 'images/caixa2/sawed_off_the_kraken.png', price: 40.00 },
+            { name: 'P90 | Tigris', rarity: 'mil-spec', image: 'images/caixa1/p90_asiimov.png', price: 15.00 },
+            { name: 'Galil AR | Stone Cold', rarity: 'mil-spec', image: 'images/caixa2/galil_ar_cerberus.png', price: 10.00 },
+            { name: 'FAMAS | Commemoration', rarity: 'mil-spec', image: 'images/caixa2/famas-roll-cage.png', price: 70.00 }
+        ]
     }
 };
 
