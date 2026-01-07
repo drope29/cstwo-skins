@@ -875,13 +875,18 @@ closeScratchcardBtn.addEventListener('click', closeScratchcard);
 const originalUpdateUIForLoginState = updateUIForLoginState;
 updateUIForLoginState = function() {
     originalUpdateUIForLoginState();
+    const upgradeBtn = document.getElementById('upgrade-btn');
     if (isLoggedIn) {
         scratchcardBtn.style.display = 'block';
+        if (upgradeBtn) upgradeBtn.style.display = 'flex';
     } else {
         scratchcardBtn.style.display = 'none';
+        if (upgradeBtn) upgradeBtn.style.display = 'none';
     }
 }
 // Re-run it immediately in case we missed the initial load
 if (typeof isLoggedIn !== 'undefined' && isLoggedIn) {
     scratchcardBtn.style.display = 'block';
+    const upgradeBtn = document.getElementById('upgrade-btn');
+    if (upgradeBtn) upgradeBtn.style.display = 'flex';
 }
