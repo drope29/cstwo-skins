@@ -111,6 +111,38 @@ const cases = {
             { name: 'Navaja Knife | Boreal Forest', rarity: 'covert', image: 'images/caixa3/navaja-boreal.png', price: 500.00 },
             { name: 'Shadow Daggers | Rust Coat', rarity: 'covert', image: 'images/caixa3/shadow-rust-coat.png', price: 450.00 }
         ]
+    },
+    case4: {
+        name: 'Caixa Lendária',
+        price: 50.00,
+        skins: [
+            { name: 'AWP | Gungnir', rarity: 'covert', image: 'images/caixa1/awp_gungnir.png', price: 50000.00 },
+            { name: 'AK-47 | Gold Arabesque', rarity: 'covert', image: 'images/caixa2/ak47_gold_arabesque.png', price: 12000.00 },
+            { name: 'M4A1-S | Knight', rarity: 'covert', image: 'images/caixa1/m4a1-knight.png', price: 9000.00 },
+            { name: 'AK-47 | Fire Serpent', rarity: 'covert', image: 'images/caixa2/ak47_fire_serpent.png', price: 4000.00 },
+            { name: 'AUG | Akihabara Accept', rarity: 'covert', image: 'images/caixa2/aug_akihabara_accept.png', price: 3000.00 },
+            { name: 'M4A4 | The Emperor', rarity: 'classified', image: 'images/caixa1/m4a4_the_emperor.png', price: 800.00 },
+            { name: 'USP-S | Kill Confirmed', rarity: 'classified', image: 'images/caixa2/usp-kill-confirmed.png', price: 500.00 },
+            { name: 'Galil AR | Cerberus', rarity: 'restricted', image: 'images/caixa2/galil_ar_cerberus.png', price: 100.00 },
+            { name: 'Sawed-Off | The Kraken', rarity: 'restricted', image: 'images/caixa2/sawed_off_the_kraken.png', price: 60.00 },
+            { name: 'Tec-9 | Isaac', rarity: 'mil-spec', image: 'images/caixa1/tec9-isaac.png', price: 10.00 }
+        ]
+    },
+    case5: {
+        name: 'Caixa Neon',
+        price: 15.00,
+        skins: [
+            { name: 'M4A1-S | Printstream', rarity: 'covert', image: 'images/caixa2/m4a1-printstream.png', price: 1800.00 },
+            { name: 'Desert Eagle | Printstream', rarity: 'covert', image: 'images/caixa1/deagle_printstream.png', price: 450.00 },
+            { name: 'AWP | Asiimov', rarity: 'covert', image: 'images/caixa1/awp_asiimov.png', price: 500.00 },
+            { name: 'AK-47 | Vulcan', rarity: 'classified', image: 'images/caixa2/ak-vulcan.png', price: 2500.00 },
+            { name: 'MAC-10 | Neon Rider', rarity: 'classified', image: 'images/caixa1/mac10_neon_rider.png', price: 120.00 },
+            { name: 'MP9 | Starlight Protector', rarity: 'classified', image: 'images/caixa2/mp9_starlight_protector.png', price: 150.00 },
+            { name: 'Glock-18 | Vogue', rarity: 'restricted', image: 'images/caixa1/glock18_vogue.png', price: 70.00 },
+            { name: 'P250 | See Ya Later', rarity: 'restricted', image: 'images/caixa1/p250_see_ya_later.png', price: 50.00 },
+            { name: 'FAMAS | Mecha Industries', rarity: 'restricted', image: 'images/caixa1/famas_mecha_industries.png', price: 35.00 },
+            { name: 'Galil AR | Chatterbox', rarity: 'mil-spec', image: 'images/caixa1/galil-chatterbox.png', price: 80.00 }
+        ]
     }
 };
 
