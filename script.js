@@ -616,6 +616,19 @@ function openScratchcard() {
     generateScratchcard();
 }
 
+function getWeekNumber() {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+    const yearStart = new Date(d.getFullYear(), 0, 1);
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function seededRandom(seed) {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+
 function startCooldownTimer(finishTime) {
     const instruction = document.querySelector('.scratch-instruction');
     instruction.classList.add('cooldown-timer');
@@ -678,14 +691,34 @@ function generateScratchcard(isLocked = false) {
     });
 
     // Remove duplicates based on name to have a diverse pool
-    const uniqueSkins = Array.from(new Map(allSkins.map(item => [item.name, item])).values());
+    let uniqueSkins = Array.from(new Map(allSkins.map(item => [item.name, item])).values());
 
-    // Sort by price descending
-    uniqueSkins.sort((a, b) => b.price - a.price);
+    // --- Weekly Rotation Logic ---
+    // Filter the pool of skins to a weekly subset to "rotate" the group of skins
+    const currentWeek = getWeekNumber();
+    const currentYear = new Date().getFullYear();
+    // Unique seed per week
+    const weekSeed = currentWeek + (currentYear * 52);
+
+    // Shuffle all skins deterministically based on week
+    // We use a simple Fisher-Yates shuffle with seeded random
+    for (let i = uniqueSkins.length - 1; i > 0; i--) {
+        const r = seededRandom(weekSeed + i); // Use seeded random
+        const j = Math.floor(r * (i + 1));
+        [uniqueSkins[i], uniqueSkins[j]] = [uniqueSkins[j], uniqueSkins[i]];
+    }
+
+    // Select a subset (e.g., top 40 skins from the shuffled list) to be the "Weekly Pool"
+    // This ensures that for a whole week, only these 40 skins can appear,
+    // effectively "changing the group of skins" every week.
+    const weeklyPool = uniqueSkins.slice(0, 40);
+
+    // Sort by price descending for consistency in logic later if needed
+    weeklyPool.sort((a, b) => b.price - a.price);
 
     const selectedSkins = [];
 
-    // Generate 16 items using roulette rarity logic
+    // Generate 16 items using roulette rarity logic FROM THE WEEKLY POOL
     for (let i = 0; i < 16; i++) {
         const rand = Math.random() * 100;
         let cumulativePercentage = 0;
@@ -704,14 +737,21 @@ function generateScratchcard(isLocked = false) {
             selectedRarity = rarities[rarities.length - 1];
         }
 
-        const skinsOfSelectedRarity = uniqueSkins.filter(skin => skin.rarity === selectedRarity);
+        // Filter from weekly pool instead of all skins
+        const skinsOfSelectedRarity = weeklyPool.filter(skin => skin.rarity === selectedRarity);
 
         if (skinsOfSelectedRarity.length > 0) {
             const randomIndex = Math.floor(Math.random() * skinsOfSelectedRarity.length);
             selectedSkins.push(skinsOfSelectedRarity[randomIndex]);
         } else {
-            // Fallback: Pick any random skin if rarity pool is empty (unlikely)
-            selectedSkins.push(uniqueSkins[Math.floor(Math.random() * uniqueSkins.length)]);
+            // Fallback: Pick any random skin from weekly pool if rarity pool is empty
+            // If weekly pool is too small, fallback to any skin from weekly pool
+            if (weeklyPool.length > 0) {
+                 selectedSkins.push(weeklyPool[Math.floor(Math.random() * weeklyPool.length)]);
+            } else {
+                 // Extreme fallback (should not happen)
+                 selectedSkins.push(uniqueSkins[0]);
+            }
         }
     }
 
