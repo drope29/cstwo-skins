@@ -123,17 +123,17 @@ const cases = {
             { name: 'M4A1-S | Welcome to the Jungle', rarity: 'classified', image: 'images/caixa4/m4a1s-welcome-to-the-jungle.png', price: 8000.00 },
             { name: 'AWP | The Prince', rarity: 'restricted', image: 'images/caixa4/awp-the-prince.png', price: 6000.00 },
             { name: 'AK-47 | X-Ray', rarity: 'restricted', image: 'images/caixa4/ak47-xray.png', price: 4500.00 },
-            { name: 'Glock-18 | Fade', rarity: 'restricted', image: 'images/caixa4/glock18_vogue.png', price: 3500.00 },
-            { name: 'USP-S | The Traitor', rarity: 'restricted', image: 'images/caixa4/usp-kill-confirmed.png', price: 150.00 },
-            { name: 'P250 | Nuclear Threat', rarity: 'restricted', image: 'images/caixa4/p250_see_ya_later.png', price: 300.00 },
-            { name: 'Five-SeveN | Hyper Beast', rarity: 'mil-spec', image: 'images/caixa4/five_seven_case_hardened.png', price: 200.00 },
-            { name: 'SSG 08 | Blood in the Water', rarity: 'mil-spec', image: 'images/caixa4/awp_asiimov.png', price: 250.00 },
-            { name: 'Galil AR | Sugar Rush', rarity: 'mil-spec', image: 'images/caixa4galil-chatterbox.png', price: 120.00 },
-            { name: 'SG 553 | Integrale', rarity: 'mil-spec', image: 'images/caixa4/famas-roll-cage.png', price: 180.00 },
-            { name: 'MP7 | Bloodsport', rarity: 'mil-spec', image: 'images/caixa4/mp9_starlight_protector.png', price: 50.00 },
-            { name: 'P90 | Emerald Dragon', rarity: 'mil-spec', image: 'images/caixa4/p90_asiimov.png', price: 400.00 },
-            { name: 'SCAR-20 | Splash Jam', rarity: 'mil-spec', image: 'images/caixa4/awp_gungnir.png', price: 80.00 },
-            { name: 'MAC-10 | Graven', rarity: 'mil-spec', image: 'images/caixa4/mac10_neon_rider.png', price: 90.00 }
+            { name: 'Glock-18 | Fade', rarity: 'restricted', image: 'images/caixa4/glock-fade.png', price: 3500.00 },
+            { name: 'USP-S | The Traitor', rarity: 'restricted', image: 'images/caixa4/usp-the-traitor.png', price: 150.00 },
+            { name: 'P250 | Nuclear Threat', rarity: 'restricted', image: 'images/caixa4/p250-nuclear-threat.png', price: 300.00 },
+            { name: 'Five-SeveN | Hyper Beast', rarity: 'mil-spec', image: 'images/caixa4/five-seven-hyper-beast.png', price: 200.00 },
+            { name: 'SSG 08 | Blood in the Water', rarity: 'mil-spec', image: 'images/caixa4/ssg-blood-in-the-water.png', price: 250.00 },
+            { name: 'Galil AR | Sugar Rush', rarity: 'mil-spec', image: 'images/caixa4/galil-sugar-rush.png', price: 120.00 },
+            { name: 'SG 553 | Integrale', rarity: 'mil-spec', image: 'images/caixa4/sg-integrale.png', price: 180.00 },
+            { name: 'MP7 | Bloodsport', rarity: 'mil-spec', image: 'images/caixa4/mp7-bloodsport.png', price: 50.00 },
+            { name: 'P90 | Emerald Dragon', rarity: 'mil-spec', image: 'images/caixa4/p90-emerald-dragon.png', price: 400.00 },
+            { name: 'SCAR-20 | Splash Jam', rarity: 'mil-spec', image: 'images/caixa4/scar20-splash-jam.png', price: 80.00 },
+            { name: 'MAC-10 | Graven', rarity: 'mil-spec', image: 'images/caixa4/mac10-graven.png', price: 90.00 }
         ]
     },
     case5: {
