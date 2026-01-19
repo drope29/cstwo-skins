@@ -25,6 +25,7 @@ const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
 const sellSkinBtn = document.getElementById('sell-skin-btn');
+const openAgainBtn = document.getElementById('open-again-btn');
 const openCaseButton = document.getElementById('open-case-button');
 const resultButtons = document.getElementById('result-buttons');
 const caseItemsGrid = document.getElementById('case-items-grid');
@@ -267,6 +268,7 @@ function showCaseOpeningScreen(caseId) {
     backToMainBtn.style.display = 'flex'; // Show back button in header
     caseNameTitle.textContent = selectedCase.name;
     openCaseButton.querySelector('span').innerHTML = `Abrir Caixa <span class="btn-price">R$ ${selectedCase.price.toFixed(2).replace('.', ',')}</span>`;
+    openAgainBtn.querySelector('.btn-price').textContent = `R$ ${selectedCase.price.toFixed(2).replace('.', ',')}`;
     caseItemsGrid.innerHTML = '';
 
     caseItemsGrid.innerHTML = '';
@@ -465,6 +467,32 @@ function sellSkin() {
     }
 }
 
+function handleOpenAgain() {
+    if (!currentCaseId || !isLoggedIn || isRouletteSpinning) return;
+
+    const selectedCase = cases[currentCaseId];
+    if (userBalance < selectedCase.price) {
+        alert('Saldo insuficiente!');
+        return;
+    }
+
+    // Hide result buttons immediately to prevent double clicks
+    resultButtons.style.display = 'none';
+
+    // Show opening button temporarily (it will be disabled by startRoulette logic if needed,
+    // but startRoulette assumes we are starting from a clean state or button click)
+    openCaseButton.style.display = 'inline-block';
+
+    // Reset previous winner state
+    const oldWinner = document.querySelector('.roulette-item.winner');
+    if (oldWinner) {
+        oldWinner.classList.remove('winner');
+    }
+
+    // Trigger the spin logic
+    startRoulette();
+}
+
 function openInventoryPage() {
     window.location.href = 'inventory.html';
 }
@@ -485,6 +513,7 @@ document.querySelectorAll('.case').forEach(caseElement => {
 openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
 sellSkinBtn.addEventListener('click', sellSkin);
+openAgainBtn.addEventListener('click', handleOpenAgain);
 inventoryBtn.addEventListener('click', openInventoryPage);
 
 // --- Initial Page Load ---
