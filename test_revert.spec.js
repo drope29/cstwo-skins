@@ -6,6 +6,7 @@ test.describe('Image Path Verification', () => {
     await page.goto('http://localhost:8080');
 
     // 1. Simulate login
+    await page.click('#header-login-btn');
     await page.click('#login-btn');
     await expect(page.locator('#main-container')).toBeVisible();
 
@@ -25,7 +26,7 @@ test.describe('Image Path Verification', () => {
 
     // Check the src of the first image to ensure it's correct
     const firstSkinImagePath = await firstSkinImage.getAttribute('src');
-    expect(firstSkinImagePath).toContain('images/awp_asiimov.png');
+    expect(firstSkinImagePath).toContain('images/caixa1/awp_asiimov.png');
 
     // Log all image paths for debugging
     const allImagePaths = await skinImages.evaluateAll(images => images.map(img => img.src));
