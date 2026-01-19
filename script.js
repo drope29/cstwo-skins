@@ -2,9 +2,10 @@
 let userBalance = 1000.00;
 let currentCaseId = null;
 let userInventory = [];
-let currentWinningSkin = null;
+let currentWinningSkins = [];
 let isLoggedIn = false;
 let isRouletteSpinning = false;
+let selectedCaseCount = 1;
 
 // --- DOM Elements ---
 const userBalanceSpan = document.getElementById('user-balance');
@@ -18,13 +19,15 @@ const userInfo = document.querySelector('.user-info');
 const caseOpeningScreen = document.getElementById('case-opening-screen');
 const backToMainBtn = document.getElementById('back-to-main-btn');
 const caseNameTitle = document.getElementById('case-name-title');
-const roulette = document.getElementById('roulette');
+const rouletteArea = document.getElementById('roulette-area');
+const multiCaseSelector = document.getElementById('multi-case-selector');
 const winningSkinModal = document.getElementById('winning-skin-modal');
 const winningSkinInfo = document.getElementById('winning-skin-info');
 const winningSkinImage = document.getElementById('winning-skin-image');
 const winningSkinName = document.getElementById('winning-skin-name');
 const winningSkinRarity = document.getElementById('winning-skin-rarity');
 const sellSkinBtn = document.getElementById('sell-skin-btn');
+const openAgainBtn = document.getElementById('open-again-btn');
 const openCaseButton = document.getElementById('open-case-button');
 const resultButtons = document.getElementById('result-buttons');
 const caseItemsGrid = document.getElementById('case-items-grid');
@@ -240,19 +243,89 @@ function updateUserBalance() {
     }
 }
 
-function resetOpeningScreen() {
-    roulette.style.transition = 'none';
-    roulette.style.transform = 'translateX(0)';
-    roulette.innerHTML = '';
+function renderRoulettes(count) {
+    rouletteArea.innerHTML = '';
+    rouletteArea.className = `layout-${count}`;
 
+    for (let i = 0; i < count; i++) {
+        const container = document.createElement('div');
+        container.classList.add('roulette-container');
+        container.innerHTML = `
+            <div class="roulette-pin"></div>
+            <div class="roulette" id="roulette-${i}"></div>
+        `;
+        rouletteArea.appendChild(container);
+    }
+}
+
+function updateCaseCount(count) {
+    selectedCaseCount = parseInt(count);
+
+    // Update active button state
+    document.querySelectorAll('.case-count-btn').forEach(btn => {
+        if (parseInt(btn.dataset.count) === selectedCaseCount) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    if (currentCaseId) {
+        const selectedCase = cases[currentCaseId];
+        const totalPrice = selectedCase.price * selectedCaseCount;
+        openCaseButton.querySelector('span').innerHTML = `Abrir ${selectedCaseCount > 1 ? selectedCaseCount + ' Caixas' : 'Caixa'} <span class="btn-price">R$ ${totalPrice.toFixed(2).replace('.', ',')}</span>`;
+        openAgainBtn.querySelector('span').innerHTML = `Abrir Novamente <span class="btn-price">R$ ${totalPrice.toFixed(2).replace('.', ',')}</span>`;
+    }
+
+    renderRoulettes(selectedCaseCount);
+
+    // Fill roulettes with preview
+    if (currentCaseId) {
+        fillRoulettesWithPreview(currentCaseId);
+    }
+}
+
+function fillRoulettesWithPreview(caseId) {
+    const selectedCase = cases[caseId];
+    const skinsToDisplay = selectedCase.type === 'knife'
+        ? [...selectedCase.skins].sort((a, b) => b.price - a.price)
+        : [...selectedCase.skins].sort((a, b) => {
+            const rarityOrder = { 'covert': 1, 'classified': 2, 'restricted': 3, 'mil-spec': 4 };
+            return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+          });
+
+    const previewItems = [...skinsToDisplay, ...skinsToDisplay, ...skinsToDisplay];
+
+    for (let i = 0; i < selectedCaseCount; i++) {
+        const rouletteEl = document.getElementById(`roulette-${i}`);
+        if (!rouletteEl) continue;
+        rouletteEl.innerHTML = '';
+        rouletteEl.style.transition = 'none';
+        rouletteEl.style.transform = 'translateX(0)';
+
+        previewItems.forEach(item => {
+            const rouletteItem = document.createElement('div');
+            rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+            rouletteItem.innerHTML = `<div class="skin-image-wrapper"><div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"></div><p>${item.name}</p>`;
+            rouletteEl.appendChild(rouletteItem);
+        });
+    }
+}
+
+function resetOpeningScreen() {
     // Reset buttons logic
     openCaseButton.style.display = 'inline-block';
     resultButtons.style.display = 'none';
     openCaseButton.disabled = false;
 
-    const oldWinner = document.querySelector('.roulette-item.winner');
-    if (oldWinner) {
-        oldWinner.classList.remove('winner');
+    // Enable selector buttons
+    document.querySelectorAll('.case-count-btn').forEach(btn => btn.disabled = false);
+
+    // Re-render empty/preview roulettes
+    renderRoulettes(selectedCaseCount);
+
+    if (currentCaseId) {
+        fillRoulettesWithPreview(currentCaseId);
     }
 }
 
@@ -262,13 +335,18 @@ function showCaseOpeningScreen(caseId) {
         return;
     }
     currentCaseId = caseId;
-    const selectedCase = cases[caseId];
+
+    // Reset to default 1 or keep selection? Usually reset is safer but keeping is nice.
+    // Let's keep selectedCaseCount but refresh UI
+    updateCaseCount(selectedCaseCount);
+
     resetOpeningScreen();
     backToMainBtn.style.display = 'flex'; // Show back button in header
-    caseNameTitle.textContent = selectedCase.name;
-    openCaseButton.querySelector('span').innerHTML = `Abrir Caixa <span class="btn-price">R$ ${selectedCase.price.toFixed(2).replace('.', ',')}</span>`;
-    caseItemsGrid.innerHTML = '';
 
+    const selectedCase = cases[caseId];
+    caseNameTitle.textContent = selectedCase.name;
+
+    caseItemsGrid.innerHTML = '';
     caseItemsGrid.innerHTML = '';
 
     if (selectedCase.type === 'knife') {
@@ -322,6 +400,7 @@ function showCaseOpeningScreen(caseId) {
     }
 
     // This variable needs to be accessible outside the if/else blocks
+    // (Previous logic for skinsToDisplay sorting matches search block)
     const skinsToDisplay = selectedCase.type === 'knife'
         ? [...selectedCase.skins].sort((a, b) => b.price - a.price)
         : [...selectedCase.skins].sort((a, b) => {
@@ -329,14 +408,8 @@ function showCaseOpeningScreen(caseId) {
             return rarityOrder[a.rarity] - rarityOrder[b.rarity];
           });
 
-
-    const previewItems = [...skinsToDisplay, ...skinsToDisplay, ...skinsToDisplay];
-    previewItems.forEach(item => {
-        const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<div class="skin-image-wrapper"><div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"></div><p>${item.name}</p>`;
-        roulette.appendChild(rouletteItem);
-    });
+    // Fill roulettes with preview
+    fillRoulettesWithPreview(caseId);
 
     mainContainer.style.display = 'none';
     caseOpeningScreen.style.display = 'flex';
@@ -344,91 +417,114 @@ function showCaseOpeningScreen(caseId) {
 
 function startRoulette() {
     if (!currentCaseId || !isLoggedIn || isRouletteSpinning) return;
+
     const selectedCase = cases[currentCaseId];
-    if (userBalance < selectedCase.price) {
+    const totalCost = selectedCase.price * selectedCaseCount;
+
+    if (userBalance < totalCost) {
         alert('Saldo insuficiente!');
         return;
     }
-    userBalance -= selectedCase.price;
+
+    userBalance -= totalCost;
     updateUserBalance();
+
     openCaseButton.disabled = true;
+    document.querySelectorAll('.case-count-btn').forEach(btn => btn.disabled = true);
     isRouletteSpinning = true;
-    roulette.style.transition = 'none';
-    roulette.style.transform = 'translateX(0)';
-    roulette.innerHTML = '';
+
+    currentWinningSkins = [];
     const skins = selectedCase.skins;
-    if (selectedCase.type === 'knife') {
-        currentWinningSkin = getPriceWeightedRandomSkin(skins);
-    } else {
-        currentWinningSkin = getWeightedRandomSkin(skins);
-    }
-    let winningItemElement = null;
-    const rouletteItems = [];
-    for (let i = 0; i < 50; i++) {
-        rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
-    }
-    rouletteItems[45] = currentWinningSkin;
-    rouletteItems.forEach((item, index) => {
-        const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<div class="skin-image-wrapper"><div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"></div><p>${item.name}</p>`;
-        roulette.appendChild(rouletteItem);
-        if (index === 45) {
-            winningItemElement = rouletteItem;
+    let finishedAnimations = 0;
+
+    // Loop through each roulette instance
+    for (let i = 0; i < selectedCaseCount; i++) {
+        const rouletteEl = document.getElementById(`roulette-${i}`);
+        if (!rouletteEl) continue;
+
+        rouletteEl.style.transition = 'none';
+        rouletteEl.style.transform = 'translateX(0)';
+        rouletteEl.innerHTML = '';
+
+        // Determine Winner
+        let winningSkin;
+        if (selectedCase.type === 'knife') {
+            winningSkin = getPriceWeightedRandomSkin(skins);
+        } else {
+            winningSkin = getWeightedRandomSkin(skins);
         }
-    });
+        currentWinningSkins.push(winningSkin);
 
-    setTimeout(() => {
-        const itemWidth = 180; // Width (170px) + Margin (10px)
-        const containerWidth = roulette.parentElement.offsetWidth;
-        // Make the stop position slightly random but always centered on the item
-        const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.5);
-        const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
-        const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
+        // Populate Roulette
+        let winningItemElement = null;
+        const rouletteItems = [];
+        for (let j = 0; j < 50; j++) {
+            rouletteItems.push(skins[Math.floor(Math.random() * skins.length)]);
+        }
+        rouletteItems[45] = winningSkin;
 
-        // Smoother animation: cubic-bezier(0.2, 0, 0.2, 1) and 7s duration
-        roulette.style.transition = 'transform 7s cubic-bezier(0.15, 0.85, 0.35, 1)';
-        roulette.style.transform = `translateX(-${scrollAmount}px)`;
-    }, 100);
-
-    // IMMEDIATE KEEP: Add to inventory immediately at start of spin
-    userInventory.push(currentWinningSkin);
-    localStorage.setItem('userInventory', JSON.stringify(userInventory));
-
-    // Use transitionend event for better timing accuracy
-    const handleAnimationEnd = () => {
-        roulette.removeEventListener('transitionend', handleAnimationEnd);
-
-        if (isRouletteSpinning) { // If user is still here
-            if (winningItemElement) {
-                winningItemElement.classList.add('winner');
+        rouletteItems.forEach((item, index) => {
+            const rouletteItem = document.createElement('div');
+            rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
+            rouletteItem.innerHTML = `<div class="skin-image-wrapper"><div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"></div><p>${item.name}</p>`;
+            rouletteEl.appendChild(rouletteItem);
+            if (index === 45) {
+                winningItemElement = rouletteItem;
             }
-            // Swap buttons
-            openCaseButton.style.display = 'none';
+        });
 
-            // Update Sell Button Text with Price
-            sellSkinBtn.innerHTML = `VENDER <span class="btn-price">R$ ${currentWinningSkin.price.toFixed(2).replace('.', ',')}</span>`;
+        // Trigger Animation (staggered slightly or same time?) -> Same time is better for sync feel
+        setTimeout(() => {
+            const itemWidth = 180;
+            const containerWidth = rouletteEl.parentElement.offsetWidth;
+            const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.5);
+            const winningItemCenter = (itemWidth * 45) + (itemWidth / 2);
+            const scrollAmount = winningItemCenter - (containerWidth / 2) + randomOffset;
 
-            resultButtons.style.display = 'flex';
-        }
-        isRouletteSpinning = false; // Reset state after animation finishes
-    };
+            rouletteEl.style.transition = 'transform 7s cubic-bezier(0.15, 0.85, 0.35, 1)';
+            rouletteEl.style.transform = `translateX(-${scrollAmount}px)`;
 
-    roulette.addEventListener('transitionend', handleAnimationEnd);
+            // Highlight winner on specific roulette
+            const handleTransitionEnd = (e) => {
+                if (e.propertyName !== 'transform') return;
+                rouletteEl.removeEventListener('transitionend', handleTransitionEnd);
+
+                if (isRouletteSpinning) {
+                     if (winningItemElement) winningItemElement.classList.add('winner');
+                     finishedAnimations++;
+                     if (finishedAnimations === selectedCaseCount) {
+                         finalizeAllRoulettes();
+                     }
+                }
+            };
+            rouletteEl.addEventListener('transitionend', handleTransitionEnd);
+
+        }, 100);
+    }
+
+    // IMMEDIATE KEEP: Add all to inventory
+    userInventory.push(...currentWinningSkins);
+    localStorage.setItem('userInventory', JSON.stringify(userInventory));
+}
+
+function finalizeAllRoulettes() {
+    isRouletteSpinning = false;
+    openCaseButton.style.display = 'none';
+
+    // Calculate total value
+    const totalValue = currentWinningSkins.reduce((sum, skin) => sum + skin.price, 0);
+
+    // Update Sell Button
+    sellSkinBtn.innerHTML = `VENDER TUDO <span class="btn-price">R$ ${totalValue.toFixed(2).replace('.', ',')}</span>`;
+
+    resultButtons.style.display = 'flex';
 }
 
 function closeOpeningScreen() {
     // Just reset screen immediately since there is no modal fade out
     openCaseButton.disabled = false;
     resetOpeningScreen();
-    const selectedCase = cases[currentCaseId];
-    const previewItems = [...selectedCase.skins, ...selectedCase.skins, ...selectedCase.skins];
-    previewItems.forEach(item => {
-        const rouletteItem = document.createElement('div');
-        rouletteItem.classList.add('roulette-item', `rarity-${item.rarity}`);
-        rouletteItem.innerHTML = `<div class="skin-image-wrapper"><div class="hexagon-bg"></div><img src="${item.image}" alt="${item.name}"></div><p>${item.name}</p>`;
-        roulette.appendChild(rouletteItem);
-    });
+    // Previews handled by resetOpeningScreen -> renderRoulettes -> fillRoulettesWithPreview
 }
 
 function goBackToMain() {
@@ -448,22 +544,49 @@ function goBackToMain() {
 }
 
 function sellSkin() {
-    if (currentWinningSkin) {
-        // Remove from inventory (it was added immediately after spin)
-        // Find the index of the object. Since we just pushed it, it should be at the end,
-        // but let's be safe and find the LAST instance of this specific object or matching props.
-        // Since objects in JS are references, and we pushed `currentWinningSkin`, we can find it.
-        const index = userInventory.lastIndexOf(currentWinningSkin);
-        if (index > -1) {
-            userInventory.splice(index, 1);
-            localStorage.setItem('userInventory', JSON.stringify(userInventory));
+    if (currentWinningSkins.length > 0) {
+        // Iterate specifically over copies of skins we won
+        for (const skin of currentWinningSkins) {
+            const index = userInventory.lastIndexOf(skin);
+            if (index > -1) {
+                userInventory.splice(index, 1);
+            }
+            userBalance += skin.price;
         }
 
-        userBalance += currentWinningSkin.price;
+        localStorage.setItem('userInventory', JSON.stringify(userInventory));
         updateUserBalance();
         closeOpeningScreen();
     }
 }
+
+function handleOpenAgain() {
+    if (!currentCaseId || !isLoggedIn || isRouletteSpinning) return;
+
+    const selectedCase = cases[currentCaseId];
+    const totalCost = selectedCase.price * selectedCaseCount;
+
+    if (userBalance < totalCost) {
+        alert('Saldo insuficiente!');
+        return;
+    }
+
+    // Hide result buttons immediately
+    resultButtons.style.display = 'none';
+
+    // Reset previous winner states
+    document.querySelectorAll('.roulette-item.winner').forEach(el => el.classList.remove('winner'));
+
+    // Trigger the spin logic
+    startRoulette();
+}
+
+// Case count selector logic
+multiCaseSelector.addEventListener('click', (e) => {
+    const btn = e.target.closest('.case-count-btn');
+    if (!btn || isRouletteSpinning) return; // Ignore if spinning
+    updateCaseCount(btn.dataset.count);
+});
 
 function openInventoryPage() {
     window.location.href = 'inventory.html';
@@ -485,6 +608,7 @@ document.querySelectorAll('.case').forEach(caseElement => {
 openCaseButton.addEventListener('click', startRoulette);
 backToMainBtn.addEventListener('click', goBackToMain);
 sellSkinBtn.addEventListener('click', sellSkin);
+openAgainBtn.addEventListener('click', handleOpenAgain);
 inventoryBtn.addEventListener('click', openInventoryPage);
 
 // --- Initial Page Load ---

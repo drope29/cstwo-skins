@@ -424,23 +424,81 @@ main {
     flex-shrink: 0;
 }
 
-#roulette-container {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    height: 260px; /* Further increased height to prevent glow clipping */
-    overflow: hidden;
-    border-radius: 4px; /* Slight radius for modern feel */
-    background: #0f0f0f; /* Even darker background */
-    border: 1px solid #222;
-    margin-bottom: 30px;
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
-    flex-shrink: 0;
+#multi-case-selector {
     display: flex;
-    align-items: center; /* Center items vertically */
+    gap: 10px;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-#roulette-container::before {
+.case-count-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #888;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.2s ease;
+}
+
+.case-count-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.case-count-btn.active {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    border-color: rgba(255, 193, 7, 0.3);
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.1);
+}
+
+#roulette-area {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 30px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Layout variants */
+#roulette-area.layout-1 {
+    display: flex;
+    justify-content: center;
+}
+
+#roulette-area.layout-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+#roulette-area.layout-4,
+#roulette-area.layout-6 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.roulette-container {
+    position: relative;
+    width: 100%;
+    height: 220px; /* Reduced slightly for compact multi-view */
+    overflow: hidden;
+    border-radius: 4px;
+    background: #0f0f0f;
+    border: 1px solid #222;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+}
+
+.roulette-container::before {
     content: '';
     position: absolute;
     top: 0;
@@ -452,7 +510,7 @@ main {
     background: linear-gradient(to right, #0f0f0f 0%, transparent 15%, transparent 85%, #0f0f0f 100%);
 }
 
-#roulette-pin {
+.roulette-pin {
     position: absolute;
     top: 0;
     left: 50%;
@@ -460,11 +518,11 @@ main {
     width: 2px;
     height: 100%;
     background: linear-gradient(to bottom, transparent, #ffc107, transparent);
-    z-index: 20; /* Ensure it is above the winner card */
+    z-index: 20;
     box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
 }
 
-#roulette-pin::after {
+.roulette-pin::after {
     content: '';
     position: absolute;
     top: -5px;
@@ -478,7 +536,7 @@ main {
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
-#roulette-pin::before {
+.roulette-pin::before {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -492,7 +550,7 @@ main {
     filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.5));
 }
 
-#roulette {
+.roulette {
     display: flex;
     position: absolute;
     left: 0;
@@ -782,6 +840,8 @@ main {
 
 #result-buttons {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 15px;
 }
 
@@ -801,6 +861,52 @@ main {
 #result-buttons button:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+}
+
+#open-again-btn {
+    background: rgba(255, 193, 7, 0.1) !important;
+    color: #ffc107 !important;
+    border: 1px solid rgba(255, 193, 7, 0.5) !important;
+    min-width: 220px;
+    padding: 12px 30px !important;
+    font-size: 1em !important;
+    letter-spacing: 1px;
+    border-radius: 50px !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#open-again-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    transition: transform 0.5s ease;
+}
+
+#open-again-btn .btn-price {
+    font-family: 'Science Gothic', sans-serif;
+    font-size: 0.9em;
+    color: rgba(255, 193, 7, 0.8);
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+#open-again-btn:hover {
+    background: rgba(255, 193, 7, 0.2) !important;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3) !important;
+    transform: translateY(-2px);
+    border-color: #ffc107 !important;
+}
+
+#open-again-btn:hover svg {
+    transform: rotate(180deg);
+}
+
+#open-again-btn:active {
+    transform: translateY(0) scale(0.98);
 }
 
 #open-case-button {
